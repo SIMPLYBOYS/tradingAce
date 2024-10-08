@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/big"
 )
 
 func main() {
@@ -22,13 +23,13 @@ func main() {
 
 	fmt.Println(latestBlock)
 
-	// fromBlock := big.NewInt(int64(latestBlock - 100))
-	// toBlock := big.NewInt(int64(latestBlock))
+	fromBlock := big.NewInt(int64(latestBlock - 100))
+	toBlock := big.NewInt(int64(latestBlock))
 
-	// logs, err := fetchSwapEvents(fromBlock, toBlock)
-	// if err != nil {
-	// 	log.Fatalf("Failed to fetch swap events: %v", err)
-	// }
+	logs, err := FetchSwapEvents(fromBlock, toBlock)
+	if err != nil {
+		log.Fatalf("Failed to fetch swap events: %v", err)
+	}
 
-	// processSwapEvents(logs)
+	ProcessSwapEvents(logs)
 }
