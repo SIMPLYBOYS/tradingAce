@@ -119,13 +119,22 @@ func ProcessSwapEvents(logs []types.Log) []*SwapEvent {
 			continue
 		}
 
-		// The first and last topics are the event signature and 'to' address respectively
 		swapEvent.Sender = common.HexToAddress(vLog.Topics[1].Hex())
 		swapEvent.To = common.HexToAddress(vLog.Topics[2].Hex())
 
 		usdValue, err := calculateUSDValue(&swapEvent)
 		if err != nil {
 			log.Printf("Error calculating USD value: %v", err)
+			continue
+		}
+
+		// Convert big.Float to float64, ignoring the accuracy
+		usdValueFloat64, _ := usdValue.Float64()
+
+		// Record the swap in the database
+		err = RecordSwap(swapEvent.Sender.Hex(), usdValueFloat64, vLog.TxHash.Hex())
+		if err != nil {
+			log.Printf("Error recording swap: %v", err)
 		}
 
 		swapEvents = append(swapEvents, &swapEvent)
