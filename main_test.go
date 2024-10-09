@@ -1,7 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"math/big"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 	"time"
 
@@ -270,5 +273,100 @@ func TestProcessSwapEvents(t *testing.T) {
 	mockClient.AssertExpectations(t)
 	if err := dbMock.ExpectationsWereMet(); err != nil {
 		t.Errorf("there were unfulfilled database expectations: %s", err)
+	}
+}
+
+func TestGetLeaderboard(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+	}
+	defer db.Close()
+
+	DB = db
+
+	rows := sqlmock.NewRows([]string{"address", "total_points", "onboarding_points", "share_pool_points", "total_swap_volume", "weeks_participated"}).
+		AddRow("0x1234", 1000, 100, 900, 5000.0, 4).
+		AddRow("0x5678", 800, 100, 700, 4000.0, 3).
+		AddRow("0x9abc", 600, 100, 500, 3000.0, 2)
+
+	mock.ExpectQuery("SELECT (.+) FROM users").
+		WithArgs(10).
+		WillReturnRows(rows)
+
+	leaderboard, err := GetLeaderboard(10)
+	assert.NoError(t, err)
+	assert.Len(t, leaderboard, 3)
+
+	assert.Equal(t, "0x1234", leaderboard[0]["address"])
+	assert.Equal(t, 1000, leaderboard[0]["total_points"])
+	assert.Equal(t, 100, leaderboard[0]["onboarding_points"])
+	assert.Equal(t, 900, leaderboard[0]["share_pool_points"])
+	assert.Equal(t, 5000.0, leaderboard[0]["total_swap_volume"])
+	assert.Equal(t, 4, leaderboard[0]["weeks_participated"])
+
+	assert.Equal(t, "0x5678", leaderboard[1]["address"])
+	assert.Equal(t, "0x9abc", leaderboard[2]["address"])
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
+	}
+}
+
+func TestGetLeaderboardAPI(t *testing.T) {
+	// Set up
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+	}
+	defer db.Close()
+
+	DB = db
+
+	// Mock the leaderboard query
+	rows := sqlmock.NewRows([]string{"address", "total_points", "onboarding_points", "share_pool_points", "total_swap_volume", "weeks_participated"}).
+		AddRow("0x1234", 1000, 100, 900, 5000.0, 4).
+		AddRow("0x5678", 800, 100, 700, 4000.0, 3)
+
+	mock.ExpectQuery("SELECT (.+) FROM users").
+		WithArgs(10).
+		WillReturnRows(rows)
+
+	// Mock the campaign config query
+	configRows := sqlmock.NewRows([]string{"id", "start_time", "end_time", "is_active"}).
+		AddRow(1, time.Now().Add(-14*24*time.Hour), time.Now().Add(14*24*time.Hour), true)
+
+	mock.ExpectQuery("SELECT id, start_time, end_time, is_active FROM campaign_config").
+		WillReturnRows(configRows)
+
+	// Set up the Gin router
+	router := SetupRouter()
+
+	// Create a test request
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/leaderboard", nil)
+	router.ServeHTTP(w, req)
+
+	// Assert
+	assert.Equal(t, 200, w.Code)
+
+	var response map[string]interface{}
+	err = json.Unmarshal(w.Body.Bytes(), &response)
+	assert.NoError(t, err)
+
+	leaderboard, ok := response["leaderboard"].([]interface{})
+	assert.True(t, ok)
+	assert.Len(t, leaderboard, 2)
+
+	campaignInfo, ok := response["campaign_info"].(map[string]interface{})
+	assert.True(t, ok)
+	assert.NotNil(t, campaignInfo["start_time"])
+	assert.NotNil(t, campaignInfo["end_time"])
+	assert.Equal(t, true, campaignInfo["is_active"])
+	assert.Equal(t, float64(4), campaignInfo["total_weeks"])
+	assert.Equal(t, float64(3), campaignInfo["current_week"])
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled expectations: %s", err)
 	}
 }
