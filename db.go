@@ -306,6 +306,7 @@ func CalculateWeeklySharePoolPoints() error {
 	log.Printf("Weekly share pool points calculated and distributed. Total points: %d, Users rewarded: %d", totalPoints, len(users))
 	return nil
 }
+
 func GetCampaignConfig() (CampaignConfig, error) {
 	var config CampaignConfig
 	err := DB.QueryRow("SELECT id, start_time, end_time, is_active FROM campaign_config ORDER BY id DESC LIMIT 1").
@@ -354,4 +355,54 @@ func AwardOnboardingPoints(userID int) error {
 	}
 
 	return nil
+}
+
+func GetLeaderboard(limit int) ([]map[string]interface{}, error) {
+	query := `
+        SELECT 
+            u.address,
+            COALESCE(SUM(ph.points), 0) as total_points,
+            COALESCE(SUM(CASE WHEN ph.reason = 'Onboarding task completed' THEN ph.points ELSE 0 END), 0) as onboarding_points,
+            COALESCE(SUM(CASE WHEN ph.reason = 'Weekly Share Pool Task' THEN ph.points ELSE 0 END), 0) as share_pool_points,
+            COALESCE(SUM(se.amount_usd), 0) as total_swap_volume,
+            COUNT(DISTINCT CASE WHEN ph.reason = 'Weekly Share Pool Task' THEN ph.timestamp ELSE NULL END) as weeks_participated
+        FROM 
+            users u
+        LEFT JOIN 
+            points_history ph ON u.id = ph.user_id
+        LEFT JOIN 
+            swap_events se ON u.id = se.user_id
+        GROUP BY 
+            u.id, u.address
+        ORDER BY 
+            total_points DESC
+        LIMIT $1
+    `
+
+	rows, err := DB.Query(query, limit)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query leaderboard: %v", err)
+	}
+	defer rows.Close()
+
+	var leaderboard []map[string]interface{}
+	for rows.Next() {
+		var address string
+		var totalPoints, onboardingPoints, sharePoolPoints int
+		var totalSwapVolume float64
+		var weeksParticipated int
+		if err := rows.Scan(&address, &totalPoints, &onboardingPoints, &sharePoolPoints, &totalSwapVolume, &weeksParticipated); err != nil {
+			return nil, fmt.Errorf("failed to scan row: %v", err)
+		}
+		leaderboard = append(leaderboard, map[string]interface{}{
+			"address":            address,
+			"total_points":       totalPoints,
+			"onboarding_points":  onboardingPoints,
+			"share_pool_points":  sharePoolPoints,
+			"total_swap_volume":  totalSwapVolume,
+			"weeks_participated": weeksParticipated,
+		})
+	}
+
+	return leaderboard, nil
 }
