@@ -11,6 +11,12 @@ import (
 
 var DB *sql.DB
 
+type CampaignConfig struct {
+	StartTime time.Time
+	EndTime   time.Time
+	IsActive  bool
+}
+
 func InitDB() error {
 	connStr := "host=localhost port=5432 user=user password=password dbname=tradingace sslmode=disable"
 	var err error
@@ -92,101 +98,173 @@ func GetUserPointsHistory(address string) ([]map[string]interface{}, error) {
 }
 
 func RecordSwap(address string, amountUSD float64, txHash string) error {
+	config, err := GetCampaignConfig()
+	if err != nil {
+		return fmt.Errorf("failed to get campaign config: %v", err)
+	}
+
+	now := time.Now()
+	if !config.IsActive || now.Before(config.StartTime) || now.After(config.EndTime) {
+		return nil // Silently ignore swaps outside the campaign timeframe
+	}
+
 	tx, err := DB.Begin()
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to begin transaction: %v", err)
 	}
 	defer tx.Rollback()
 
-	// Insert or update user
 	var userID int
 	err = tx.QueryRow("INSERT INTO users (address) VALUES ($1) ON CONFLICT (address) DO UPDATE SET address = EXCLUDED.address RETURNING id", address).Scan(&userID)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to insert or get user: %v", err)
 	}
 
-	// Record swap event
 	_, err = tx.Exec("INSERT INTO swap_events (user_id, transaction_hash, amount_usd, timestamp) VALUES ($1, $2, $3, $4)",
-		userID, txHash, amountUSD, time.Now())
+		userID, txHash, amountUSD, now)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to insert swap event: %v", err)
 	}
 
-	// Check and update onboarding task
-	var onboardingCompleted bool
-	err = tx.QueryRow("SELECT onboarding_completed FROM users WHERE id = $1", userID).Scan(&onboardingCompleted)
-	if err != nil {
-		return err
-	}
-
-	if !onboardingCompleted && amountUSD >= 1000 {
-		_, err = tx.Exec("UPDATE users SET onboarding_completed = true, onboarding_points = 100 WHERE id = $1", userID)
+	if amountUSD >= 1000 {
+		var onboardingCompleted bool
+		err = tx.QueryRow("SELECT onboarding_completed FROM users WHERE id = $1", userID).Scan(&onboardingCompleted)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to check onboarding status: %v", err)
 		}
 
-		// Record points for onboarding task
-		_, err = tx.Exec("INSERT INTO points_history (user_id, points, reason, timestamp) VALUES ($1, 100, 'Onboarding task completed', $2)",
-			userID, time.Now())
-		if err != nil {
-			return err
+		if !onboardingCompleted {
+			_, err = tx.Exec("UPDATE users SET onboarding_completed = true, onboarding_points = 100 WHERE id = $1", userID)
+			if err != nil {
+				return fmt.Errorf("failed to update onboarding status: %v", err)
+			}
+
+			_, err = tx.Exec("INSERT INTO points_history (user_id, points, reason, timestamp) VALUES ($1, 100, 'Onboarding task completed', $2)",
+				userID, now)
+			if err != nil {
+				return fmt.Errorf("failed to insert onboarding points history: %v", err)
+			}
 		}
 	}
 
-	return tx.Commit()
+	err = tx.Commit()
+	if err != nil {
+		return fmt.Errorf("failed to commit transaction: %v", err)
+	}
+
+	return nil
 }
 
-func CalculateSharePoolPoints() error {
-	// This function should be run weekly
+func CalculateWeeklySharePoolPoints() error {
+	config, err := GetCampaignConfig()
+	if err != nil {
+		return fmt.Errorf("failed to get campaign config: %v", err)
+	}
+
+	if !config.IsActive || time.Now().Before(config.StartTime) || time.Now().After(config.EndTime) {
+		log.Println("Campaign is not active or outside the timeframe, skipping point distribution")
+		return nil
+	}
+
 	tx, err := DB.Begin()
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to begin transaction: %v", err)
 	}
 	defer tx.Rollback()
 
-	// Get total swap volume for the week
+	// Get the total swap volume for the week
 	var totalVolume float64
-	err = tx.QueryRow("SELECT COALESCE(SUM(amount_usd), 0) FROM swap_events WHERE timestamp >= NOW() - INTERVAL '1 week'").Scan(&totalVolume)
+	err = tx.QueryRow(`
+		SELECT COALESCE(SUM(amount_usd), 0)
+		FROM swap_events
+		WHERE timestamp >= NOW() - INTERVAL '1 week'
+	`).Scan(&totalVolume)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to get total volume: %v", err)
 	}
 
 	if totalVolume == 0 {
-		// No swaps this week, nothing to do
+		log.Println("No swaps this week, skipping point distribution")
 		return nil
 	}
 
 	// Calculate and award points for each user
 	rows, err := tx.Query(`
-        SELECT u.id, u.address, COALESCE(SUM(se.amount_usd), 0) as volume
-        FROM users u
-        LEFT JOIN swap_events se ON u.id = se.user_id AND se.timestamp >= NOW() - INTERVAL '1 week'
-        WHERE u.onboarding_completed = true
-        GROUP BY u.id, u.address
-    `)
+		SELECT u.id, u.address, COALESCE(SUM(se.amount_usd), 0) as volume
+		FROM users u
+		LEFT JOIN swap_events se ON u.id = se.user_id AND se.timestamp >= NOW() - INTERVAL '1 week'
+		WHERE u.onboarding_completed = true
+		GROUP BY u.id, u.address
+	`)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to query user volumes: %v", err)
 	}
 	defer rows.Close()
 
 	for rows.Next() {
 		var userID int
 		var address string
-		var volume float64
-		err := rows.Scan(&userID, &address, &volume)
+		var userVolume float64
+		err := rows.Scan(&userID, &address, &userVolume)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to scan user data: %v", err)
 		}
 
-		if volume > 0 {
-			points := int((volume / totalVolume) * 10000) // 10000 is the total points pool
-			_, err = tx.Exec("INSERT INTO points_history (user_id, points, reason, timestamp) VALUES ($1, $2, 'Share pool task - Weekly', $3)",
-				userID, points, time.Now())
+		if userVolume > 0 {
+			points := int((userVolume / totalVolume) * 10000) // 10000 is the total points pool
+			_, err = tx.Exec(`
+				INSERT INTO points_history (user_id, points, reason, timestamp)
+				VALUES ($1, $2, $3, $4)
+			`, userID, points, "Weekly Share Pool Task", time.Now())
 			if err != nil {
-				return err
+				return fmt.Errorf("failed to insert points history: %v", err)
 			}
 		}
 	}
 
-	return tx.Commit()
+	if err = tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction: %v", err)
+	}
+
+	log.Println("Weekly share pool points calculated and distributed")
+	return nil
+}
+
+func GetCampaignConfig() (CampaignConfig, error) {
+	var config CampaignConfig
+	err := DB.QueryRow("SELECT start_time, end_time, is_active FROM campaign_config ORDER BY id DESC LIMIT 1").
+		Scan(&config.StartTime, &config.EndTime, &config.IsActive)
+	if err != nil {
+		return CampaignConfig{}, fmt.Errorf("failed to get campaign config: %v", err)
+	}
+	return config, nil
+}
+
+func SetCampaignConfig(startTime, endTime time.Time) error {
+	_, err := DB.Exec("INSERT INTO campaign_config (start_time, end_time) VALUES ($1, $2)",
+		startTime, endTime)
+	if err != nil {
+		return fmt.Errorf("failed to set campaign config: %v", err)
+	}
+	return nil
+}
+
+func AwardOnboardingPoints(userID int) error {
+	_, err := DB.Exec(`
+        UPDATE users SET onboarding_completed = true, onboarding_points = 100
+        WHERE id = $1 AND onboarding_completed = false
+    `, userID)
+	if err != nil {
+		return fmt.Errorf("failed to award onboarding points: %v", err)
+	}
+
+	_, err = DB.Exec(`
+        INSERT INTO points_history (user_id, points, reason, timestamp)
+        VALUES ($1, 100, 'Onboarding task completed', NOW())
+    `, userID)
+	if err != nil {
+		return fmt.Errorf("failed to record onboarding points: %v", err)
+	}
+
+	return nil
 }

@@ -68,10 +68,25 @@ func main() {
 
 func runWeeklySharePoolTask() {
 	for {
-		time.Sleep(7 * 24 * time.Hour) // Wait for a week
-		err := CalculateSharePoolPoints()
+		// Wait until the next Monday at 00:00 UTC
+		nextMonday := getNextMonday()
+		time.Sleep(time.Until(nextMonday))
+
+		log.Println("Starting weekly share pool calculation")
+		err := CalculateWeeklySharePoolPoints()
 		if err != nil {
-			log.Printf("Error calculating share pool points: %v", err)
+			log.Printf("Error calculating weekly share pool points: %v", err)
 		}
 	}
+}
+
+func getNextMonday() time.Time {
+	now := time.Now().UTC()
+	weekday := int(now.Weekday())
+	daysUntilMonday := 7 - weekday
+	if weekday == 0 { // If it's Sunday
+		daysUntilMonday = 1
+	}
+	nextMonday := now.AddDate(0, 0, daysUntilMonday)
+	return time.Date(nextMonday.Year(), nextMonday.Month(), nextMonday.Day(), 0, 0, 0, 0, time.UTC)
 }
