@@ -9,19 +9,18 @@ import (
 )
 
 func main() {
-	fmt.Println("Trading Ace starting...")
+	LogInfo("Trading Ace starting...")
 
 	err := InitDB()
 	if err != nil {
-		log.Fatalf("Failed to initialize database: %v", err)
+		LogFatal("Failed to initialize database: %v", err)
 	}
 	defer DB.Close()
 
 	err = InitEthereumClient()
 	if err != nil {
-		log.Fatalf("Failed to initialize Ethereum client: %v", err)
+		LogFatal("Failed to initialize Ethereum client: %v", err)
 	}
-
 	// Set up and run the API server
 	r := SetupRouter()
 	go func() {

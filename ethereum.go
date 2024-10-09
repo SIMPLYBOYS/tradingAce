@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 	"math/big"
 	"strings"
+	"time"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -53,8 +53,9 @@ func InitEthereumClient() error {
 	var err error
 	Client, err = ethclient.Dial(InfuraURL)
 	if err != nil {
-		return fmt.Errorf("failed to connect to the Ethereum client: %v", err)
+		return fmt.Errorf("failed to connect to the Ethereum client: %w", err)
 	}
+	LogInfo("Successfully connected to Ethereum client")
 	return nil
 }
 
@@ -67,11 +68,15 @@ func FetchSwapEvents(fromBlock, toBlock *big.Int) ([]types.Log, error) {
 		Topics:    [][]common.Hash{{crypto.Keccak256Hash(SwapEventSignature)}},
 	}
 
-	logs, err := Client.FilterLogs(context.Background(), query)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	logs, err := Client.FilterLogs(ctx, query)
 	if err != nil {
-		return nil, fmt.Errorf("failed to filter logs: %v", err)
+		return nil, fmt.Errorf("failed to filter logs: %w", err)
 	}
 
+	LogInfo("Successfully fetched %d swap events from block %s to %s", len(logs), fromBlock.String(), toBlock.String())
 	return logs, nil
 }
 
@@ -115,7 +120,7 @@ func ProcessSwapEvents(logs []types.Log) []*SwapEvent {
 		var swapEvent SwapEvent
 		err := swapEventABI.UnpackIntoInterface(&swapEvent, "Swap", vLog.Data)
 		if err != nil {
-			log.Printf("Error unpacking swap event: %v", err)
+			LogError("Error unpacking swap event: %v", err)
 			continue
 		}
 
@@ -124,34 +129,22 @@ func ProcessSwapEvents(logs []types.Log) []*SwapEvent {
 
 		usdValue, err := calculateUSDValue(&swapEvent)
 		if err != nil {
-			log.Printf("Error calculating USD value: %v", err)
+			LogError("Error calculating USD value for swap event %s: %v", vLog.TxHash.Hex(), err)
 			continue
 		}
 
-		// Convert big.Float to float64, ignoring the accuracy
 		usdValueFloat64, _ := usdValue.Float64()
 
-		// Record the swap in the database
 		err = RecordSwap(swapEvent.Sender.Hex(), usdValueFloat64, vLog.TxHash.Hex())
 		if err != nil {
-			log.Printf("Error recording swap: %v", err)
+			LogError("Error recording swap event %s: %v", vLog.TxHash.Hex(), err)
+			continue
 		}
 
 		swapEvents = append(swapEvents, &swapEvent)
 
-		fmt.Printf("Swap Event:\n")
-		fmt.Printf("  Block Number: %d\n", vLog.BlockNumber)
-		fmt.Printf("  Transaction Hash: %s\n", vLog.TxHash.Hex())
-		fmt.Printf("  Sender: %s\n", swapEvent.Sender.Hex())
-		fmt.Printf("  Amount0In: %s\n", swapEvent.Amount0In.String())
-		fmt.Printf("  Amount1In: %s\n", swapEvent.Amount1In.String())
-		fmt.Printf("  Amount0Out: %s\n", swapEvent.Amount0Out.String())
-		fmt.Printf("  Amount1Out: %s\n", swapEvent.Amount1Out.String())
-		fmt.Printf("  To: %s\n", swapEvent.To.Hex())
-		if usdValue != nil {
-			fmt.Printf("  USD Value: $%.2f\n", usdValue)
-		}
-		fmt.Println("--------------------")
+		LogInfo("Processed swap event: TX Hash: %s, Sender: %s, To: %s, USD Value: %.2f",
+			vLog.TxHash.Hex(), swapEvent.Sender.Hex(), swapEvent.To.Hex(), usdValueFloat64)
 	}
 
 	return swapEvents
@@ -163,9 +156,14 @@ func CalculateSwapVolume(event *SwapEvent) *big.Int {
 }
 
 func GetLatestBlockNumber() (uint64, error) {
-	header, err := Client.HeaderByNumber(context.Background(), nil)
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	header, err := Client.HeaderByNumber(ctx, nil)
 	if err != nil {
-		return 0, fmt.Errorf("failed to get latest block number: %v", err)
+		return 0, fmt.Errorf("failed to get latest block number: %w", err)
 	}
+
+	LogInfo("Retrieved latest block number: %d", header.Number.Uint64())
 	return header.Number.Uint64(), nil
 }
