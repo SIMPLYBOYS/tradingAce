@@ -12,6 +12,7 @@ import (
 var DB *sql.DB
 
 type CampaignConfig struct {
+	ID        int
 	StartTime time.Time
 	EndTime   time.Time
 	IsActive  bool
@@ -161,10 +162,14 @@ func CalculateWeeklySharePoolPoints() error {
 		return fmt.Errorf("failed to get campaign config: %v", err)
 	}
 
-	if !config.IsActive || time.Now().Before(config.StartTime) || time.Now().After(config.EndTime) {
-		log.Println("Campaign is not active or outside the timeframe, skipping point distribution")
+	now := time.Now()
+	if !config.IsActive || now.Before(config.StartTime) || now.After(config.EndTime) {
+		log.Println("Campaign is not active or has ended, skipping point distribution")
 		return nil
 	}
+
+	// Check if this is the last week of the campaign
+	isLastWeek := now.Add(7 * 24 * time.Hour).After(config.EndTime)
 
 	tx, err := DB.Begin()
 	if err != nil {
@@ -177,8 +182,8 @@ func CalculateWeeklySharePoolPoints() error {
 	err = tx.QueryRow(`
 		SELECT COALESCE(SUM(amount_usd), 0)
 		FROM swap_events
-		WHERE timestamp >= NOW() - INTERVAL '1 week'
-	`).Scan(&totalVolume)
+		WHERE timestamp >= $1 AND timestamp < $2
+	`, now.Add(-7*24*time.Hour), now).Scan(&totalVolume)
 	if err != nil {
 		return fmt.Errorf("failed to get total volume: %v", err)
 	}
@@ -192,10 +197,10 @@ func CalculateWeeklySharePoolPoints() error {
 	rows, err := tx.Query(`
 		SELECT u.id, u.address, COALESCE(SUM(se.amount_usd), 0) as volume
 		FROM users u
-		LEFT JOIN swap_events se ON u.id = se.user_id AND se.timestamp >= NOW() - INTERVAL '1 week'
+		LEFT JOIN swap_events se ON u.id = se.user_id AND se.timestamp >= $1 AND se.timestamp < $2
 		WHERE u.onboarding_completed = true
 		GROUP BY u.id, u.address
-	`)
+	`, now.Add(-7*24*time.Hour), now)
 	if err != nil {
 		return fmt.Errorf("failed to query user volumes: %v", err)
 	}
@@ -215,11 +220,19 @@ func CalculateWeeklySharePoolPoints() error {
 			_, err = tx.Exec(`
 				INSERT INTO points_history (user_id, points, reason, timestamp)
 				VALUES ($1, $2, $3, $4)
-			`, userID, points, "Weekly Share Pool Task", time.Now())
+			`, userID, points, "Weekly Share Pool Task", now)
 			if err != nil {
 				return fmt.Errorf("failed to insert points history: %v", err)
 			}
 		}
+	}
+
+	if isLastWeek {
+		_, err = tx.Exec("UPDATE campaign_config SET is_active = false WHERE id = $1", config.ID)
+		if err != nil {
+			return fmt.Errorf("failed to deactivate campaign: %v", err)
+		}
+		log.Println("Campaign has ended. Deactivated in the database.")
 	}
 
 	if err = tx.Commit(); err != nil {
@@ -232,17 +245,18 @@ func CalculateWeeklySharePoolPoints() error {
 
 func GetCampaignConfig() (CampaignConfig, error) {
 	var config CampaignConfig
-	err := DB.QueryRow("SELECT start_time, end_time, is_active FROM campaign_config ORDER BY id DESC LIMIT 1").
-		Scan(&config.StartTime, &config.EndTime, &config.IsActive)
+	err := DB.QueryRow("SELECT id, start_time, end_time, is_active FROM campaign_config ORDER BY id DESC LIMIT 1").
+		Scan(&config.ID, &config.StartTime, &config.EndTime, &config.IsActive)
 	if err != nil {
 		return CampaignConfig{}, fmt.Errorf("failed to get campaign config: %v", err)
 	}
 	return config, nil
 }
 
-func SetCampaignConfig(startTime, endTime time.Time) error {
-	_, err := DB.Exec("INSERT INTO campaign_config (start_time, end_time) VALUES ($1, $2)",
-		startTime, endTime)
+func SetCampaignConfig(startTime time.Time) error {
+	endTime := startTime.Add(4 * 7 * 24 * time.Hour) // 4 weeks
+	_, err := DB.Exec("INSERT INTO campaign_config (start_time, end_time, is_active) VALUES ($1, $2, $3)",
+		startTime, endTime, true)
 	if err != nil {
 		return fmt.Errorf("failed to set campaign config: %v", err)
 	}
