@@ -6,10 +6,12 @@ import (
 	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestGetUserTasks(t *testing.T) {
@@ -153,8 +155,8 @@ func TestCalculateSwapVolume(t *testing.T) {
 }
 
 func TestProcessSwapEvents(t *testing.T) {
-	// Mock DB for RecordSwap function
-	db, mock, err := sqlmock.New()
+	// Set up mock DB
+	db, dbMock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
@@ -162,23 +164,52 @@ func TestProcessSwapEvents(t *testing.T) {
 	DB = db
 
 	// Set up mock expectations for RecordSwap
-	mock.ExpectQuery("SELECT id, start_time, end_time, is_active FROM campaign_config").
+	dbMock.ExpectQuery("SELECT id, start_time, end_time, is_active FROM campaign_config").
 		WillReturnRows(sqlmock.NewRows([]string{"id", "start_time", "end_time", "is_active"}).
 			AddRow(1, time.Now().Add(-7*24*time.Hour), time.Now().Add(21*24*time.Hour), true))
-	mock.ExpectQuery("INSERT INTO users").
-		WithArgs(sqlmock.AnyArg()).
+
+	dbMock.ExpectQuery("INSERT INTO users").
+		WithArgs("0x1234567890123456789012345678901234567890").
 		WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(1))
-	mock.ExpectBegin()
-	mock.ExpectExec("INSERT INTO swap_events").
-		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg()).
+
+	dbMock.ExpectBegin()
+	dbMock.ExpectExec("INSERT INTO swap_events").
+		WithArgs(1, "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890", 2000.0, sqlmock.AnyArg()).
 		WillReturnResult(sqlmock.NewResult(1, 1))
-	mock.ExpectQuery("SELECT onboarding_completed FROM users").
+
+	dbMock.ExpectQuery("SELECT onboarding_completed FROM users").
+		WithArgs(1).
 		WillReturnRows(sqlmock.NewRows([]string{"onboarding_completed"}).AddRow(false))
-	mock.ExpectExec("UPDATE users SET onboarding_completed").
+
+	dbMock.ExpectExec("UPDATE users SET onboarding_completed").
+		WithArgs(1).
 		WillReturnResult(sqlmock.NewResult(1, 1))
-	mock.ExpectExec("INSERT INTO points_history").
+
+	// Update the mock expectation for points_history insertion
+	dbMock.ExpectExec("INSERT INTO points_history \\(user_id, points, reason, timestamp\\) VALUES \\(\\$1, 100, 'Onboarding task completed', \\$2\\)").
+		WithArgs(1, sqlmock.AnyArg()).
 		WillReturnResult(sqlmock.NewResult(1, 1))
-	mock.ExpectCommit()
+
+	dbMock.ExpectCommit()
+
+	// Set up mock Ethereum client
+	mockClient := new(MockEthereumClient)
+	Client = mockClient
+
+	// Mock the CallContract method for GetEthereumPrice
+	ethPrice := big.NewInt(2000e8) // 2000 USD per ETH, with 8 decimal places
+	mockClient.On("CallContract", mock.Anything, mock.MatchedBy(func(call ethereum.CallMsg) bool {
+		return call.To.Hex() == ChainlinkETHUSDAddress
+	}), mock.Anything).Return(
+		append(
+			make([]byte, 32), // roundId
+			append(
+				common.LeftPadBytes(ethPrice.Bytes(), 32), // price
+				make([]byte, 32*3)...,                     // startedAt, updatedAt, answeredInRound
+			)...,
+		),
+		nil,
+	)
 
 	// Create a sample Swap event log
 	senderAddress := common.HexToAddress("0x1234567890123456789012345678901234567890")
@@ -214,36 +245,30 @@ func TestProcessSwapEvents(t *testing.T) {
 
 	logs := []types.Log{sampleLog}
 
-	// Mock getPoolReservesWrapper
-	originalWrapper := getPoolReservesWrapper
-	getPoolReservesWrapper = func(blockNumber uint64) (*big.Int, *big.Int, error) {
-		return big.NewInt(100).Mul(big.NewInt(100), big.NewInt(1e18)), big.NewInt(200000e6), nil
-	}
-	defer func() { getPoolReservesWrapper = originalWrapper }()
-
 	swapEvents := ProcessSwapEvents(logs)
 
-	assert.Len(t, swapEvents, 1)
-	assert.Equal(t, senderAddress, swapEvents[0].Sender)
-	assert.Equal(t, 0, amount0In.Cmp(swapEvents[0].Amount0In), "Amount0In should be equal")
-	assert.Equal(t, 0, amount1In.Cmp(swapEvents[0].Amount1In), "Amount1In should be equal")
-	assert.Equal(t, 0, amount0Out.Cmp(swapEvents[0].Amount0Out), "Amount0Out should be equal")
-	assert.Equal(t, 0, amount1Out.Cmp(swapEvents[0].Amount1Out), "Amount1Out should be equal")
-	assert.Equal(t, recipientAddress, swapEvents[0].To)
+	assert.Len(t, swapEvents, 1, "Expected 1 swap event to be processed")
+	if len(swapEvents) > 0 {
+		assert.Equal(t, senderAddress, swapEvents[0].Sender)
+		assert.Equal(t, 0, amount0In.Cmp(swapEvents[0].Amount0In), "Amount0In should be equal")
+		assert.Equal(t, 0, amount1In.Cmp(swapEvents[0].Amount1In), "Amount1In should be equal")
+		assert.Equal(t, 0, amount0Out.Cmp(swapEvents[0].Amount0Out), "Amount0Out should be equal")
+		assert.Equal(t, 0, amount1Out.Cmp(swapEvents[0].Amount1Out), "Amount1Out should be equal")
+		assert.Equal(t, recipientAddress, swapEvents[0].To)
 
-	// Check if USDValue is set
-	assert.NotNil(t, swapEvents[0].USDValue, "USDValue should not be nil")
-
-	if swapEvents[0].USDValue != nil {
-		// Additional check for USD value
-		expectedUSDValue, _ := new(big.Float).SetString("2000")
-		expectedFloat64, _ := expectedUSDValue.Float64()
-		actualFloat64, _ := swapEvents[0].USDValue.Float64()
-		assert.InDelta(t, expectedFloat64, actualFloat64, 0.01, "USD Value should be approximately 2000")
+		// Check if USDValue is set and correct
+		assert.NotNil(t, swapEvents[0].USDValue, "USDValue should not be nil")
+		if swapEvents[0].USDValue != nil {
+			expectedUSDValue, _ := new(big.Float).SetString("2000")
+			actualUSDValue, _ := swapEvents[0].USDValue.Float64()
+			expectedFloat64, _ := expectedUSDValue.Float64()
+			assert.InDelta(t, expectedFloat64, actualUSDValue, 0.01, "USD Value should be close to 2000")
+		}
 	}
 
 	// Check if the mock expectations were met
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("there were unfulfilled expectations: %s", err)
+	mockClient.AssertExpectations(t)
+	if err := dbMock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfilled database expectations: %s", err)
 	}
 }
