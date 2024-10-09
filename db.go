@@ -43,29 +43,65 @@ func InitDB() error {
 }
 
 func GetUserTasks(address string) (map[string]interface{}, error) {
-	var onboardingCompleted bool
-	var onboardingPoints int
-	err := DB.QueryRow("SELECT onboarding_completed, onboarding_points FROM users WHERE address = $1", address).Scan(&onboardingCompleted, &onboardingPoints)
+	var user struct {
+		ID                  int
+		OnboardingCompleted bool
+		OnboardingPoints    int
+		OnboardingAmount    float64
+	}
+	err := DB.QueryRow(`
+        SELECT id, onboarding_completed, onboarding_points, 
+               COALESCE((SELECT amount_usd FROM swap_events WHERE user_id = users.id ORDER BY timestamp ASC LIMIT 1), 0) as onboarding_amount
+        FROM users 
+        WHERE address = $1`, address).Scan(&user.ID, &user.OnboardingCompleted, &user.OnboardingPoints, &user.OnboardingAmount)
 	if err != nil {
 		return nil, err
 	}
 
-	var sharePoolAmount float64
-	err = DB.QueryRow("SELECT COALESCE(SUM(amount_usd), 0) FROM swap_events WHERE user_id = (SELECT id FROM users WHERE address = $1)", address).Scan(&sharePoolAmount)
+	var sharePoolAmount, sharePoolPoints float64
+	err = DB.QueryRow(`
+        SELECT COALESCE(SUM(amount_usd), 0),
+               COALESCE((SELECT SUM(points) FROM points_history WHERE user_id = $1 AND reason = 'Weekly Share Pool Task'), 0)
+        FROM swap_events 
+        WHERE user_id = $1`, user.ID).Scan(&sharePoolAmount, &sharePoolPoints)
 	if err != nil {
 		return nil, err
 	}
+
+	// Get the latest campaign config
+	campaignConfig, err := GetCampaignConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	// Check if the user is eligible for the current share pool distribution
+	var latestDistribution time.Time
+	err = DB.QueryRow(`
+        SELECT COALESCE(MAX(timestamp), $1)
+        FROM points_history
+        WHERE user_id = $2 AND reason = 'Weekly Share Pool Task'`, campaignConfig.StartTime, user.ID).Scan(&latestDistribution)
+	if err != nil {
+		return nil, err
+	}
+
+	isEligibleForCurrentDistribution := latestDistribution.Before(time.Now().AddDate(0, 0, -7))
 
 	tasks := map[string]interface{}{
 		"onboarding": map[string]interface{}{
-			"completed": onboardingCompleted,
-			"amount":    0, // This should be the amount swapped for onboarding
-			"points":    onboardingPoints,
+			"completed": user.OnboardingCompleted,
+			"amount":    user.OnboardingAmount,
+			"points":    user.OnboardingPoints,
 		},
 		"sharePool": map[string]interface{}{
 			"completed": sharePoolAmount > 0,
 			"amount":    sharePoolAmount,
-			"points":    0, // This should be calculated based on the user's share of the pool
+			"points":    sharePoolPoints,
+			"eligible":  isEligibleForCurrentDistribution,
+		},
+		"campaign": map[string]interface{}{
+			"startTime": campaignConfig.StartTime,
+			"endTime":   campaignConfig.EndTime,
+			"isActive":  campaignConfig.IsActive,
 		},
 	}
 
@@ -101,7 +137,7 @@ func GetUserPointsHistory(address string) ([]map[string]interface{}, error) {
 func RecordSwap(address string, amountUSD float64, txHash string) error {
 	config, err := GetCampaignConfig()
 	if err != nil {
-		return fmt.Errorf("failed to get campaign config: %v", err)
+		return LogErrorf(err, "failed to get campaign config")
 	}
 
 	now := time.Now()
@@ -109,48 +145,48 @@ func RecordSwap(address string, amountUSD float64, txHash string) error {
 		return nil // Silently ignore swaps outside the campaign timeframe
 	}
 
+	var userID int
+	err = DB.QueryRow("INSERT INTO users (address) VALUES ($1) ON CONFLICT (address) DO UPDATE SET address = EXCLUDED.address RETURNING id", address).Scan(&userID)
+	if err != nil {
+		return LogErrorf(err, "failed to insert or get user")
+	}
+
 	tx, err := DB.Begin()
 	if err != nil {
-		return fmt.Errorf("failed to begin transaction: %v", err)
+		return LogErrorf(err, "failed to begin transaction")
 	}
 	defer tx.Rollback()
-
-	var userID int
-	err = tx.QueryRow("INSERT INTO users (address) VALUES ($1) ON CONFLICT (address) DO UPDATE SET address = EXCLUDED.address RETURNING id", address).Scan(&userID)
-	if err != nil {
-		return fmt.Errorf("failed to insert or get user: %v", err)
-	}
 
 	_, err = tx.Exec("INSERT INTO swap_events (user_id, transaction_hash, amount_usd, timestamp) VALUES ($1, $2, $3, $4)",
 		userID, txHash, amountUSD, now)
 	if err != nil {
-		return fmt.Errorf("failed to insert swap event: %v", err)
+		return LogErrorf(err, "failed to insert swap event")
 	}
 
 	if amountUSD >= 1000 {
 		var onboardingCompleted bool
 		err = tx.QueryRow("SELECT onboarding_completed FROM users WHERE id = $1", userID).Scan(&onboardingCompleted)
 		if err != nil {
-			return fmt.Errorf("failed to check onboarding status: %v", err)
+			return LogErrorf(err, "failed to check onboarding status")
 		}
 
 		if !onboardingCompleted {
 			_, err = tx.Exec("UPDATE users SET onboarding_completed = true, onboarding_points = 100 WHERE id = $1", userID)
 			if err != nil {
-				return fmt.Errorf("failed to update onboarding status: %v", err)
+				return LogErrorf(err, "failed to update onboarding status")
 			}
 
 			_, err = tx.Exec("INSERT INTO points_history (user_id, points, reason, timestamp) VALUES ($1, 100, 'Onboarding task completed', $2)",
 				userID, now)
 			if err != nil {
-				return fmt.Errorf("failed to insert onboarding points history: %v", err)
+				return LogErrorf(err, "failed to insert onboarding points history")
 			}
 		}
 	}
 
 	err = tx.Commit()
 	if err != nil {
-		return fmt.Errorf("failed to commit transaction: %v", err)
+		return LogErrorf(err, "failed to commit transaction")
 	}
 
 	return nil
@@ -180,10 +216,10 @@ func CalculateWeeklySharePoolPoints() error {
 	// Get the total swap volume for the week
 	var totalVolume float64
 	err = tx.QueryRow(`
-		SELECT COALESCE(SUM(amount_usd), 0)
-		FROM swap_events
-		WHERE timestamp >= $1 AND timestamp < $2
-	`, now.Add(-7*24*time.Hour), now).Scan(&totalVolume)
+        SELECT COALESCE(SUM(amount_usd), 0)
+        FROM swap_events
+        WHERE timestamp >= $1 AND timestamp < $2
+    `, now.Add(-7*24*time.Hour), now).Scan(&totalVolume)
 	if err != nil {
 		return fmt.Errorf("failed to get total volume: %v", err)
 	}
@@ -193,38 +229,66 @@ func CalculateWeeklySharePoolPoints() error {
 		return nil
 	}
 
-	// Calculate and award points for each user
+	// Fetch all eligible users and their volumes
 	rows, err := tx.Query(`
-		SELECT u.id, u.address, COALESCE(SUM(se.amount_usd), 0) as volume
-		FROM users u
-		LEFT JOIN swap_events se ON u.id = se.user_id AND se.timestamp >= $1 AND se.timestamp < $2
-		WHERE u.onboarding_completed = true
-		GROUP BY u.id, u.address
-	`, now.Add(-7*24*time.Hour), now)
+        SELECT u.id, u.address, COALESCE(SUM(se.amount_usd), 0) as volume
+        FROM users u
+        LEFT JOIN swap_events se ON u.id = se.user_id AND se.timestamp >= $1 AND se.timestamp < $2
+        WHERE u.onboarding_completed = true
+        GROUP BY u.id, u.address
+        HAVING COALESCE(SUM(se.amount_usd), 0) > 0
+        ORDER BY volume DESC
+    `, now.Add(-7*24*time.Hour), now)
 	if err != nil {
 		return fmt.Errorf("failed to query user volumes: %v", err)
 	}
 	defer rows.Close()
 
+	type UserData struct {
+		ID      int
+		Address string
+		Volume  float64
+	}
+
+	var users []UserData
 	for rows.Next() {
-		var userID int
-		var address string
-		var userVolume float64
-		err := rows.Scan(&userID, &address, &userVolume)
-		if err != nil {
+		var user UserData
+		if err := rows.Scan(&user.ID, &user.Address, &user.Volume); err != nil {
 			return fmt.Errorf("failed to scan user data: %v", err)
 		}
+		users = append(users, user)
+	}
 
-		if userVolume > 0 {
-			points := int((userVolume / totalVolume) * 10000) // 10000 is the total points pool
-			_, err = tx.Exec(`
-				INSERT INTO points_history (user_id, points, reason, timestamp)
-				VALUES ($1, $2, $3, $4)
-			`, userID, points, "Weekly Share Pool Task", now)
-			if err != nil {
-				return fmt.Errorf("failed to insert points history: %v", err)
+	if err := rows.Err(); err != nil {
+		return fmt.Errorf("error iterating over user rows: %v", err)
+	}
+
+	totalPoints := 10000
+	remainingPoints := totalPoints
+
+	// Distribute points
+	for i, user := range users {
+		var points int
+		if i == len(users)-1 {
+			// Last user gets all remaining points
+			points = remainingPoints
+		} else {
+			points = int((user.Volume / totalVolume) * float64(totalPoints))
+			if points == 0 {
+				points = 1 // Ensure users with very small volume get at least 1 point
 			}
 		}
+		remainingPoints -= points
+
+		_, err = tx.Exec(`
+            INSERT INTO points_history (user_id, points, reason, timestamp)
+            VALUES ($1, $2, $3, $4)
+        `, user.ID, points, "Weekly Share Pool Task", now)
+		if err != nil {
+			return fmt.Errorf("failed to insert points history for user %s: %v", user.Address, err)
+		}
+
+		log.Printf("Awarded %d points to user %s for Weekly Share Pool Task", points, user.Address)
 	}
 
 	if isLastWeek {
@@ -239,10 +303,9 @@ func CalculateWeeklySharePoolPoints() error {
 		return fmt.Errorf("failed to commit transaction: %v", err)
 	}
 
-	log.Println("Weekly share pool points calculated and distributed")
+	log.Printf("Weekly share pool points calculated and distributed. Total points: %d, Users rewarded: %d", totalPoints, len(users))
 	return nil
 }
-
 func GetCampaignConfig() (CampaignConfig, error) {
 	var config CampaignConfig
 	err := DB.QueryRow("SELECT id, start_time, end_time, is_active FROM campaign_config ORDER BY id DESC LIMIT 1").
