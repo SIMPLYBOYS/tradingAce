@@ -11,6 +11,7 @@ func SetupRouter() *gin.Engine {
 
 	r.GET("/user/:address/tasks", getUserTasks)
 	r.GET("/user/:address/points", getUserPointsHistory)
+	r.GET("/ethereum/price", getEthereumPrice) // New endpoint
 
 	return r
 }
@@ -37,4 +38,14 @@ func getUserPointsHistory(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, pointsHistory)
+}
+
+func getEthereumPrice(c *gin.Context) {
+	price, err := GetEthereumPrice()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch Ethereum price"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"price": price})
 }

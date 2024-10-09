@@ -44,6 +44,35 @@ func (m *MockEthereumClient) FilterLogs(ctx context.Context, q ethereum.FilterQu
 	return args.Get(0).([]types.Log), args.Error(1)
 }
 
+// Add these new methods to match the updated EthereumClient interface
+
+func (m *MockEthereumClient) ChainID(ctx context.Context) (*big.Int, error) {
+	args := m.Called(ctx)
+	return args.Get(0).(*big.Int), args.Error(1)
+}
+
+func (m *MockEthereumClient) SendTransaction(ctx context.Context, tx *types.Transaction) error {
+	args := m.Called(ctx, tx)
+	return args.Error(0)
+}
+
+func (m *MockEthereumClient) SuggestGasPrice(ctx context.Context) (*big.Int, error) {
+	args := m.Called(ctx)
+	return args.Get(0).(*big.Int), args.Error(1)
+}
+
+func (m *MockEthereumClient) EstimateGas(ctx context.Context, call ethereum.CallMsg) (gas uint64, err error) {
+	args := m.Called(ctx, call)
+	return args.Get(0).(uint64), args.Error(1)
+}
+
+func (m *MockEthereumClient) TransactionReceipt(ctx context.Context, txHash common.Hash) (*types.Receipt, error) {
+	args := m.Called(ctx, txHash)
+	return args.Get(0).(*types.Receipt), args.Error(1)
+}
+
+// The rest of your test functions remain the same...
+
 func TestInitEthereumClient(t *testing.T) {
 	mockClient := new(MockEthereumClient)
 
