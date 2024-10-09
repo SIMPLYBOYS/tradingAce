@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"math/big"
 	"time"
@@ -17,12 +16,19 @@ func main() {
 	}
 	defer DB.Close()
 
-	err = InitEthereumClient(nil) // Use the default client creator
+	err = InitEthereumClient(nil)
 	if err != nil {
 		LogFatal("Failed to initialize Ethereum client: %v", err)
 	}
+
+	wsManager := NewWebSocketManager()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	go wsManager.Run(ctx)
+
 	// Set up and run the API server
-	r := SetupRouter()
+	r := SetupRouter(wsManager)
 	go func() {
 		if err := r.Run(":8080"); err != nil {
 			log.Fatalf("Failed to run server: %v", err)
@@ -30,20 +36,17 @@ func main() {
 	}()
 
 	// Start the weekly share pool task
-	go runWeeklySharePoolTask()
+	go runWeeklySharePoolTask(wsManager)
 
 	// Fetch and process swap events continuously
 	go func() {
 		for {
-			// Fetch swap events for the last 100 blocks
 			latestBlock, err := Client.BlockNumber(context.Background())
 			if err != nil {
 				log.Printf("Failed to get latest block number: %v", err)
 				time.Sleep(15 * time.Second)
 				continue
 			}
-
-			fmt.Println("Processing blocks up to:", latestBlock)
 
 			fromBlock := big.NewInt(int64(latestBlock - 100))
 			toBlock := big.NewInt(int64(latestBlock))
@@ -55,19 +58,20 @@ func main() {
 				continue
 			}
 
-			ProcessSwapEvents(logs)
+			swapEvents := ProcessSwapEvents(logs)
+			for _, event := range swapEvents {
+				wsManager.BroadcastSwapEvent(event)
+			}
 
-			time.Sleep(15 * time.Second) // Wait for 15 seconds before next fetch
+			time.Sleep(15 * time.Second)
 		}
 	}()
 
-	// Keep the main goroutine running
 	select {}
 }
 
-func runWeeklySharePoolTask() {
+func runWeeklySharePoolTask(wsManager *WebSocketManager) {
 	for {
-		// Wait until the next Monday at 00:00 UTC
 		nextMonday := getNextMonday()
 		time.Sleep(time.Until(nextMonday))
 
@@ -75,6 +79,14 @@ func runWeeklySharePoolTask() {
 		err := CalculateWeeklySharePoolPoints()
 		if err != nil {
 			log.Printf("Error calculating weekly share pool points: %v", err)
+		}
+
+		// After calculating points, update the leaderboard
+		leaderboard, err := GetLeaderboard(100) // Get top 100 for broadcasting
+		if err != nil {
+			log.Printf("Error getting leaderboard: %v", err)
+		} else {
+			wsManager.BroadcastLeaderboardUpdate(leaderboard)
 		}
 	}
 }
