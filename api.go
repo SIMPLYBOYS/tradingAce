@@ -8,13 +8,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter() *gin.Engine {
+func SetupRouter(wsManager *WebSocketManager) *gin.Engine {
 	r := gin.Default()
 
 	r.GET("/user/:address/tasks", getUserTasks)
 	r.GET("/user/:address/points", getUserPointsHistory)
 	r.GET("/ethereum/price", getEthereumPrice)
-	r.GET("/leaderboard", getLeaderboard) // New endpoint
+	r.GET("/leaderboard", getLeaderboard)
+	r.GET("/ws", func(c *gin.Context) {
+		wsManager.HandleWebSocket(c.Writer, c.Request)
+	})
 
 	return r
 }
