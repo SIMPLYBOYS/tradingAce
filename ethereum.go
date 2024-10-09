@@ -16,13 +16,12 @@ import (
 )
 
 const (
-	InfuraURL            = "https://mainnet.infura.io/v3/ff484e5e9e3b45829dff73464bc78b26"
+	InfuraURL            = "https://mainnet.infura.io/v3/POJECT_ID"
 	UniswapV2PairAddress = "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc" // WETH/USDC pair
-
 )
 
 var (
-	Client       *ethclient.Client
+	Client       EthereumClient
 	swapEventABI abi.ABI
 	// getReservesSelector is the function selector for the getReserves() function
 	getReservesSelector = crypto.Keccak256Hash([]byte("getReserves()")).Bytes()[:4]
@@ -33,15 +32,24 @@ type EthereumClient interface {
 	CallContract(ctx context.Context, call ethereum.CallMsg, blockNumber *big.Int) ([]byte, error)
 	HeaderByNumber(ctx context.Context, number *big.Int) (*types.Header, error)
 	BlockNumber(ctx context.Context) (uint64, error)
+	FilterLogs(ctx context.Context, q ethereum.FilterQuery) ([]types.Log, error)
 }
 
-func InitEthereumClient() error {
+type ClientCreator func(url string) (EthereumClient, error)
+
+func defaultClientCreator(url string) (EthereumClient, error) {
+	return ethclient.Dial(url)
+}
+
+func InitEthereumClient(creator ClientCreator) error {
+	if creator == nil {
+		creator = defaultClientCreator
+	}
 	var err error
-	rawClient, err := ethclient.Dial(InfuraURL)
+	Client, err = creator(InfuraURL)
 	if err != nil {
 		return LogErrorf(err, "failed to connect to the Ethereum client")
 	}
-	Client = rawClient
 	LogInfo("Successfully connected to Ethereum client")
 	return nil
 }
@@ -127,6 +135,10 @@ func calculateUSDValue(event *SwapEvent, reserve0, reserve1 *big.Int) (*big.Floa
 	return usdValue.Abs(usdValue), nil
 }
 
+var getPoolReservesWrapper = func(blockNumber uint64) (*big.Int, *big.Int, error) {
+	return getPoolReserves(blockNumber)
+}
+
 func ProcessSwapEvents(logs []types.Log) []*SwapEvent {
 	swapEvents := make([]*SwapEvent, 0)
 
@@ -141,7 +153,7 @@ func ProcessSwapEvents(logs []types.Log) []*SwapEvent {
 		swapEvent.Sender = common.HexToAddress(vLog.Topics[1].Hex())
 		swapEvent.To = common.HexToAddress(vLog.Topics[2].Hex())
 
-		reserve0, reserve1, err := getPoolReserves(vLog.BlockNumber)
+		reserve0, reserve1, err := getPoolReservesWrapper(vLog.BlockNumber)
 		if err != nil {
 			LogError("Error fetching pool reserves: %v", err)
 			continue
@@ -152,6 +164,8 @@ func ProcessSwapEvents(logs []types.Log) []*SwapEvent {
 			LogError("Error calculating USD value for swap event %s: %v", vLog.TxHash.Hex(), err)
 			continue
 		}
+
+		swapEvent.USDValue = usdValue // Ensure this line is present
 
 		usdValueFloat64, _ := usdValue.Float64()
 

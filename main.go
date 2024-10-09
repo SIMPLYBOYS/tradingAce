@@ -17,7 +17,7 @@ func main() {
 	}
 	defer DB.Close()
 
-	err = InitEthereumClient()
+	err = InitEthereumClient(nil) // Use the default client creator
 	if err != nil {
 		LogFatal("Failed to initialize Ethereum client: %v", err)
 	}

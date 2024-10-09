@@ -327,7 +327,13 @@ func SetCampaignConfig(startTime time.Time) error {
 }
 
 func AwardOnboardingPoints(userID int) error {
-	_, err := DB.Exec(`
+	tx, err := DB.Begin()
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %v", err)
+	}
+	defer tx.Rollback()
+
+	_, err = tx.Exec(`
         UPDATE users SET onboarding_completed = true, onboarding_points = 100
         WHERE id = $1 AND onboarding_completed = false
     `, userID)
@@ -335,12 +341,16 @@ func AwardOnboardingPoints(userID int) error {
 		return fmt.Errorf("failed to award onboarding points: %v", err)
 	}
 
-	_, err = DB.Exec(`
+	_, err = tx.Exec(`
         INSERT INTO points_history (user_id, points, reason, timestamp)
-        VALUES ($1, 100, 'Onboarding task completed', NOW())
-    `, userID)
+        VALUES ($1, $2, $3, $4)
+    `, userID, 100, "Onboarding task completed", time.Now())
 	if err != nil {
 		return fmt.Errorf("failed to record onboarding points: %v", err)
+	}
+
+	if err = tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction: %v", err)
 	}
 
 	return nil
