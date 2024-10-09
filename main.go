@@ -35,9 +35,6 @@ func main() {
 		}
 	}()
 
-	// Start the weekly share pool task
-	go runWeeklySharePoolTask(wsManager)
-
 	// Fetch and process swap events continuously
 	go func() {
 		for {
@@ -58,10 +55,7 @@ func main() {
 				continue
 			}
 
-			swapEvents := ProcessSwapEvents(logs)
-			for _, event := range swapEvents {
-				wsManager.BroadcastSwapEvent(event)
-			}
+			ProcessSwapEvents(logs, wsManager)
 
 			time.Sleep(15 * time.Second)
 		}
