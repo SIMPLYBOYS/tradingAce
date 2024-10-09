@@ -339,8 +339,16 @@ func TestGetLeaderboardAPI(t *testing.T) {
 	mock.ExpectQuery("SELECT id, start_time, end_time, is_active FROM campaign_config").
 		WillReturnRows(configRows)
 
-	// Set up the Gin router
-	router := SetupRouter()
+	// Create a mock WebSocketManager
+	mockWSManager := &WebSocketManager{
+		clients:    make(map[*WSClient]bool),
+		broadcast:  make(chan []byte),
+		register:   make(chan *WSClient),
+		unregister: make(chan *WSClient),
+	}
+
+	// Set up the Gin router with the mock WebSocketManager
+	router := SetupRouter(mockWSManager)
 
 	// Create a test request
 	w := httptest.NewRecorder()
