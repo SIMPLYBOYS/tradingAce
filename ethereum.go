@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	InfuraURL              = "https://mainnet.infura.io/v3/ff484e5e9e3b45829dff73464bc78b26"
+	InfuraURL              = "https://mainnet.infura.io/v3/PROJECT_ID"
 	UniswapV2PairAddress   = "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc" // WETH/USDC pair
 	ChainlinkETHUSDAddress = "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419" // Ethereum Mainnet Chainlink Price Feed address for ETH/USD
 )
@@ -177,7 +177,7 @@ func FetchSwapEvents(fromBlock, toBlock *big.Int) ([]types.Log, error) {
 	return logs, nil
 }
 
-func calculateUSDValue(event *SwapEvent, reserve0, reserve1 *big.Int) (*big.Float, error) {
+var calculateUSDValue = func(event *SwapEvent, reserve0, reserve1 *big.Int) (*big.Float, error) {
 	// Assume USDC has 6 decimal places and WETH has 18
 	usdcDecimals := big.NewFloat(1e6)
 	wethDecimals := big.NewFloat(1e18)
@@ -199,14 +199,20 @@ func calculateUSDValue(event *SwapEvent, reserve0, reserve1 *big.Int) (*big.Floa
 	reserveUSDC := new(big.Float).Quo(new(big.Float).SetInt(reserve1), usdcDecimals)
 	poolPrice := new(big.Float).Quo(reserveUSDC, reserveWETH)
 
-	// Calculate USD value based on the non-zero input or output
 	var usdValue *big.Float
+
 	if amount0In.Cmp(big.NewFloat(0)) > 0 {
-		// WETH was input, calculate USD value based on WETH
+		// WETH was input
 		usdValue = new(big.Float).Mul(amount0In, poolPrice)
 	} else if amount1Out.Cmp(big.NewFloat(0)) > 0 {
-		// USDC was output, use this value directly
+		// USDC was output
 		usdValue = amount1Out
+	} else if amount1In.Cmp(big.NewFloat(0)) > 0 {
+		// USDC was input
+		usdValue = amount1In
+	} else if amount0Out.Cmp(big.NewFloat(0)) > 0 {
+		// WETH was output
+		usdValue = new(big.Float).Mul(amount0Out, poolPrice)
 	} else {
 		return nil, fmt.Errorf("invalid swap event: no input or output")
 	}
@@ -218,15 +224,7 @@ var getPoolReservesWrapper = func(blockNumber uint64) (*big.Int, *big.Int, error
 	return getPoolReserves(blockNumber)
 }
 
-func ProcessSwapEvents(logs []types.Log) []*SwapEvent {
-	swapEvents := make([]*SwapEvent, 0)
-
-	ethPrice, err := GetEthereumPrice()
-	if err != nil {
-		LogError("Failed to fetch Ethereum price: %v", err)
-		return swapEvents
-	}
-
+func ProcessSwapEvents(logs []types.Log, wsManager WebSocketManagerInterface) {
 	for _, vLog := range logs {
 		var swapEvent SwapEvent
 		err := swapEventABI.UnpackIntoInterface(&swapEvent, "Swap", vLog.Data)
@@ -238,11 +236,21 @@ func ProcessSwapEvents(logs []types.Log) []*SwapEvent {
 		swapEvent.Sender = common.HexToAddress(vLog.Topics[1].Hex())
 		swapEvent.To = common.HexToAddress(vLog.Topics[2].Hex())
 
-		// Log the unpacked event data for debugging
-		LogInfo("Unpacked swap event: TX Hash: %s, Amount0In: %s, Amount1In: %s, Amount0Out: %s, Amount1Out: %s",
+		// Add this logging
+		LogInfo("Processing swap event: TX Hash: %s, Amount0In: %s, Amount1In: %s, Amount0Out: %s, Amount1Out: %s",
 			vLog.TxHash.Hex(), swapEvent.Amount0In, swapEvent.Amount1In, swapEvent.Amount0Out, swapEvent.Amount1Out)
 
-		usdValue, err := calculateUSDValueWithEthPrice(&swapEvent, ethPrice)
+		// Get the block number for this event
+		blockNumber := vLog.BlockNumber
+
+		// Fetch pool reserves for the block
+		reserve0, reserve1, err := getPoolReserves(blockNumber)
+		if err != nil {
+			LogError("Error fetching pool reserves for block %d: %v", blockNumber, err)
+			continue
+		}
+
+		usdValue, err := calculateUSDValue(&swapEvent, reserve0, reserve1)
 		if err != nil {
 			LogError("Error calculating USD value for swap event %s: %v", vLog.TxHash.Hex(), err)
 			continue
@@ -252,19 +260,39 @@ func ProcessSwapEvents(logs []types.Log) []*SwapEvent {
 
 		usdValueFloat64, _ := usdValue.Float64()
 
-		err = RecordSwap(swapEvent.Sender.Hex(), usdValueFloat64, vLog.TxHash.Hex())
+		points, err := CalculatePointsForSwap(swapEvent.Sender.Hex(), usdValueFloat64)
 		if err != nil {
-			LogError("Error recording swap event %s: %v", vLog.TxHash.Hex(), err)
+			LogError("Error calculating points for swap event %s: %v", vLog.TxHash.Hex(), err)
+			continue
+		}
+		// Ensure points is int64
+		points64 := int64(points)
+
+		// Update user's points and record the swap
+		err = RecordSwapAndUpdatePoints(swapEvent.Sender.Hex(), usdValueFloat64, points64, vLog.TxHash.Hex())
+		if err != nil {
+			LogError("Error recording swap and updating points for event %s: %v", vLog.TxHash.Hex(), err)
 			continue
 		}
 
-		swapEvents = append(swapEvents, &swapEvent)
+		// Broadcast the swap event and updated points
+		wsManager.BroadcastSwapEvent(&swapEvent)
+		wsManager.BroadcastUserPointsUpdate(swapEvent.Sender.Hex(), points)
 
-		LogInfo("Processed swap event: TX Hash: %s, Sender: %s, To: %s, USD Value: %.2f",
-			vLog.TxHash.Hex(), swapEvent.Sender.Hex(), swapEvent.To.Hex(), usdValueFloat64)
+		// Update and broadcast leaderboard
+		err = UpdateLeaderboard(swapEvent.Sender.Hex(), points)
+		if err != nil {
+			LogError("Error updating leaderboard for event %s: %v", vLog.TxHash.Hex(), err)
+		} else {
+			leaderboard, err := GetLeaderboard(10) // Get top 10 for broadcasting
+			if err == nil {
+				wsManager.BroadcastLeaderboardUpdate(leaderboard)
+			}
+		}
+
+		LogInfo("Processed swap event: TX Hash: %s, Sender: %s, To: %s, USD Value: %.2f, Points: %d",
+			vLog.TxHash.Hex(), swapEvent.Sender.Hex(), swapEvent.To.Hex(), usdValueFloat64, points)
 	}
-
-	return swapEvents
 }
 
 func calculateUSDValueWithEthPrice(event *SwapEvent, ethPrice *big.Float) (*big.Float, error) {

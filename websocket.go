@@ -43,6 +43,20 @@ type WSClient struct {
 	mutex         sync.RWMutex
 }
 
+type WebSocketManagerInterface interface {
+	Run(ctx context.Context)
+	Stop()
+	BroadcastToTopic(topic string, message []byte)
+	HandleWebSocket(w http.ResponseWriter, r *http.Request)
+	BroadcastLeaderboardUpdate(leaderboard []map[string]interface{})
+	BroadcastUserPointsUpdate(address string, points int64)
+	BroadcastSwapEvent(event *SwapEvent)
+	BroadcastCampaignUpdate(campaignInfo map[string]interface{})
+}
+
+// Ensure WebSocketManager implements WebSocketManagerInterface
+var _ WebSocketManagerInterface = (*WebSocketManager)(nil)
+
 type WebSocketManager struct {
 	clients    map[*WSClient]bool
 	broadcast  chan []byte
@@ -251,8 +265,20 @@ func (manager *WebSocketManager) BroadcastLeaderboardUpdate(leaderboard []map[st
 		log.Println("Error marshaling leaderboard update:", err)
 		return
 	}
-	log.Printf("Broadcasting leaderboard update to %d clients", len(manager.clients))
 	manager.BroadcastToTopic("leaderboard", message)
+}
+
+func (manager *WebSocketManager) BroadcastUserPointsUpdate(address string, points int64) {
+	message, err := json.Marshal(map[string]interface{}{
+		"type":    "user_points_update",
+		"address": address,
+		"points":  points,
+	})
+	if err != nil {
+		log.Println("Error marshaling user points update:", err)
+		return
+	}
+	manager.BroadcastToTopic("user_"+address, message)
 }
 
 func (manager *WebSocketManager) BroadcastSwapEvent(event *SwapEvent) {
