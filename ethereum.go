@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math/big"
+	"os"
 	"strings"
 	"time"
 
@@ -17,7 +18,6 @@ import (
 )
 
 const (
-	InfuraURL              = "https://mainnet.infura.io/v3/PROJECT_ID"
 	UniswapV2PairAddress   = "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc" // WETH/USDC pair
 	ChainlinkETHUSDAddress = "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419" // Ethereum Mainnet Chainlink Price Feed address for ETH/USD
 )
@@ -27,6 +27,7 @@ var (
 	swapEventABI abi.ABI
 	// getReservesSelector is the function selector for the getReserves() function
 	getReservesSelector = crypto.Keccak256Hash([]byte("getReserves()")).Bytes()[:4]
+	InfuraURL           string
 )
 
 // Extend the EthereumClient interface
@@ -48,6 +49,14 @@ type ClientCreator func(url string) (EthereumClient, error)
 
 func defaultClientCreator(url string) (EthereumClient, error) {
 	return ethclient.Dial(url)
+}
+
+func init() {
+	projectID := os.Getenv("INFURA_PROJECT_ID")
+	if projectID == "" {
+		LogFatal("INFURA_PROJECT_ID environment variable is not set")
+	}
+	InfuraURL = fmt.Sprintf("https://mainnet.infura.io/v3/%s", projectID)
 }
 
 func InitEthereumClient(creator ClientCreator) error {

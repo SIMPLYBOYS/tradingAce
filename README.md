@@ -33,11 +33,6 @@ Trading Ace is a Go-based application designed to manage a campaign for Uniswap'
    - Create a new database named `tradingace`
    - Update the database connection string in `db.go` if necessary
 
-4. Run database migrations:
-   ```
-   go run migrations.go
-   ```
-
 ## Configuration
 
 - The campaign configuration can be set in the database or a config file.
@@ -58,17 +53,96 @@ Trading Ace is a Go-based application designed to manage a campaign for Uniswap'
 - GET `/user/:address/tasks`: Get user tasks status
 - GET `/user/:address/points`: Get user points history
 
+# Trading Ace
+
+[... previous sections remain unchanged ...]
+
+## Configuration
+
+During the development stage, environment variables are hardcoded in the application for simplicity. Here's how it's set up:
+
+1. Infura Project ID: The Infura URL is hardcoded in the `ethereum.go` file. For example:
+   ```go
+   const InfuraURL = "https://mainnet.infura.io/v3/YOUR_PROJECT_ID"
+   ```
+   Replace `YOUR_PROJECT_ID` with your actual Infura project ID.
+
+2. Database Configuration: The database connection string is hardcoded in the `db.go` file. For example:
+   ```go
+   const connStr = "host=localhost port=5432 user=your_username password=your_password dbname=tradingace sslmode=disable"
+   ```
+   Update this string with your local PostgreSQL configuration.
+
+3. Campaign Settings: The campaign configuration is stored in the database. You can modify the default values in the relevant functions in `db.go`.
+
+Note: For production deployments, it's recommended to use environment variables for sensitive information. The code can be modified to read from environment variables instead of using hardcoded values.
+
+## Running the Application
+
+1. Ensure your PostgreSQL database is running and accessible.
+
+2. Build the application:
+   ```
+   go build
+   ```
+
+3. Run the application:
+   ```
+   ./trading-ace
+   ```
+
+4. The application will start and listen on port 8080.
+
 ## Docker Deployment
 
-1. Build the Docker image:
-   ```
-   docker build -t trading-ace .
+For Docker deployment, we use Docker Compose with hardcoded environment variables in the development stage:
+
+1. Ensure you have Docker and Docker Compose installed on your system.
+
+2. The `docker-compose.yml` file should already contain the necessary environment variables. For example:
+   ```yaml
+   version: '3.8'
+   services:
+     app:
+       build: .
+       ports:
+         - "8080:8080"
+       environment:
+         - INFURA_PROJECT_ID=your_hardcoded_project_id
+         - DB_HOST=db
+         - DB_USER=your_db_user
+         - DB_PASSWORD=your_db_password
+         - DB_NAME=tradingace
+       depends_on:
+         - db
+     db:
+       image: postgres:13
+       environment:
+         - POSTGRES_DB=tradingace
+         - POSTGRES_USER=your_db_user
+         - POSTGRES_PASSWORD=your_db_password
+       volumes:
+         - postgres_data:/var/lib/postgresql/data
+
+   volumes:
+     postgres_data:
    ```
 
-2. Run the container:
+3. Use Docker Compose to build and start the services:
    ```
-   docker run -p 8080:8080 -e INFURA_PROJECT_ID=your_project_id trading-ace
+   docker-compose up --build
    ```
+
+   This command will build the Trading Ace application image and start both the application and the PostgreSQL database.
+
+4. The application will be accessible at `http://localhost:8080`.
+
+5. To stop the services, use:
+   ```
+   docker-compose down
+   ```
+
+Note: For production deployments, it's recommended to use a `.env` file or environment variables instead of hardcoding values in the `docker-compose.yml` file.
 
 ## Testing
 
