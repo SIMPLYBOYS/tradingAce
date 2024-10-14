@@ -8,151 +8,111 @@ Trading Ace is a Go-based application designed to manage a campaign for Uniswap'
 - Share Pool Task: Points awarded based on the proportion of user's swap volume among all users on the target pool.
 - Real-time processing of swap events from the Ethereum blockchain.
 - Weekly calculation of share pool points.
-- RESTful API for retrieving user tasks status and points history.
+- RESTful API for retrieving user tasks status, points history, and Ethereum price.
 
 ## Prerequisites
 
 - Go 1.18 or later
-- PostgreSQL
-- Docker (optional, for containerized deployment)
+- Docker and Docker Compose
+- Infura account (for Ethereum blockchain interaction)
 
 ## Installation
 
 1. Clone the repository:
    ```
-   git clone https://github.com/SIMPLYBOYS/trading-ace.git
+   git clone https://github.com/SIMPLYBOYS/tradingAce.git
+
    cd trading-ace
    ```
 
-2. Install dependencies:
+2. Install Go dependencies:
    ```
    go mod download
    ```
 
-3. Set up the PostgreSQL database:
-   - Create a new database named `tradingace`
-   - Update the database connection string in `db.go` if necessary
-
 ## Configuration
 
-During the development stage, environment variables are hardcoded in the application for simplicity. Here's how it's set up:
+The application uses environment variables for configuration. The following environment variable is required:
 
-1. Infura Project ID: The Infura URL is hardcoded in the `ethereum.go` file. For example:
-   ```go
-   const InfuraURL = "https://mainnet.infura.io/v3/YOUR_PROJECT_ID"
-   ```
-   Replace `YOUR_PROJECT_ID` with your actual Infura project ID.
+- `INFURA_PROJECT_ID`: Your Infura project ID
 
-2. Database Configuration: The database connection string is hardcoded in the `db.go` file. For example:
-   ```go
-   const connStr = "host=localhost port=5432 user=your_username password=your_password dbname=tradingace sslmode=disable"
-   ```
-   Update this string with your local PostgreSQL configuration.
+Set it in your environment before running the application:
 
-3. Campaign Settings: The campaign configuration is stored in the database. You can modify the default values in the relevant functions in `db.go`.
+```
+export INFURA_PROJECT_ID=your_project_id_here
+```
 
-Note: For production deployments, it's recommended to use environment variables for sensitive information. The code can be modified to read from environment variables instead of using hardcoded values.
+Note: For Windows, use `set` instead of `export`.
+
+Database configuration is handled through Docker Compose and doesn't require manual setup.
 
 ## Running the Application
 
-1. Ensure your PostgreSQL database is running and accessible.
+### Development Environment
 
-2. Build the application:
+1. Start the PostgreSQL database using Docker Compose:
    ```
-   go build
+   docker-compose up db
    ```
 
-3. Run the application:
+2. In a new terminal, run the application:
+   ```
+   go run .
+   ```
+
+3. The application will start and listen on port 8080.
+
+### Production-like Environment
+
+1. Start the PostgreSQL database using Docker Compose:
+   ```
+   docker-compose up -d db
+   ```
+
+2. Build the Go application:
+   ```
+   go build -o trading-ace
+   ```
+
+3. Run the compiled application:
    ```
    ./trading-ace
    ```
 
-4. The application will start and listen on port 8080.
+Note: For a full containerized deployment, additional configuration would be needed in the `docker-compose.yml` file to include the application service.
 
 ## API Endpoints
 
 - GET `/user/:address/tasks`: Get user tasks status
 - GET `/user/:address/points`: Get user points history
+- GET `/ethereum/price`: Get current Ethereum price
 
-# Trading Ace
+## Docker Configuration
 
-[... previous sections remain unchanged ...]
+The current `docker-compose.yml` file is configured to set up the PostgreSQL database. Here's an overview:
 
-## Configuration
+```yaml
+version: '3.8'
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: tradingace
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
 
-During the development stage, environment variables are hardcoded in the application for simplicity. Here's how it's set up:
+volumes:
+  postgres_data:
+```
 
-1. Infura Project ID: The Infura URL is hardcoded in the `ethereum.go` file. For example:
-   ```go
-   const InfuraURL = "https://mainnet.infura.io/v3/YOUR_PROJECT_ID"
-   ```
-   Replace `YOUR_PROJECT_ID` with your actual Infura project ID.
-
-2. Database Configuration: The database connection string is hardcoded in the `db.go` file. For example:
-   ```go
-   const connStr = "host=localhost port=5432 user=your_username password=your_password dbname=tradingace sslmode=disable"
-   ```
-   Update this string with your local PostgreSQL configuration.
-
-3. Campaign Settings: The campaign configuration is stored in the database. You can modify the default values in the relevant functions in `db.go`.
-
-Note: For production deployments, it's recommended to use environment variables for sensitive information. The code can be modified to read from environment variables instead of using hardcoded values.
-
-## Running the Application
-
-1. Ensure your PostgreSQL database is running and accessible.
-
-2. Build the application:
-   ```
-   go build
-   ```
-
-3. Run the application:
-   ```
-   ./trading-ace
-   ```
-
-4. The application will start and listen on port 8080.
-
-## Docker Deployment
-
-For Docker deployment, we use Docker Compose with hardcoded environment variables in the development stage:
-
-1. Ensure you have Docker and Docker Compose installed on your system.
-
-2. The `docker-compose.yml` file should already contain the necessary environment variables. For example:
-   ```yaml
-   version: '3.8'
-   services:
-     app:
-       build: .
-       ports:
-         - "8080:8080"
-       environment:
-         - INFURA_PROJECT_ID=your_hardcoded_project_id
-         - DB_HOST=db
-         - DB_USER=your_db_user
-         - DB_PASSWORD=your_db_password
-         - DB_NAME=tradingace
-       depends_on:
-         - db
-     db:
-       image: postgres:13
-       environment:
-         - POSTGRES_DB=tradingace
-         - POSTGRES_USER=your_db_user
-         - POSTGRES_PASSWORD=your_db_password
-       volumes:
-         - postgres_data:/var/lib/postgresql/data
-
-   volumes:
-     postgres_data:
-   ```
-
-3. Use Docker Compose to build and start the services:
-   ```
-   docker-compose up --build
-   ```
+This configuration sets up a PostgreSQL database with the following details:
+- Database name: tradingace
+- User: user
+- Password: password
 
    This command will build the Trading Ace application image and start both the application and the PostgreSQL database.
 
@@ -188,3 +148,12 @@ go tool cover -func=coverage.out
 - `api.go`: API endpoint handlers
 - `logger.go`: Logging utilities
 - `migrations/`: SQL migration files
+- `*_test.go`: Test files for respective packages
+- `docker-compose.yml`: Docker configuration file
+
+## Development Notes
+
+- The application uses the Uniswap V2 WETH/USDC pool for tracking swap events.
+- Ethereum interaction is done through Infura, ensure your Infura project has sufficient capacity for the expected load.
+- The campaign runs for 4 weeks, with weekly share pool point calculations.
+- Ensure proper error handling and logging in production environments.
