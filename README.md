@@ -35,18 +35,39 @@ Trading Ace is a Go-based application designed to manage a campaign for Uniswap'
 
 ## Configuration
 
-- The campaign configuration can be set in the database or a config file.
-- Ensure you have set the `INFURA_PROJECT_ID` environment variable for Ethereum network access.
+During the development stage, environment variables are hardcoded in the application for simplicity. Here's how it's set up:
+
+1. Infura Project ID: The Infura URL is hardcoded in the `ethereum.go` file. For example:
+   ```go
+   const InfuraURL = "https://mainnet.infura.io/v3/YOUR_PROJECT_ID"
+   ```
+   Replace `YOUR_PROJECT_ID` with your actual Infura project ID.
+
+2. Database Configuration: The database connection string is hardcoded in the `db.go` file. For example:
+   ```go
+   const connStr = "host=localhost port=5432 user=your_username password=your_password dbname=tradingace sslmode=disable"
+   ```
+   Update this string with your local PostgreSQL configuration.
+
+3. Campaign Settings: The campaign configuration is stored in the database. You can modify the default values in the relevant functions in `db.go`.
+
+Note: For production deployments, it's recommended to use environment variables for sensitive information. The code can be modified to read from environment variables instead of using hardcoded values.
 
 ## Running the Application
 
-1. Build and run the application:
+1. Ensure your PostgreSQL database is running and accessible.
+
+2. Build the application:
    ```
    go build
+   ```
+
+3. Run the application:
+   ```
    ./trading-ace
    ```
 
-2. The application will start and listen on port 8080.
+4. The application will start and listen on port 8080.
 
 ## API Endpoints
 
