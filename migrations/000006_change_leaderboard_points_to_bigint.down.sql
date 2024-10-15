@@ -1,1 +1,0 @@
-ALTER TABLE leaderboard ALTER COLUMN points TYPE INTEGER;
