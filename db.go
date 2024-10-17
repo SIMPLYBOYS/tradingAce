@@ -306,6 +306,7 @@ func CalculateWeeklySharePoolPoints() error {
 	log.Printf("Weekly share pool points calculated and distributed. Total points: %d, Users rewarded: %d", totalPoints, len(users))
 	return nil
 }
+
 func GetCampaignConfig() (CampaignConfig, error) {
 	var config CampaignConfig
 	err := DB.QueryRow("SELECT id, start_time, end_time, is_active FROM campaign_config ORDER BY id DESC LIMIT 1").
@@ -354,4 +355,101 @@ func AwardOnboardingPoints(userID int) error {
 	}
 
 	return nil
+}
+
+func CalculatePointsForSwap(address string, usdValue float64) (int64, error) {
+	// Simple point calculation: 1 point per 10 USD
+	points := int64(usdValue / 10)
+
+	// Check if this is the user's first swap (onboarding task)
+	var onboardingCompleted bool
+	err := DB.QueryRow("SELECT onboarding_completed FROM users WHERE address = $1", address).Scan(&onboardingCompleted)
+	if err != nil && err != sql.ErrNoRows {
+		return 0, fmt.Errorf("failed to check onboarding status: %v", err)
+	}
+
+	if !onboardingCompleted && usdValue >= 1000 {
+		points += 100 // Onboarding bonus
+	}
+
+	return points, nil
+}
+
+func RecordSwapAndUpdatePoints(address string, usdValue float64, points int64, txHash string) error {
+	tx, err := DB.Begin()
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %v", err)
+	}
+	defer tx.Rollback()
+
+	// Insert or update user
+	var userID int
+	err = tx.QueryRow("INSERT INTO users (address, total_points) VALUES ($1, $2) ON CONFLICT (address) DO UPDATE SET total_points = users.total_points + $2 RETURNING id", address, points).Scan(&userID)
+	if err != nil {
+		return fmt.Errorf("failed to insert or update user: %v", err)
+	}
+
+	// Record swap event
+	_, err = tx.Exec("INSERT INTO swap_events (user_id, transaction_hash, amount_usd, timestamp) VALUES ($1, $2, $3, $4)",
+		userID, txHash, usdValue, time.Now())
+	if err != nil {
+		return fmt.Errorf("failed to insert swap event: %v", err)
+	}
+
+	// Record points history
+	_, err = tx.Exec("INSERT INTO points_history (user_id, points, reason, timestamp) VALUES ($1, $2, $3, $4)",
+		userID, points, "Swap event", time.Now())
+	if err != nil {
+		return fmt.Errorf("failed to insert points history: %v", err)
+	}
+
+	// Check and update onboarding status
+	var onboardingCompleted bool
+	err = tx.QueryRow("SELECT onboarding_completed FROM users WHERE id = $1", userID).Scan(&onboardingCompleted)
+	if err != nil {
+		return fmt.Errorf("failed to check onboarding status: %v", err)
+	}
+
+	if !onboardingCompleted && usdValue >= 1000 {
+		_, err = tx.Exec("UPDATE users SET onboarding_completed = true, onboarding_points = 100, total_points = total_points + 100 WHERE id = $1", userID)
+		if err != nil {
+			return fmt.Errorf("failed to update onboarding status: %v", err)
+		}
+
+		_, err = tx.Exec("INSERT INTO points_history (user_id, points, reason, timestamp) VALUES ($1, 100, 'Onboarding task completed', $2)",
+			userID, time.Now())
+		if err != nil {
+			return fmt.Errorf("failed to record onboarding points: %v", err)
+		}
+	}
+
+	return tx.Commit()
+}
+
+func UpdateLeaderboard(address string, points int64) error {
+	_, err := DB.Exec("INSERT INTO leaderboard (address, points) VALUES ($1, $2) ON CONFLICT (address) DO UPDATE SET points = leaderboard.points + $2", address, points)
+	return err
+}
+
+func GetLeaderboard(limit int) ([]map[string]interface{}, error) {
+	rows, err := DB.Query("SELECT address, points FROM leaderboard ORDER BY points DESC LIMIT $1", limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var leaderboard []map[string]interface{}
+	for rows.Next() {
+		var address string
+		var points int64
+		if err := rows.Scan(&address, &points); err != nil {
+			return nil, err
+		}
+		leaderboard = append(leaderboard, map[string]interface{}{
+			"address": address,
+			"points":  points,
+		})
+	}
+
+	return leaderboard, nil
 }

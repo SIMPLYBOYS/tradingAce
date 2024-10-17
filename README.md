@@ -8,7 +8,8 @@ Trading Ace is a Go-based application designed to manage a campaign for Uniswap'
 - Share Pool Task: Points awarded based on the proportion of user's swap volume among all users on the target pool.
 - Real-time processing of swap events from the Ethereum blockchain.
 - Weekly calculation of share pool points.
-- RESTful API for retrieving user tasks status, points history, and Ethereum price.
+- RESTful API for retrieving user tasks status, points history, and leaderboard.
+- WebSocket support for real-time updates.
 
 ## Prerequisites
 
@@ -86,6 +87,16 @@ Note: For a full containerized deployment, additional configuration would be nee
 - GET `/user/:address/tasks`: Get user tasks status
 - GET `/user/:address/points`: Get user points history
 - GET `/ethereum/price`: Get current Ethereum price
+- GET `/leaderboard`: Get the current leaderboard
+
+## WebSocket Support
+
+The application supports real-time updates via WebSocket connections. Clients can subscribe to the following topics:
+
+- `leaderboard`: Receive leaderboard updates
+- `swap_events`: Receive notifications of new swap events
+- `campaign`: Receive campaign status updates
+- `user_<address>`: Receive point updates for a specific user
 
 ## Docker Configuration
 
@@ -146,8 +157,9 @@ go tool cover -func=coverage.out
 - `db.go`: Database operations
 - `ethereum.go`: Ethereum-related operations
 - `api.go`: API endpoint handlers
+- `websocket.go`: WebSocket management
 - `logger.go`: Logging utilities
-- `migrations/`: SQL migration files
+- `migrations/`: SQL migration files (these are applied automatically when the application starts)
 - `*_test.go`: Test files for respective packages
 - `docker-compose.yml`: Docker configuration file
 
