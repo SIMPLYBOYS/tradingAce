@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/SIMPLYBOYS/trading_ace/pkg/logger"
 	_ "github.com/lib/pq" // PostgreSQL driver
 )
 
@@ -43,54 +44,42 @@ func NewDBService() (DBService, error) {
 	return &DBServiceImpl{db: db}, nil
 }
 
-func (s *DBServiceImpl) GetUserTasks(address string) (map[string]interface{}, error) {
-	query := `
-		SELECT onboarding_completed, onboarding_points, 
-			   (SELECT COUNT(*) FROM swap_events WHERE user_address = $1) as swap_count,
-			   (SELECT COALESCE(SUM(points), 0) FROM points_history WHERE user_address = $1 AND reason = 'Swap') as swap_points
-		FROM users
-		WHERE address = $1
-	`
-	var onboardingCompleted bool
-	var onboardingPoints, swapCount, swapPoints int
-
-	err := s.db.QueryRow(query, address).Scan(&onboardingCompleted, &onboardingPoints, &swapCount, &swapPoints)
+// GetUserPointsHistory retrieves the points history for a given user
+func (s *DBServiceImpl) GetUserPointsHistory(address string) ([]PointsHistory, error) {
+	// First, get the user ID
+	var userID int
+	err := s.db.QueryRow("SELECT id FROM users WHERE address = $1", address).Scan(&userID)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get user tasks: %w", err)
+		if err == sql.ErrNoRows {
+			logger.Info("No user found for address: %s", address)
+			return nil, nil
+		}
+		return nil, fmt.Errorf("error fetching user ID: %w", err)
 	}
 
-	return map[string]interface{}{
-		"onboarding": map[string]interface{}{
-			"completed": onboardingCompleted,
-			"points":    onboardingPoints,
-		},
-		"swaps": map[string]interface{}{
-			"count":  swapCount,
-			"points": swapPoints,
-		},
-	}, nil
-}
-
-func (s *DBServiceImpl) GetUserPointsHistory(address string) ([]PointsHistory, error) {
-	query := `
-		SELECT points, reason, timestamp
-		FROM points_history
-		WHERE user_address = $1
-		ORDER BY timestamp DESC
-	`
-	rows, err := s.db.Query(query, address)
+	// Now fetch the points history
+	rows, err := s.db.Query(`
+		SELECT points, reason, timestamp 
+		FROM points_history 
+		WHERE user_id = $1 
+		ORDER BY timestamp DESC`, userID)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get user points history: %w", err)
+		return nil, fmt.Errorf("error fetching points history: %w", err)
 	}
 	defer rows.Close()
 
 	var history []PointsHistory
 	for rows.Next() {
 		var ph PointsHistory
-		if err := rows.Scan(&ph.Points, &ph.Reason, &ph.Timestamp); err != nil {
-			return nil, fmt.Errorf("failed to scan points history row: %w", err)
+		err := rows.Scan(&ph.Points, &ph.Reason, &ph.Timestamp)
+		if err != nil {
+			return nil, fmt.Errorf("error scanning points history row: %w", err)
 		}
 		history = append(history, ph)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating points history rows: %w", err)
 	}
 
 	return history, nil

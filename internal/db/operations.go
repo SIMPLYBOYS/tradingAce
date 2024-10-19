@@ -92,29 +92,45 @@ func GetUserTasks(address string) (map[string]interface{}, error) {
 	return tasks, nil
 }
 
-// GetUserPointsHistory retrieves the points history for a given user
-func GetUserPointsHistory(address string) ([]PointsHistory, error) {
-	rows, err := DB.Query(`
-        SELECT points, reason, timestamp 
-        FROM points_history 
-        WHERE user_id = (SELECT id FROM users WHERE address = $1) 
-        ORDER BY timestamp DESC`, address)
+func (s *DBServiceImpl) GetUserTasks(address string) (map[string]interface{}, error) {
+	var user User
+	err := s.db.QueryRow(`
+        SELECT id, onboarding_completed, onboarding_points, 
+               COALESCE((SELECT SUM(amount_usd) FROM swap_events WHERE sender = $1), 0) as total_swap_amount
+        FROM users 
+        WHERE address = $1`, address).Scan(&user.ID, &user.OnboardingCompleted, &user.OnboardingPoints, &user.TotalPoints)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get user points history: %w", err)
-	}
-	defer rows.Close()
-
-	var history []PointsHistory
-	for rows.Next() {
-		var ph PointsHistory
-		err := rows.Scan(&ph.Points, &ph.Reason, &ph.Timestamp)
-		if err != nil {
-			return nil, fmt.Errorf("failed to scan points history: %w", err)
+		if err == sql.ErrNoRows {
+			logger.Info("No user found for address: %s", address)
+			return nil, nil
 		}
-		history = append(history, ph)
+		return nil, fmt.Errorf("error fetching user tasks: %w", err)
 	}
 
-	return history, nil
+	var sharePoolAmount, sharePoolPoints float64
+	err = s.db.QueryRow(`
+        SELECT COALESCE(SUM(amount_usd), 0),
+               COALESCE((SELECT SUM(points) FROM points_history WHERE user_id = $1 AND reason = 'Weekly Share Pool Task'), 0)
+        FROM swap_events 
+        WHERE sender = $2`, user.ID, address).Scan(&sharePoolAmount, &sharePoolPoints)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get share pool info: %w", err)
+	}
+
+	tasks := map[string]interface{}{
+		"onboarding": map[string]interface{}{
+			"completed": user.OnboardingCompleted,
+			"amount":    user.TotalPoints,
+			"points":    user.OnboardingPoints,
+		},
+		"sharePool": map[string]interface{}{
+			"completed": sharePoolAmount > 0,
+			"amount":    sharePoolAmount,
+			"points":    sharePoolPoints,
+		},
+	}
+
+	return tasks, nil
 }
 
 // RecordSwapAndUpdatePoints records a swap event, updates user points, and updates the leaderboard

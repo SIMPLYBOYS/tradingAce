@@ -7,12 +7,13 @@ import (
 
 var DB *sql.DB
 
+// Update the User struct to use float64 for TotalPoints
 type User struct {
 	ID                  int
 	Address             string
 	OnboardingCompleted bool
 	OnboardingPoints    int
-	TotalPoints         int64
+	TotalPoints         float64
 }
 
 type SwapEvent struct {

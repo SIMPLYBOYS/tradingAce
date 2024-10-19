@@ -5,6 +5,7 @@ import (
 
 	"github.com/SIMPLYBOYS/trading_ace/internal/db"
 	"github.com/SIMPLYBOYS/trading_ace/internal/ethereum"
+	"github.com/SIMPLYBOYS/trading_ace/pkg/logger"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,7 +29,13 @@ func (h *Handler) GetUserTasks(c *gin.Context) {
 
 	tasks, err := h.DB.GetUserTasks(address)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user tasks"})
+		logger.Error("Failed to fetch user tasks for address %s: %v", address, err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user tasks", "details": err.Error()})
+		return
+	}
+
+	if tasks == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
 
@@ -41,7 +48,13 @@ func (h *Handler) GetUserPointsHistory(c *gin.Context) {
 
 	pointsHistory, err := h.DB.GetUserPointsHistory(address)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user points history"})
+		logger.Error("Failed to fetch user points history for address %s: %v", address, err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user points history", "details": err.Error()})
+		return
+	}
+
+	if pointsHistory == nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
 
