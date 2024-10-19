@@ -2,26 +2,33 @@ package api
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/SIMPLYBOYS/trading_ace/internal/db"
-	"github.com/SIMPLYBOYS/trading_ace/internal/errors"
 	"github.com/SIMPLYBOYS/trading_ace/internal/ethereum"
-	"github.com/SIMPLYBOYS/trading_ace/pkg/logger"
 	"github.com/gin-gonic/gin"
 )
 
+// Handler struct holds our dependencies
+type Handler struct {
+	DB       db.DBService
+	Ethereum ethereum.EthereumService
+}
+
+// NewHandler creates a new Handler with the given dependencies
+func NewHandler(db db.DBService, eth ethereum.EthereumService) *Handler {
+	return &Handler{
+		DB:       db,
+		Ethereum: eth,
+	}
+}
+
 // GetUserTasks handles the GET request for user tasks
-func GetUserTasks(c *gin.Context) {
+func (h *Handler) GetUserTasks(c *gin.Context) {
 	address := c.Param("address")
 
-	tasks, err := db.GetUserTasks(address)
+	tasks, err := h.DB.GetUserTasks(address)
 	if err != nil {
-		c.Error(&errors.APIError{
-			StatusCode: 500,
-			Message:    "Failed to fetch user tasks",
-			Err:        err,
-		})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user tasks"})
 		return
 	}
 
@@ -29,12 +36,11 @@ func GetUserTasks(c *gin.Context) {
 }
 
 // GetUserPointsHistory handles the GET request for user points history
-func GetUserPointsHistory(c *gin.Context) {
+func (h *Handler) GetUserPointsHistory(c *gin.Context) {
 	address := c.Param("address")
 
-	pointsHistory, err := db.GetUserPointsHistory(address)
+	pointsHistory, err := h.DB.GetUserPointsHistory(address)
 	if err != nil {
-		logger.Error("Failed to fetch user points history: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user points history"})
 		return
 	}
@@ -43,10 +49,9 @@ func GetUserPointsHistory(c *gin.Context) {
 }
 
 // GetEthereumPrice handles the GET request for current Ethereum price
-func GetEthereumPrice(c *gin.Context) {
-	price, err := ethereum.GetEthereumPrice()
+func (h *Handler) GetEthereumPrice(c *gin.Context) {
+	price, err := h.Ethereum.GetEthereumPrice()
 	if err != nil {
-		logger.Error("Failed to fetch Ethereum price: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch Ethereum price"})
 		return
 	}
@@ -55,39 +60,21 @@ func GetEthereumPrice(c *gin.Context) {
 }
 
 // GetLeaderboard handles the GET request for the leaderboard
-func GetLeaderboard(c *gin.Context) {
-	leaderboard, err := db.GetLeaderboard(10) // Get top 10 for now
+func (h *Handler) GetLeaderboard(c *gin.Context) {
+	leaderboard, err := h.DB.GetLeaderboard(10) // Get top 10 for now
 	if err != nil {
-		logger.Error("Failed to fetch leaderboard: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch leaderboard"})
 		return
 	}
 
-	campaign, err := db.GetCampaignConfig()
+	campaign, err := h.DB.GetCampaignConfig()
 	if err != nil {
-		logger.Error("Failed to fetch campaign config: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch campaign config"})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"leaderboard": leaderboard,
-		"campaign": gin.H{
-			"start_time":   campaign.StartTime,
-			"end_time":     campaign.EndTime,
-			"is_active":    campaign.IsActive,
-			"total_weeks":  4, // Assuming 4-week campaign
-			"current_week": getCurrentWeek(campaign.StartTime),
-		},
+		"campaign":    campaign,
 	})
-}
-
-// getCurrentWeek calculates the current week of the campaign
-func getCurrentWeek(startTime time.Time) int {
-	duration := time.Since(startTime)
-	week := int(duration.Hours()/(7*24)) + 1
-	if week > 4 {
-		week = 4
-	}
-	return week
 }

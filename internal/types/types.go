@@ -7,13 +7,12 @@ import (
 )
 
 type SwapEvent struct {
+	TxHash     common.Hash
 	Sender     common.Address
 	Recipient  common.Address
 	Amount0In  *big.Int
 	Amount1In  *big.Int
 	Amount0Out *big.Int
 	Amount1Out *big.Int
-	To         common.Address
 	USDValue   *big.Float
-	TxHash     common.Hash
 }

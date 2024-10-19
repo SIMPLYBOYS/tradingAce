@@ -27,7 +27,7 @@ func InitDB() error {
 		return &errors.DatabaseError{Operation: "ping database", Err: err}
 	}
 
-	return runMigrations(DB)
+	return RunMigrations(DB)
 }
 
 // GetUserTasks retrieves the tasks status for a given user
@@ -117,58 +117,77 @@ func GetUserPointsHistory(address string) ([]PointsHistory, error) {
 	return history, nil
 }
 
-// RecordSwapAndUpdatePoints records a swap event and updates user points
-func RecordSwapAndUpdatePoints(address string, usdValue float64, points int64, txHash string) error {
-	tx, err := DB.Begin()
+// RecordSwapAndUpdatePoints records a swap event, updates user points, and updates the leaderboard
+func (s *DBServiceImpl) RecordSwapAndUpdatePoints(address string, usdValue float64, points int64, txHash string) error {
+	tx, err := s.db.Begin()
 	if err != nil {
-		return &errors.DatabaseError{Operation: "begin transaction", Err: err}
+		return fmt.Errorf("failed to begin transaction: %w", err)
 	}
-	defer func() {
-		if err != nil {
-			if rbErr := tx.Rollback(); rbErr != nil {
-				logger.Error("Transaction rollback failed: %v", rbErr)
-			}
-		}
-	}()
+	defer tx.Rollback()
 
-	var userID int
-	err = tx.QueryRow("INSERT INTO users (address, total_points) VALUES ($1, $2) ON CONFLICT (address) DO UPDATE SET total_points = users.total_points + $2 RETURNING id", address, points).Scan(&userID)
+	// Record swap event
+	_, err = tx.Exec(`
+		INSERT INTO swap_events (sender, amount_usd, transaction_hash, timestamp)
+		VALUES ($1, $2, $3, NOW())
+	`, address, usdValue, txHash)
 	if err != nil {
-		return &errors.DatabaseError{Operation: "failed to insert or update user", Err: err}
+		return fmt.Errorf("failed to record swap event: %w", err)
 	}
 
-	_, err = tx.Exec("INSERT INTO swap_events (user_id, transaction_hash, amount_usd, timestamp) VALUES ($1, $2, $3, $4)",
-		userID, txHash, usdValue, time.Now())
+	// Update user points
+	_, err = tx.Exec(`
+		INSERT INTO users (address, total_points)
+		VALUES ($1, $2)
+		ON CONFLICT (address) DO UPDATE
+		SET total_points = users.total_points + $2
+	`, address, points)
 	if err != nil {
-		return &errors.DatabaseError{Operation: "failed to insert swap event", Err: err}
+		return fmt.Errorf("failed to update user points: %w", err)
 	}
 
-	_, err = tx.Exec("INSERT INTO points_history (user_id, points, reason, timestamp) VALUES ($1, $2, $3, $4)",
-		userID, points, "Swap event", time.Now())
+	// Record points history
+	_, err = tx.Exec(`
+		INSERT INTO points_history (user_id, points, reason, timestamp)
+		SELECT id, $2, 'Swap', NOW()
+		FROM users
+		WHERE address = $1
+	`, address, points)
 	if err != nil {
-		return &errors.DatabaseError{Operation: "failed to insert points history", Err: err}
+		return fmt.Errorf("failed to record points history: %w", err)
 	}
 
-	var onboardingCompleted bool
-	err = tx.QueryRow("SELECT onboarding_completed FROM users WHERE id = $1", userID).Scan(&onboardingCompleted)
+	// Update leaderboard
+	_, err = tx.Exec(`
+		INSERT INTO leaderboard (address, points)
+		VALUES ($1, $2)
+		ON CONFLICT (address) DO UPDATE
+		SET points = leaderboard.points + $2
+	`, address, points)
 	if err != nil {
-		return &errors.DatabaseError{Operation: "failed to check onboarding status", Err: err}
-	}
-
-	if !onboardingCompleted && usdValue >= 1000 {
-		_, err = tx.Exec("UPDATE users SET onboarding_completed = true, onboarding_points = 100, total_points = total_points + 100 WHERE id = $1", userID)
-		if err != nil {
-			return &errors.DatabaseError{Operation: "failed to update onboarding status", Err: err}
-		}
-
-		_, err = tx.Exec("INSERT INTO points_history (user_id, points, reason, timestamp) VALUES ($1, 100, 'Onboarding task completed', $2)",
-			userID, time.Now())
-		if err != nil {
-			return &errors.DatabaseError{Operation: "failed to record onboarding points", Err: err}
-		}
+		return fmt.Errorf("failed to update leaderboard: %w", err)
 	}
 
 	return tx.Commit()
+}
+
+// GetLeaderboard retrieves the current leaderboard
+func (s *DBServiceImpl) GetLeaderboard(limit int) ([]LeaderboardEntry, error) {
+	rows, err := s.db.Query("SELECT address, points FROM leaderboard ORDER BY points DESC LIMIT $1", limit)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query leaderboard: %w", err)
+	}
+	defer rows.Close()
+
+	var leaderboard []LeaderboardEntry
+	for rows.Next() {
+		var entry LeaderboardEntry
+		if err := rows.Scan(&entry.Address, &entry.Points); err != nil {
+			return nil, fmt.Errorf("failed to scan leaderboard entry: %w", err)
+		}
+		leaderboard = append(leaderboard, entry)
+	}
+
+	return leaderboard, nil
 }
 
 // GetCampaignConfig retrieves the current campaign configuration
@@ -357,7 +376,8 @@ func GetUserSwaps(userID int) ([]SwapEvent, error) {
 	return swaps, nil
 }
 
-func runMigrations(db *sql.DB) error {
+// RunMigrations runs the database migrations
+func RunMigrations(db *sql.DB) error {
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
 	if err != nil {
 		return &errors.DatabaseError{Operation: "could not create the postgres driver", Err: err}

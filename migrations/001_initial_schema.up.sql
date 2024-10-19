@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
 -- Create swap_events table
 CREATE TABLE IF NOT EXISTS swap_events (
     id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(id),
+    sender VARCHAR(42) NOT NULL,
     transaction_hash VARCHAR(66) NOT NULL,
     amount_usd NUMERIC(20, 2) NOT NULL,
     timestamp TIMESTAMP NOT NULL
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS leaderboard (
 );
 
 -- Create indexes
-CREATE INDEX idx_swap_events_user_id ON swap_events(user_id);
+CREATE INDEX idx_swap_events_sender ON swap_events(sender);
 CREATE INDEX idx_points_history_user_id ON points_history(user_id);
 CREATE INDEX idx_leaderboard_points ON leaderboard(points DESC);
 
