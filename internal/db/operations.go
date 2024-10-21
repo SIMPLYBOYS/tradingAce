@@ -142,6 +142,7 @@ func (s *DBServiceImpl) RecordSwapAndUpdatePoints(address string, usdValue float
 
 	// Get user ID from address
 	var userID int
+	var userOnboardingCompleted bool
 	err = tx.QueryRow("SELECT id FROM users WHERE address = $1", address).Scan(&userID)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -181,6 +182,26 @@ func (s *DBServiceImpl) RecordSwapAndUpdatePoints(address string, usdValue float
     `, userID, points, "Swap")
 	if err != nil {
 		return fmt.Errorf("failed to record points history: %w", err)
+	}
+
+	// Check if user has completed onboarding
+	var totalSwapAmount float64
+	err = tx.QueryRow("SELECT COALESCE(SUM(amount_usd), 0) FROM swap_events WHERE user_id = $1", userID).Scan(&totalSwapAmount)
+	if err != nil {
+		return fmt.Errorf("failed to get total swap amount: %w", err)
+	}
+
+	if totalSwapAmount >= 1000 && !userOnboardingCompleted {
+		_, err = tx.Exec("UPDATE users SET onboarding_completed = true, onboarding_points = onboarding_points + 100 WHERE id = $1", userID)
+		if err != nil {
+			return fmt.Errorf("failed to update onboarding status: %w", err)
+		}
+		// Also update points_history for onboarding completion
+		_, err = tx.Exec("INSERT INTO points_history (user_id, points, reason) VALUES ($1, 100, 'Onboarding Completed')", userID)
+		if err != nil {
+			return fmt.Errorf("failed to record onboarding points: %w", err)
+		}
+		logger.Info("User %s completed onboarding task", address)
 	}
 
 	return tx.Commit()

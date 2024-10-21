@@ -387,92 +387,109 @@ func TestGetLeaderboard(t *testing.T) {
 }
 
 func TestRecordSwapAndUpdatePoints(t *testing.T) {
-	tdb := setupTestDB(t)
-	defer tdb.close()
+	db, mock, err := sqlmock.New()
+	require.NoError(t, err)
+	defer db.Close()
 
-	testCases := []struct {
-		name        string
-		address     string
-		usdValue    float64
-		points      int64
-		txHash      string
-		mockSetup   func()
-		expectError bool
+	s := &DBServiceImpl{db: db}
+
+	tests := []struct {
+		name                    string
+		address                 string
+		usdValue                float64
+		points                  int64
+		txHash                  string
+		existingUser            bool
+		existingTotalSwapAmount float64
+		expectedError           bool
 	}{
 		{
-			name:     "Successful swap and points update for existing user",
-			address:  "0x1234567890123456789012345678901234567890",
-			usdValue: 1000.0,
-			points:   100,
-			txHash:   "0xabcdef1234567890",
-			mockSetup: func() {
-				tdb.mock.ExpectBegin()
-				// Expect the SELECT query to get the user ID
-				tdb.mock.ExpectQuery("SELECT id FROM users WHERE address = \\$1").
-					WithArgs("0x1234567890123456789012345678901234567890").
-					WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(1))
-				// Expectation for INSERT INTO swap_events
-				tdb.mock.ExpectExec("INSERT INTO swap_events").
-					WithArgs(1, "0x1234567890123456789012345678901234567890", 1000.0, "0xabcdef1234567890").
-					WillReturnResult(sqlmock.NewResult(1, 1))
-				// Expectation for UPDATE users
-				tdb.mock.ExpectExec("UPDATE users").
-					WithArgs(1, 100).
-					WillReturnResult(sqlmock.NewResult(1, 1))
-				tdb.mock.ExpectExec("INSERT INTO points_history").
-					WithArgs(1, 100, "Swap").
-					WillReturnResult(sqlmock.NewResult(1, 1))
-				tdb.mock.ExpectCommit()
-			},
-			expectError: false,
+			name:                    "New user, first swap",
+			address:                 "0x1234567890123456789012345678901234567890",
+			usdValue:                500.0,
+			points:                  50,
+			txHash:                  "0xabcdef1234567890",
+			existingUser:            false,
+			existingTotalSwapAmount: 0,
+			expectedError:           false,
 		},
 		{
-			name:     "Successful swap and points update for new user",
-			address:  "0x0987654321098765432109876543210987654321",
-			usdValue: 500.0,
-			points:   50,
-			txHash:   "0xfedcba9876543210",
-			mockSetup: func() {
-				tdb.mock.ExpectBegin()
-				// Expect the SELECT query to get the user ID (user not found)
-				tdb.mock.ExpectQuery("SELECT id FROM users WHERE address = \\$1").
-					WithArgs("0x0987654321098765432109876543210987654321").
-					WillReturnError(sql.ErrNoRows)
-				// Expect INSERT INTO users for new user
-				tdb.mock.ExpectQuery("INSERT INTO users").
-					WithArgs("0x0987654321098765432109876543210987654321").
-					WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(2))
-				// Expectation for INSERT INTO swap_events
-				tdb.mock.ExpectExec("INSERT INTO swap_events").
-					WithArgs(2, "0x0987654321098765432109876543210987654321", 500.0, "0xfedcba9876543210").
-					WillReturnResult(sqlmock.NewResult(1, 1))
-				// Expectation for UPDATE users
-				tdb.mock.ExpectExec("UPDATE users").
-					WithArgs(2, 50).
-					WillReturnResult(sqlmock.NewResult(1, 1))
-				tdb.mock.ExpectExec("INSERT INTO points_history").
-					WithArgs(2, 50, "Swap").
-					WillReturnResult(sqlmock.NewResult(1, 1))
-				tdb.mock.ExpectCommit()
-			},
-			expectError: false,
+			name:                    "Existing user, completes onboarding",
+			address:                 "0x1234567890123456789012345678901234567890",
+			usdValue:                600.0,
+			points:                  60,
+			txHash:                  "0xabcdef1234567890",
+			existingUser:            true,
+			existingTotalSwapAmount: 500.0,
+			expectedError:           false,
 		},
-		// Add more test cases here...
+		{
+			name:                    "Existing user, already completed onboarding",
+			address:                 "0x1234567890123456789012345678901234567890",
+			usdValue:                1000.0,
+			points:                  100,
+			txHash:                  "0xabcdef1234567890",
+			existingUser:            true,
+			existingTotalSwapAmount: 2000.0,
+			expectedError:           false,
+		},
 	}
 
-	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			tc.mockSetup()
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Reset mock
+			mock.ExpectBegin()
 
-			err := tdb.svc.RecordSwapAndUpdatePoints(tc.address, tc.usdValue, tc.points, tc.txHash)
-
-			if tc.expectError {
-				tdb.assert.Error(err)
+			// Expect query for user ID
+			if tt.existingUser {
+				mock.ExpectQuery("SELECT id FROM users WHERE address = \\$1").
+					WithArgs(tt.address).
+					WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(1))
 			} else {
-				tdb.assert.NoError(err)
+				mock.ExpectQuery("SELECT id FROM users WHERE address = \\$1").
+					WithArgs(tt.address).
+					WillReturnError(sql.ErrNoRows)
+				mock.ExpectQuery("INSERT INTO users \\(address\\) VALUES \\(\\$1\\) RETURNING id").
+					WithArgs(tt.address).
+					WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(1))
 			}
 
-			tdb.assert.NoError(tdb.mock.ExpectationsWereMet())
+			mock.ExpectExec("INSERT INTO swap_events").
+				WithArgs(1, tt.address, tt.usdValue, tt.txHash).
+				WillReturnResult(sqlmock.NewResult(1, 1))
+
+			mock.ExpectExec("UPDATE users SET total_points = total_points \\+ \\$2 WHERE id = \\$1").
+				WithArgs(1, tt.points).
+				WillReturnResult(sqlmock.NewResult(1, 1))
+
+			mock.ExpectExec("INSERT INTO points_history").
+				WithArgs(1, tt.points, "Swap").
+				WillReturnResult(sqlmock.NewResult(1, 1))
+
+			mock.ExpectQuery("SELECT COALESCE\\(SUM\\(amount_usd\\), 0\\) FROM swap_events WHERE user_id = \\$1").
+				WithArgs(1).
+				WillReturnRows(sqlmock.NewRows([]string{"total_swap_amount"}).AddRow(tt.existingTotalSwapAmount + tt.usdValue))
+
+			if tt.existingTotalSwapAmount+tt.usdValue >= 1000 {
+				mock.ExpectExec("UPDATE users SET onboarding_completed = true, onboarding_points = onboarding_points \\+ 100 WHERE id = \\$1").
+					WithArgs(1).
+					WillReturnResult(sqlmock.NewResult(1, 1))
+				mock.ExpectExec("INSERT INTO points_history \\(user_id, points, reason\\) VALUES \\(\\$1, 100, 'Onboarding Completed'\\)").
+					WithArgs(1).
+					WillReturnResult(sqlmock.NewResult(1, 1))
+			}
+
+			mock.ExpectCommit()
+
+			err := s.RecordSwapAndUpdatePoints(tt.address, tt.usdValue, tt.points, tt.txHash)
+
+			if tt.expectedError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+			}
+
+			assert.NoError(t, mock.ExpectationsWereMet())
 		})
 	}
 }
