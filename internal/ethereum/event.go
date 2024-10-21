@@ -20,66 +20,65 @@ type WebSocketManager interface {
 }
 
 // ProcessSwapEvents processes the fetched swap events
-func ProcessSwapEvents(logs []types.Log, wsManager WebSocketManager, dbService db.DBService) error {
-	for _, vLog := range logs {
-		// Check if this log is a Swap event
-		if len(vLog.Topics) != 3 || vLog.Topics[0] != SwapEventSignature {
-			continue
+func ProcessSwapEvents(events []customtypes.SwapEvent, wsManager WebSocketManager, dbService db.DBService) error {
+	for _, event := range events {
+		// Calculate USD value of the swap (if not already calculated)
+		if event.USDValue == nil {
+			event.USDValue = calculateUSDValue(event.Amount0In, event.Amount1In, event.Amount0Out, event.Amount1Out)
 		}
-
-		// Parse the swap event
-		swapEvent, err := parseSwapEvent(vLog)
-		if err != nil {
-			return fmt.Errorf("failed to parse swap event: %w", err)
-		}
-
-		// Calculate USD value of the swap
-		usdValue := calculateUSDValue(swapEvent.Amount0In, swapEvent.Amount1In, swapEvent.Amount0Out, swapEvent.Amount1Out)
-		swapEvent.USDValue = usdValue
 
 		// Broadcast the swap event
-		err = wsManager.BroadcastSwapEvent(swapEvent)
+		err := wsManager.BroadcastSwapEvent(&event)
 		if err != nil {
-			return fmt.Errorf("failed to broadcast swap event: %w", err)
+			logger.Error("Failed to broadcast swap event: %v", err)
+			// Continue processing instead of returning
 		}
 
 		// Calculate points for the swap
-		points := calculatePointsForSwap(usdValue)
+		points := calculatePointsForSwap(event.USDValue)
+
+		// Convert common.Address to string
+		senderAddress := event.Sender.Hex()
 
 		// Record swap and update points
-		usdValueFloat, _ := usdValue.Float64()
-		err = dbService.RecordSwapAndUpdatePoints(swapEvent.Sender.Hex(), usdValueFloat, points, swapEvent.TxHash.Hex())
+		usdValueFloat, _ := event.USDValue.Float64()
+		err = dbService.RecordSwapAndUpdatePoints(senderAddress, usdValueFloat, points, event.TxHash.Hex())
 		if err != nil {
-			return fmt.Errorf("failed to record swap and update points: %w", err)
+			logger.Error("Failed to record swap and update points: %v", err)
+			continue // Continue processing other events instead of returning
 		}
 
 		// Broadcast user points update
-		err = wsManager.BroadcastUserPointsUpdate(swapEvent.Sender.Hex(), points)
+		err = wsManager.BroadcastUserPointsUpdate(senderAddress, points)
 		if err != nil {
-			return fmt.Errorf("failed to broadcast user points update: %w", err)
+			logger.Error("Failed to broadcast user points update: %v", err)
+			// Continue processing instead of returning
 		}
 
 		// Update the leaderboard
-		err = dbService.UpdateLeaderboard(swapEvent.Sender.Hex(), points)
+		err = dbService.UpdateLeaderboard(senderAddress, points)
 		if err != nil {
-			return fmt.Errorf("failed to update leaderboard: %w", err)
+			logger.Error("Failed to update leaderboard: %v", err)
+			continue // Continue processing other events instead of returning
 		}
 
 		// Get and broadcast the updated leaderboard
 		leaderboard, err := dbService.GetLeaderboard(10) // Get top 10
 		if err != nil {
-			return fmt.Errorf("failed to get leaderboard: %w", err)
+			logger.Error("Failed to get leaderboard: %v", err)
+			continue // Continue processing other events instead of returning
 		}
 
 		leaderboardMap := convertLeaderboard(leaderboard)
 		err = wsManager.BroadcastLeaderboardUpdate(leaderboardMap)
 		if err != nil {
-			return fmt.Errorf("failed to broadcast leaderboard update: %w", err)
+			logger.Error("Failed to broadcast leaderboard update: %v", err)
+			// Continue processing instead of returning
 		}
 
 		// Log the processed event
 		logger.Info("Processed swap event: TX Hash: %s, Sender: %s, To: %s, USD Value: %.2f, Points: %d",
-			vLog.TxHash.Hex(), swapEvent.Sender.Hex(), swapEvent.Recipient.Hex(), usdValueFloat, points)
+			event.TxHash.Hex(), senderAddress, event.Recipient.Hex(), usdValueFloat, points)
 	}
 
 	return nil

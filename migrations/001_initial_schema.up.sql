@@ -10,10 +10,11 @@ CREATE TABLE IF NOT EXISTS users (
 -- Create swap_events table
 CREATE TABLE IF NOT EXISTS swap_events (
     id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
     sender VARCHAR(42) NOT NULL,
     transaction_hash VARCHAR(66) NOT NULL,
     amount_usd NUMERIC(20, 2) NOT NULL,
-    timestamp TIMESTAMP NOT NULL
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create points_history table
@@ -22,7 +23,7 @@ CREATE TABLE IF NOT EXISTS points_history (
     user_id INT REFERENCES users(id),
     points BIGINT NOT NULL,
     reason VARCHAR(255) NOT NULL,
-    timestamp TIMESTAMP NOT NULL
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create campaign_config table

@@ -133,7 +133,6 @@ func (s *DBServiceImpl) GetUserTasks(address string) (map[string]interface{}, er
 	return tasks, nil
 }
 
-// RecordSwapAndUpdatePoints records a swap event, updates user points, and updates the leaderboard
 func (s *DBServiceImpl) RecordSwapAndUpdatePoints(address string, usdValue float64, points int64, txHash string) error {
 	tx, err := s.db.Begin()
 	if err != nil {
@@ -141,52 +140,52 @@ func (s *DBServiceImpl) RecordSwapAndUpdatePoints(address string, usdValue float
 	}
 	defer tx.Rollback()
 
+	// Get user ID from address
+	var userID int
+	err = tx.QueryRow("SELECT id FROM users WHERE address = $1", address).Scan(&userID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			// User doesn't exist, create new user
+			err = tx.QueryRow("INSERT INTO users (address) VALUES ($1) RETURNING id", address).Scan(&userID)
+			if err != nil {
+				return fmt.Errorf("failed to create new user: %w", err)
+			}
+		} else {
+			return fmt.Errorf("failed to get user ID: %w", err)
+		}
+	}
+
 	// Record swap event
 	_, err = tx.Exec(`
-		INSERT INTO swap_events (sender, amount_usd, transaction_hash, timestamp)
-		VALUES ($1, $2, $3, NOW())
-	`, address, usdValue, txHash)
+        INSERT INTO swap_events (user_id, sender, amount_usd, transaction_hash)
+        VALUES ($1, $2, $3, $4)
+    `, userID, address, usdValue, txHash)
 	if err != nil {
 		return fmt.Errorf("failed to record swap event: %w", err)
 	}
 
 	// Update user points
 	_, err = tx.Exec(`
-		INSERT INTO users (address, total_points)
-		VALUES ($1, $2)
-		ON CONFLICT (address) DO UPDATE
-		SET total_points = users.total_points + $2
-	`, address, points)
+        UPDATE users 
+        SET total_points = total_points + $2
+        WHERE id = $1
+    `, userID, points)
 	if err != nil {
 		return fmt.Errorf("failed to update user points: %w", err)
 	}
 
 	// Record points history
 	_, err = tx.Exec(`
-		INSERT INTO points_history (user_id, points, reason, timestamp)
-		SELECT id, $2, 'Swap', NOW()
-		FROM users
-		WHERE address = $1
-	`, address, points)
+        INSERT INTO points_history (user_id, points, reason)
+        VALUES ($1, $2, $3)
+    `, userID, points, "Swap")
 	if err != nil {
 		return fmt.Errorf("failed to record points history: %w", err)
-	}
-
-	// Update leaderboard
-	_, err = tx.Exec(`
-		INSERT INTO leaderboard (address, points)
-		VALUES ($1, $2)
-		ON CONFLICT (address) DO UPDATE
-		SET points = leaderboard.points + $2
-	`, address, points)
-	if err != nil {
-		return fmt.Errorf("failed to update leaderboard: %w", err)
 	}
 
 	return tx.Commit()
 }
 
-// GetLeaderboard retrieves the current leaderboard
 func (s *DBServiceImpl) GetLeaderboard(limit int) ([]LeaderboardEntry, error) {
 	rows, err := s.db.Query("SELECT address, points FROM leaderboard ORDER BY points DESC LIMIT $1", limit)
 	if err != nil {
@@ -201,6 +200,15 @@ func (s *DBServiceImpl) GetLeaderboard(limit int) ([]LeaderboardEntry, error) {
 			return nil, fmt.Errorf("failed to scan leaderboard entry: %w", err)
 		}
 		leaderboard = append(leaderboard, entry)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating leaderboard rows: %w", err)
+	}
+
+	// Return an empty slice instead of nil if no entries were found
+	if leaderboard == nil {
+		return []LeaderboardEntry{}, nil
 	}
 
 	return leaderboard, nil
@@ -330,25 +338,25 @@ func UpdateLeaderboard(address string, points int64) error {
 	return nil
 }
 
-// GetLeaderboard retrieves the current leaderboard
-func GetLeaderboard(limit int) ([]LeaderboardEntry, error) {
-	rows, err := DB.Query("SELECT address, points FROM leaderboard ORDER BY points DESC LIMIT $1", limit)
-	if err != nil {
-		return nil, &errors.DatabaseError{Operation: "failed to query leaderboard", Err: err}
-	}
-	defer rows.Close()
+// // GetLeaderboard retrieves the current leaderboard
+// func GetLeaderboard(limit int) ([]LeaderboardEntry, error) {
+// 	rows, err := DB.Query("SELECT address, points FROM leaderboard ORDER BY points DESC LIMIT $1", limit)
+// 	if err != nil {
+// 		return nil, &errors.DatabaseError{Operation: "failed to query leaderboard", Err: err}
+// 	}
+// 	defer rows.Close()
 
-	var leaderboard []LeaderboardEntry
-	for rows.Next() {
-		var entry LeaderboardEntry
-		if err := rows.Scan(&entry.Address, &entry.Points); err != nil {
-			return nil, &errors.DatabaseError{Operation: "failed to scan leaderboard entry", Err: err}
-		}
-		leaderboard = append(leaderboard, entry)
-	}
+// 	var leaderboard []LeaderboardEntry
+// 	for rows.Next() {
+// 		var entry LeaderboardEntry
+// 		if err := rows.Scan(&entry.Address, &entry.Points); err != nil {
+// 			return nil, &errors.DatabaseError{Operation: "failed to scan leaderboard entry", Err: err}
+// 		}
+// 		leaderboard = append(leaderboard, entry)
+// 	}
 
-	return leaderboard, nil
-}
+// 	return leaderboard, nil
+// }
 
 // GetUserByAddress retrieves a user by their address
 func GetUserByAddress(address string) (User, error) {

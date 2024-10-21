@@ -16,8 +16,13 @@ type DBServiceImpl struct {
 	db *sql.DB
 }
 
+type DBOperations interface {
+	Open(driverName, dataSourceName string) (*sql.DB, error)
+	RunMigrations(db *sql.DB) error
+}
+
 // NewDBService creates and returns a new DBService
-func NewDBService() (DBService, error) {
+func NewDBService(ops DBOperations) (DBService, error) {
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
 	user := os.Getenv("DB_USER")
@@ -27,7 +32,7 @@ func NewDBService() (DBService, error) {
 	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 
-	db, err := sql.Open("postgres", connStr)
+	db, err := ops.Open("postgres", connStr)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
@@ -37,7 +42,7 @@ func NewDBService() (DBService, error) {
 	}
 
 	// Run migrations
-	if err := RunMigrations(db); err != nil {
+	if err := ops.RunMigrations(db); err != nil {
 		return nil, fmt.Errorf("failed to run migrations: %w", err)
 	}
 
@@ -119,7 +124,6 @@ func (s *DBServiceImpl) CalculateWeeklySharePoolPoints() error {
 	}
 	defer tx.Rollback()
 
-	// Get total swap volume for the week
 	var totalVolume float64
 	err = tx.QueryRow(`
 		SELECT COALESCE(SUM(usd_value), 0)
@@ -134,7 +138,6 @@ func (s *DBServiceImpl) CalculateWeeklySharePoolPoints() error {
 		return nil // No swaps this week
 	}
 
-	// Calculate and distribute points
 	rows, err := tx.Query(`
 		SELECT user_address, SUM(usd_value) as user_volume
 		FROM swap_events
@@ -170,9 +173,9 @@ func (s *DBServiceImpl) CalculateWeeklySharePoolPoints() error {
 
 		// Record points history
 		_, err = tx.Exec(`
-			INSERT INTO points_history (user_address, points, reason, timestamp)
-			VALUES ($1, $2, 'Weekly Share Pool', NOW())
-		`, address, points)
+			INSERT INTO points_history (user_address, points, reason)
+			VALUES ($1, $2, $3)
+		`, address, points, "Weekly Share Pool")
 		if err != nil {
 			return fmt.Errorf("failed to record points history: %w", err)
 		}

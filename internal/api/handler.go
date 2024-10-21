@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/SIMPLYBOYS/trading_ace/internal/db"
+	"github.com/SIMPLYBOYS/trading_ace/internal/errors"
 	"github.com/SIMPLYBOYS/trading_ace/internal/ethereum"
 	"github.com/SIMPLYBOYS/trading_ace/pkg/logger"
 	"github.com/gin-gonic/gin"
@@ -29,6 +30,10 @@ func (h *Handler) GetUserTasks(c *gin.Context) {
 
 	tasks, err := h.DB.GetUserTasks(address)
 	if err != nil {
+		if _, ok := err.(*errors.NotFoundError); ok {
+			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+			return
+		}
 		logger.Error("Failed to fetch user tasks for address %s: %v", address, err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user tasks", "details": err.Error()})
 		return

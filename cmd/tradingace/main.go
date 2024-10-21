@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
-	"log"
+	"database/sql"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 	"time"
 
@@ -14,29 +16,61 @@ import (
 	"github.com/SIMPLYBOYS/trading_ace/internal/ethereum"
 	"github.com/SIMPLYBOYS/trading_ace/internal/websocket"
 	"github.com/SIMPLYBOYS/trading_ace/pkg/logger"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
+	_ "github.com/lib/pq"
 )
+
+// RealDBOperations implements the DBOperations interface
+type RealDBOperations struct{}
+
+func (RealDBOperations) Open(driverName, dataSourceName string) (*sql.DB, error) {
+	return sql.Open(driverName, dataSourceName)
+}
+
+func (RealDBOperations) RunMigrations(db *sql.DB) error {
+	driver, err := postgres.WithInstance(db, &postgres.Config{})
+	if err != nil {
+		return fmt.Errorf("could not create the postgres driver: %v", err)
+	}
+
+	m, err := migrate.NewWithDatabaseInstance(
+		"file://migrations", // This should be the path to your migration files
+		"postgres", driver)
+	if err != nil {
+		return fmt.Errorf("migration failed: %v", err)
+	}
+
+	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
+		return fmt.Errorf("an error occurred while syncing the database: %v", err)
+	}
+
+	return nil
+}
 
 func main() {
 	// Initialize logger
-	logger.SetLevel(logger.INFO)
-	err := logger.EnableFileLogging("./logs")
-	if err != nil {
-		log.Fatalf("Failed to enable file logging: %v", err)
+	logLevel := logger.INFO
+	if os.Getenv("DEBUG") == "true" {
+		logLevel = logger.DEBUG
 	}
+	logger.SetLevel(logLevel)
 
-	logger.Info("Trading Ace starting...")
+	// Create a real DBOperations implementation
+	dbOps := RealDBOperations{}
 
-	// Initialize database
-	dbService, err := db.NewDBService()
+	// Initialize database service
+	dbService, err := db.NewDBService(dbOps)
 	if err != nil {
-		logger.Fatal("Failed to initialize database: %v", err)
+		logger.Fatal("Failed to initialize database service: %v", err)
 	}
 	defer dbService.Close()
 
-	// Initialize Ethereum client
+	// Initialize Ethereum service
 	ethService, err := ethereum.NewEthereumService()
 	if err != nil {
-		logger.Fatal("Failed to initialize Ethereum client: %v", err)
+		logger.Fatal("Failed to initialize Ethereum service: %v", err)
 	}
 	defer ethService.Close()
 
@@ -44,153 +78,144 @@ func main() {
 	wsManager := websocket.NewWebSocketManager()
 	go wsManager.Run()
 
-	// Set up and run the API server
-	r := api.SetupRouter(dbService, ethService, wsManager)
+	// Setup router
+	router := api.SetupRouter(dbService, ethService, wsManager)
 
-	// Create a new server
-	srv := &http.Server{
-		Addr:    ":8080",
-		Handler: r,
+	// Get port from environment variable or use default
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
 	}
 
-	// Initializing the server in a goroutine so that
-	// it won't block the graceful shutdown handling below
+	// Create a new http.Server
+	srv := &http.Server{
+		Addr:    ":" + port,
+		Handler: router,
+	}
+
+	// Create a context that we can cancel
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	// Start the server in a goroutine
 	go func() {
+		logger.Info("Server is running on port %s", port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			logger.Fatal("Failed to run server: %v", err)
+			logger.Fatal("Failed to start server: %v", err)
 		}
 	}()
 
-	// Start the campaign task scheduler
-	go runCampaignTasks(dbService, wsManager)
+	// Start processing Ethereum events in a separate goroutine
+	go processEthereumEvents(ctx, ethService, dbService, wsManager)
 
-	// Fetch and process swap events continuously
-	go processSwapEvents(ethService, dbService, wsManager)
+	// Start the campaign management goroutine
+	go manageCampaign(ctx, dbService)
 
-	// Wait for interrupt signal to gracefully shutdown the server with
-	// a timeout of 5 seconds.
+	// Wait for interrupt signal to gracefully shutdown the server
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 	logger.Info("Shutting down server...")
 
-	// The context is used to inform the server it has 5 seconds to finish
-	// the request it is currently handling
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	if err := srv.Shutdown(ctx); err != nil {
+	// Cancel the context to stop the Ethereum event processing and campaign management
+	cancel()
+
+	// Create a deadline to wait for
+	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer shutdownCancel()
+
+	// Doesn't block if no connections, but will otherwise wait until the timeout deadline
+	if err := srv.Shutdown(shutdownCtx); err != nil {
 		logger.Fatal("Server forced to shutdown: %v", err)
 	}
 
 	logger.Info("Server exiting")
 }
 
-func runCampaignTasks(dbService db.DBService, wsManager *websocket.WebSocketManager) {
-	ticker := time.NewTicker(24 * time.Hour)
+func processEthereumEvents(ctx context.Context, ethService ethereum.EthereumService, dbService db.DBService, wsManager *websocket.WebSocketManager) {
+	ticker := time.NewTicker(15 * time.Second) // Poll for new events every 15 seconds
+	defer ticker.Stop()
+
+	var lastProcessedBlock uint64
+	var mu sync.Mutex
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+			func() {
+				mu.Lock()
+				defer mu.Unlock()
+
+				latestBlock, err := ethService.GetLatestBlockNumber()
+				if err != nil {
+					logger.Error("Failed to get latest block number: %v", err)
+					return
+				}
+
+				if lastProcessedBlock == 0 {
+					lastProcessedBlock = latestBlock - 100 // Start from 100 blocks ago on first run
+				}
+
+				if latestBlock <= lastProcessedBlock {
+					return // No new blocks to process
+				}
+
+				logs, err := ethService.FetchSwapEvents(lastProcessedBlock+1, latestBlock)
+				if err != nil {
+					logger.Error("Failed to fetch swap events: %v", err)
+					return
+				}
+
+				err = ethereum.ProcessSwapEvents(logs, wsManager, dbService)
+				if err != nil {
+					logger.Error("Failed to process swap events: %v", err)
+					return
+				}
+
+				lastProcessedBlock = latestBlock
+			}()
+		}
+	}
+}
+
+func manageCampaign(ctx context.Context, dbService db.DBService) {
+	ticker := time.NewTicker(24 * time.Hour) // Check campaign status daily
 	defer ticker.Stop()
 
 	for {
 		select {
+		case <-ctx.Done():
+			return
 		case <-ticker.C:
-			logger.Info("Running daily campaign tasks...")
-
-			// Check and update campaign status
 			campaign, err := dbService.GetCampaignConfig()
 			if err != nil {
 				logger.Error("Failed to get campaign config: %v", err)
 				continue
 			}
 
-			if campaign.IsActive && time.Now().After(campaign.EndTime) {
-				logger.Info("Campaign has ended. Deactivating...")
-				err = dbService.EndCampaign(campaign.ID)
+			now := time.Now()
+
+			if campaign.IsActive && now.After(campaign.EndTime) {
+				// End the campaign
+				err := dbService.EndCampaign(campaign.ID)
 				if err != nil {
 					logger.Error("Failed to end campaign: %v", err)
+				} else {
+					logger.Info("Campaign ended: ID %d", campaign.ID)
 				}
 			}
 
-			// Run weekly share pool calculation if it's Monday
-			if time.Now().Weekday() == time.Monday {
-				logger.Info("Calculating weekly share pool points...")
+			// Check if it's time to calculate weekly share pool points
+			if now.Weekday() == time.Sunday && now.Hour() == 0 {
 				err := dbService.CalculateWeeklySharePoolPoints()
 				if err != nil {
 					logger.Error("Failed to calculate weekly share pool points: %v", err)
+				} else {
+					logger.Info("Calculated weekly share pool points")
 				}
-			}
-
-			// Update and broadcast leaderboard
-			leaderboard, err := dbService.GetLeaderboard(100)
-			if err != nil {
-				logger.Error("Failed to get leaderboard: %v", err)
-			} else {
-				// Convert leaderboard to the format expected by WebSocketManager
-				leaderboardData := make([]map[string]interface{}, len(leaderboard))
-				for i, entry := range leaderboard {
-					leaderboardData[i] = map[string]interface{}{
-						"address": entry.Address,
-						"points":  entry.Points,
-					}
-				}
-				wsManager.BroadcastLeaderboardUpdate(leaderboardData)
 			}
 		}
 	}
-}
-
-func processSwapEvents(ethService ethereum.EthereumService, dbService db.DBService, wsManager *websocket.WebSocketManager) {
-	for {
-		latestBlock, err := ethService.GetLatestBlockNumber()
-		if err != nil {
-			logger.Error("Failed to get latest block number: %v", err)
-			time.Sleep(15 * time.Second)
-			continue
-		}
-
-		fromBlock := latestBlock - 100
-		if fromBlock < 0 {
-			fromBlock = 0
-		}
-
-		logs, err := ethService.FetchSwapEvents(fromBlock, latestBlock)
-		if err != nil {
-			logger.Error("Failed to fetch swap events: %v", err)
-			time.Sleep(15 * time.Second)
-			continue
-		}
-
-		for _, log := range logs {
-			// Process each swap event
-			usdValue, _ := log.USDValue.Float64()
-			err := dbService.RecordSwapAndUpdatePoints(log.Sender.Hex(), usdValue, calculatePoints(usdValue), log.TxHash.Hex())
-			if err != nil {
-				logger.Error("Failed to record swap and update points: %v", err)
-				continue
-			}
-
-			// Broadcast swap event
-			wsManager.BroadcastSwapEvent(&log)
-
-			// Update and broadcast leaderboard
-			leaderboard, err := dbService.GetLeaderboard(100)
-			if err != nil {
-				logger.Error("Failed to get leaderboard: %v", err)
-			} else {
-				leaderboardData := make([]map[string]interface{}, len(leaderboard))
-				for i, entry := range leaderboard {
-					leaderboardData[i] = map[string]interface{}{
-						"address": entry.Address,
-						"points":  entry.Points,
-					}
-				}
-				wsManager.BroadcastLeaderboardUpdate(leaderboardData)
-			}
-		}
-
-		time.Sleep(15 * time.Second)
-	}
-}
-
-func calculatePoints(usdValue float64) int64 {
-	// Implement your points calculation logic here
-	return int64(usdValue / 10) // Example: 1 point for every 10 USD
 }
