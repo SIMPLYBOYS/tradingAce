@@ -1,0 +1,617 @@
+2024/10/19 01:59:46 [INFO] [logger.go:161] Trading Ace starting...
+2024/10/19 01:59:46 [FATAL] [logger.go:176] Failed to initialize database: failed to ping database: dial tcp 127.0.0.1:5432: connect: connection refused
+2024/10/19 02:01:04 [INFO] [logger.go:161] Trading Ace starting...
+2024/10/19 02:01:04 [INFO] [logger.go:161] Successfully connected to database
+2024/10/19 02:01:04 [INFO] [logger.go:161] Database migrations completed successfully
+2024/10/19 02:01:04 [INFO] [logger.go:161] Successfully connected to Ethereum client
+2024/10/19 02:01:05 [INFO] [logger.go:161] Successfully fetched 31 swap events from block 20994004 to 20994104
+2024/10/19 02:01:05 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x697e3335e80a05f988315bd37ddf79c9f34c5a6626e51e33110cff5b1b443173, Amount0In: 13516977, Amount1In: 0, Amount0Out: 0, Amount1Out: 5089214712647192
+2024/10/19 02:01:05 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:05 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D
+2024/10/19 02:01:05 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:05 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x697e3335e80a05f988315bd37ddf79c9f34c5a6626e51e33110cff5b1b443173, Sender: 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D, To: 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D, USD Value: 0.00, Points: 1
+2024/10/19 02:01:05 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x697e3335e80a05f988315bd37ddf79c9f34c5a6626e51e33110cff5b1b443173, Sender: 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D, To: 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D, USD Value: 0.00, Points: 1
+2024/10/19 02:01:05 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x68436fbb1857e5139f31ef400d99c1db308b0fbacdf49cfb6e2928ea5c8a2ef0, Amount0In: 1500000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 564738871096943173
+2024/10/19 02:01:05 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:05 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 02:01:05 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:05 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x68436fbb1857e5139f31ef400d99c1db308b0fbacdf49cfb6e2928ea5c8a2ef0, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x3006c0D2A6e54d3590a44384c6F066c9cF9a4ceA, USD Value: 0.00, Points: 1
+2024/10/19 02:01:05 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x68436fbb1857e5139f31ef400d99c1db308b0fbacdf49cfb6e2928ea5c8a2ef0, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x3006c0D2A6e54d3590a44384c6F066c9cF9a4ceA, USD Value: 0.00, Points: 1
+2024/10/19 02:01:05 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xd1f2447e56727ae2ab165f132087a55af6a65795b092d0297942016a56a03f03, Amount0In: 133129765, Amount1In: 0, Amount0Out: 0, Amount1Out: 50120523599071545
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xd1f2447e56727ae2ab165f132087a55af6a65795b092d0297942016a56a03f03, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x54D094a26e6B021E719bD7Cfc0cF332c68b78E05, USD Value: 0.00, Points: 1
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xd1f2447e56727ae2ab165f132087a55af6a65795b092d0297942016a56a03f03, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x54D094a26e6B021E719bD7Cfc0cF332c68b78E05, USD Value: 0.00, Points: 1
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x0598cfb2e9ff48bb6770604a0c51cf0a64de407bfa687c6728de7d7e1d9c96c9, Amount0In: 0, Amount1In: 342766014065818364, Amount0Out: 904982286, Amount1Out: 0
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xDef1C0ded9bec7F1a1670819833240f027b25EfF
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x0598cfb2e9ff48bb6770604a0c51cf0a64de407bfa687c6728de7d7e1d9c96c9, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0x814e3D7A925Ed1FD1E6C5c0bF39be54A5D767897, USD Value: 342766014065.82, Points: 34276601406
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x0598cfb2e9ff48bb6770604a0c51cf0a64de407bfa687c6728de7d7e1d9c96c9, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0x814e3D7A925Ed1FD1E6C5c0bF39be54A5D767897, USD Value: 342766014065.82, Points: 34276601406
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xcdcbe6fd83e1bce869be7d608f98f26dbafc30d6720859cb8719b170f8121878, Amount0In: 0, Amount1In: 25269872354830500, Amount0Out: 66716895, Amount1Out: 0
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xF3dE3C0d654FDa23daD170f0f320a92172509127
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xcdcbe6fd83e1bce869be7d608f98f26dbafc30d6720859cb8719b170f8121878, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x0b4a7E0082aD2FEc200fEAe1B68f460Cb969d80c, USD Value: 25269872354.83, Points: 2526987235
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xcdcbe6fd83e1bce869be7d608f98f26dbafc30d6720859cb8719b170f8121878, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x0b4a7E0082aD2FEc200fEAe1B68f460Cb969d80c, USD Value: 25269872354.83, Points: 2526987235
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x3c98d70c0b7dbe17cd0bd098e21f859fbe7b3ca3338423033267d07c4a878d13, Amount0In: 500000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 188244940396023070
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xF3dE3C0d654FDa23daD170f0f320a92172509127
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x3c98d70c0b7dbe17cd0bd098e21f859fbe7b3ca3338423033267d07c4a878d13, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x73b809b4F424477c5806CE7F7317C52bfa7dC39b, USD Value: 0.00, Points: 1
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x3c98d70c0b7dbe17cd0bd098e21f859fbe7b3ca3338423033267d07c4a878d13, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x73b809b4F424477c5806CE7F7317C52bfa7dC39b, USD Value: 0.00, Points: 1
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xa0ea66cfcaba3eebb12dfa510ad5b995703103bf3442658b5b23af3561179d0c, Amount0In: 692667474, Amount1In: 0, Amount0Out: 0, Amount1Out: 260775294120790104
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 02:01:06 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xa0ea66cfcaba3eebb12dfa510ad5b995703103bf3442658b5b23af3561179d0c, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0xcc0FCd959871E69F84fe9464C629f327941b655B, USD Value: 0.00, Points: 1
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xa0ea66cfcaba3eebb12dfa510ad5b995703103bf3442658b5b23af3561179d0c, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0xcc0FCd959871E69F84fe9464C629f327941b655B, USD Value: 0.00, Points: 1
+2024/10/19 02:01:06 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xb24fd8c4ca86aefcdeb6c5d1470073e305e24caf3fa4a758155ada9b93b28254, Amount0In: 0, Amount1In: 147694773523397151, Amount0Out: 389957034, Amount1Out: 0
+2024/10/19 02:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 02:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:07 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xb24fd8c4ca86aefcdeb6c5d1470073e305e24caf3fa4a758155ada9b93b28254, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x74de5d4FCbf63E00296fd95d33236B9794016631, USD Value: 147694773523.40, Points: 14769477352
+2024/10/19 02:01:07 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xb24fd8c4ca86aefcdeb6c5d1470073e305e24caf3fa4a758155ada9b93b28254, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x74de5d4FCbf63E00296fd95d33236B9794016631, USD Value: 147694773523.40, Points: 14769477352
+2024/10/19 02:01:07 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x165b520fb10def13fb44522135030d71213d1745eef8f004d5c705067f462f95, Amount0In: 2500000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 941148419329430254
+2024/10/19 02:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xf164fC0Ec4E93095b804a4795bBe1e041497b92a
+2024/10/19 02:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:07 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x165b520fb10def13fb44522135030d71213d1745eef8f004d5c705067f462f95, Sender: 0xf164fC0Ec4E93095b804a4795bBe1e041497b92a, To: 0xe945683B3462D2603a18BDfBB19261C6a4f03aD1, USD Value: 0.00, Points: 1
+2024/10/19 02:01:07 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x165b520fb10def13fb44522135030d71213d1745eef8f004d5c705067f462f95, Sender: 0xf164fC0Ec4E93095b804a4795bBe1e041497b92a, To: 0xe945683B3462D2603a18BDfBB19261C6a4f03aD1, USD Value: 0.00, Points: 1
+2024/10/19 02:01:07 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x26564c768544a506e99ff2f66422b9f90759c736f1533661bd390b8a47a02946, Amount0In: 470039102, Amount1In: 0, Amount0Out: 0, Amount1Out: 176938779718050420
+2024/10/19 02:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 02:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:07 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x26564c768544a506e99ff2f66422b9f90759c736f1533661bd390b8a47a02946, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 0.00, Points: 1
+2024/10/19 02:01:07 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x26564c768544a506e99ff2f66422b9f90759c736f1533661bd390b8a47a02946, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 0.00, Points: 1
+2024/10/19 02:01:07 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xd9f30f9bc75d5349a0da14795b422d58a3454b1731aabac4487e7750bb1c80c9, Amount0In: 100000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 37642933562781078
+2024/10/19 02:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xDef1C0ded9bec7F1a1670819833240f027b25EfF
+2024/10/19 02:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:07 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xd9f30f9bc75d5349a0da14795b422d58a3454b1731aabac4487e7750bb1c80c9, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0xfb4492a1cd2a28D08B0b2a3fFa567342EA93776F, USD Value: 0.00, Points: 1
+2024/10/19 02:01:07 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xd9f30f9bc75d5349a0da14795b422d58a3454b1731aabac4487e7750bb1c80c9, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0xfb4492a1cd2a28D08B0b2a3fFa567342EA93776F, USD Value: 0.00, Points: 1
+2024/10/19 02:01:07 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x071e114a1adabee7b0144f1449a263157d7c88d4ad715dc8f0fb227e0aeb6d8f, Amount0In: 192210854, Amount1In: 0, Amount0Out: 0, Amount1Out: 72353328335182928
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x071e114a1adabee7b0144f1449a263157d7c88d4ad715dc8f0fb227e0aeb6d8f, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x0f420A1d4c87037D562f0ce684D1ddEe52A53748, USD Value: 0.00, Points: 1
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x071e114a1adabee7b0144f1449a263157d7c88d4ad715dc8f0fb227e0aeb6d8f, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x0f420A1d4c87037D562f0ce684D1ddEe52A53748, USD Value: 0.00, Points: 1
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x6ebb2aea6b431f780a951263938f5f20f76c1f61a4de3b4b11dc90407e3f5624, Amount0In: 100000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 37642438314973968
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xDef1C0ded9bec7F1a1670819833240f027b25EfF
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x6ebb2aea6b431f780a951263938f5f20f76c1f61a4de3b4b11dc90407e3f5624, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0xfb4492a1cd2a28D08B0b2a3fFa567342EA93776F, USD Value: 0.00, Points: 1
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x6ebb2aea6b431f780a951263938f5f20f76c1f61a4de3b4b11dc90407e3f5624, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0xfb4492a1cd2a28D08B0b2a3fFa567342EA93776F, USD Value: 0.00, Points: 1
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x865381ca85d7708461b4ca5952fa3a6ba53778ab438493bebda3d9952a220e09, Amount0In: 1484116325, Amount1In: 0, Amount0Out: 0, Amount1Out: 558637676354360259
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x865381ca85d7708461b4ca5952fa3a6ba53778ab438493bebda3d9952a220e09, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0xe46935aE80E05cdEbD4a4008B6ccaA36d2845370, USD Value: 0.00, Points: 1
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x865381ca85d7708461b4ca5952fa3a6ba53778ab438493bebda3d9952a220e09, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0xe46935aE80E05cdEbD4a4008B6ccaA36d2845370, USD Value: 0.00, Points: 1
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x90957ac5c6451d8927fcf2e85ad2ae67b229b89f9ca7872b1d0d87675d32437c, Amount0In: 100000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 37639753676769639
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xDef1C0ded9bec7F1a1670819833240f027b25EfF
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x90957ac5c6451d8927fcf2e85ad2ae67b229b89f9ca7872b1d0d87675d32437c, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0xfb4492a1cd2a28D08B0b2a3fFa567342EA93776F, USD Value: 0.00, Points: 1
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x90957ac5c6451d8927fcf2e85ad2ae67b229b89f9ca7872b1d0d87675d32437c, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0xfb4492a1cd2a28D08B0b2a3fFa567342EA93776F, USD Value: 0.00, Points: 1
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xffcd7a46448de4b13327437b582c1c1977070d7f3574e29e1c1278e066e6b58d, Amount0In: 1158238724, Amount1In: 0, Amount0Out: 0, Amount1Out: 435945870356140706
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 02:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xffcd7a46448de4b13327437b582c1c1977070d7f3574e29e1c1278e066e6b58d, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 0.00, Points: 1
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xffcd7a46448de4b13327437b582c1c1977070d7f3574e29e1c1278e066e6b58d, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 0.00, Points: 1
+2024/10/19 02:01:08 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xaa1bcfdb0fe2ae080e69f013913d57d096e8c9be708b13139c6493f86da50c9c, Amount0In: 100000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 37637621515560444
+2024/10/19 02:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xDef1C0ded9bec7F1a1670819833240f027b25EfF
+2024/10/19 02:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:09 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xaa1bcfdb0fe2ae080e69f013913d57d096e8c9be708b13139c6493f86da50c9c, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0xfb4492a1cd2a28D08B0b2a3fFa567342EA93776F, USD Value: 0.00, Points: 1
+2024/10/19 02:01:09 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xaa1bcfdb0fe2ae080e69f013913d57d096e8c9be708b13139c6493f86da50c9c, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0xfb4492a1cd2a28D08B0b2a3fFa567342EA93776F, USD Value: 0.00, Points: 1
+2024/10/19 02:01:09 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x5d2322559da85281bbc805d17f5a684e7ff9cec27203ccb2234e4d8a788ccb6c, Amount0In: 0, Amount1In: 184604068130100421, Amount0Out: 487534797, Amount1Out: 0
+2024/10/19 02:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 02:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:09 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x5d2322559da85281bbc805d17f5a684e7ff9cec27203ccb2234e4d8a788ccb6c, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x74de5d4FCbf63E00296fd95d33236B9794016631, USD Value: 184604068130.10, Points: 18460406813
+2024/10/19 02:01:09 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x5d2322559da85281bbc805d17f5a684e7ff9cec27203ccb2234e4d8a788ccb6c, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x74de5d4FCbf63E00296fd95d33236B9794016631, USD Value: 184604068130.10, Points: 18460406813
+2024/10/19 02:01:09 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x9375bb2597c126ae1b3c1871be494d30b64cb40e1f0fd9eae34e44525822e5bf, Amount0In: 75644438, Amount1In: 0, Amount0Out: 0, Amount1Out: 28471281481875766
+2024/10/19 02:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 02:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:09 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x9375bb2597c126ae1b3c1871be494d30b64cb40e1f0fd9eae34e44525822e5bf, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 0.00, Points: 1
+2024/10/19 02:01:09 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x9375bb2597c126ae1b3c1871be494d30b64cb40e1f0fd9eae34e44525822e5bf, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 0.00, Points: 1
+2024/10/19 02:01:09 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x2c7ce4b7cfafacfe91e2bbbef2cea414b269cfbe35336c7df8104ba051de1a54, Amount0In: 100000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 37638152501492031
+2024/10/19 02:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 02:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:09 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x2c7ce4b7cfafacfe91e2bbbef2cea414b269cfbe35336c7df8104ba051de1a54, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0xEbA3966336a5B276EBDD157e9c677898603a2C5D, USD Value: 0.00, Points: 1
+2024/10/19 02:01:09 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x2c7ce4b7cfafacfe91e2bbbef2cea414b269cfbe35336c7df8104ba051de1a54, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0xEbA3966336a5B276EBDD157e9c677898603a2C5D, USD Value: 0.00, Points: 1
+2024/10/19 02:01:09 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xffcfde0e81ee380b02fce3bbcfdd95e3195cd3b0c2daf29136ca77ff43c18e8d, Amount0In: 2099162370, Amount1In: 0, Amount0Out: 0, Amount1Out: 790046876383805777
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xffcfde0e81ee380b02fce3bbcfdd95e3195cd3b0c2daf29136ca77ff43c18e8d, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0xcc0FCd959871E69F84fe9464C629f327941b655B, USD Value: 0.00, Points: 1
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xffcfde0e81ee380b02fce3bbcfdd95e3195cd3b0c2daf29136ca77ff43c18e8d, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0xcc0FCd959871E69F84fe9464C629f327941b655B, USD Value: 0.00, Points: 1
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xd28bd7f0946bd506ea33a0d3e511d7af385d46b7387a6b10311b430fd62c329c, Amount0In: 100000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 37634426244975591
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xDef1C0ded9bec7F1a1670819833240f027b25EfF
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xd28bd7f0946bd506ea33a0d3e511d7af385d46b7387a6b10311b430fd62c329c, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0xfb4492a1cd2a28D08B0b2a3fFa567342EA93776F, USD Value: 0.00, Points: 1
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xd28bd7f0946bd506ea33a0d3e511d7af385d46b7387a6b10311b430fd62c329c, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0xfb4492a1cd2a28D08B0b2a3fFa567342EA93776F, USD Value: 0.00, Points: 1
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x439e220b048c0679e31908dc2233400db742dda5704190062a331bd5131509be, Amount0In: 0, Amount1In: 1131808924203343, Amount0Out: 2989365, Amount1Out: 0
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x439e220b048c0679e31908dc2233400db742dda5704190062a331bd5131509be, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x9A84A1852bC7FB608794960960ADb04666A12B41, USD Value: 1131808924.20, Points: 113180892
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x439e220b048c0679e31908dc2233400db742dda5704190062a331bd5131509be, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x9A84A1852bC7FB608794960960ADb04666A12B41, USD Value: 1131808924.20, Points: 113180892
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x65b19ea059e36a0b4f092b1782f6e504fca5cdf1fa3f3591901ee4a47ae95e4c, Amount0In: 0, Amount1In: 623859153945916837, Amount0Out: 1647693231, Amount1Out: 0
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xf164fC0Ec4E93095b804a4795bBe1e041497b92a
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x65b19ea059e36a0b4f092b1782f6e504fca5cdf1fa3f3591901ee4a47ae95e4c, Sender: 0xf164fC0Ec4E93095b804a4795bBe1e041497b92a, To: 0x22F9dCF4647084d6C31b2765F6910cd85C178C18, USD Value: 623859153945.92, Points: 62385915394
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x65b19ea059e36a0b4f092b1782f6e504fca5cdf1fa3f3591901ee4a47ae95e4c, Sender: 0xf164fC0Ec4E93095b804a4795bBe1e041497b92a, To: 0x22F9dCF4647084d6C31b2765F6910cd85C178C18, USD Value: 623859153945.92, Points: 62385915394
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x850f3d9f26892968556e4a1c66dac5c693edfae5509be0cb44ac0611e07bb46f, Amount0In: 1000000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 376363007361771164
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xf164fC0Ec4E93095b804a4795bBe1e041497b92a
+2024/10/19 02:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x850f3d9f26892968556e4a1c66dac5c693edfae5509be0cb44ac0611e07bb46f, Sender: 0xf164fC0Ec4E93095b804a4795bBe1e041497b92a, To: 0x9cF1190D71f7c5FCaF2033FfA4b017B1b0591EfD, USD Value: 0.00, Points: 1
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x850f3d9f26892968556e4a1c66dac5c693edfae5509be0cb44ac0611e07bb46f, Sender: 0xf164fC0Ec4E93095b804a4795bBe1e041497b92a, To: 0x9cF1190D71f7c5FCaF2033FfA4b017B1b0591EfD, USD Value: 0.00, Points: 1
+2024/10/19 02:01:10 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x87feda084917c510624d1852c4863acec8cf6f51bb937b6ce2f4f555b17fe3be, Amount0In: 100000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 37635367684133757
+2024/10/19 02:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xDef1C0ded9bec7F1a1670819833240f027b25EfF
+2024/10/19 02:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:11 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x87feda084917c510624d1852c4863acec8cf6f51bb937b6ce2f4f555b17fe3be, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0xfb4492a1cd2a28D08B0b2a3fFa567342EA93776F, USD Value: 0.00, Points: 1
+2024/10/19 02:01:11 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x87feda084917c510624d1852c4863acec8cf6f51bb937b6ce2f4f555b17fe3be, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0xfb4492a1cd2a28D08B0b2a3fFa567342EA93776F, USD Value: 0.00, Points: 1
+2024/10/19 02:01:11 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xb15d4bc3c8e03047e639200cd7f61258ea1277b7a01a30fcc271307e8243ffb1, Amount0In: 0, Amount1In: 162339689257865971, Amount0Out: 428761365, Amount1Out: 0
+2024/10/19 02:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 02:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:11 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xb15d4bc3c8e03047e639200cd7f61258ea1277b7a01a30fcc271307e8243ffb1, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0xF94b6AB4a14bd01328721B694d8d681A222C7901, USD Value: 162339689257.87, Points: 16233968925
+2024/10/19 02:01:11 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xb15d4bc3c8e03047e639200cd7f61258ea1277b7a01a30fcc271307e8243ffb1, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0xF94b6AB4a14bd01328721B694d8d681A222C7901, USD Value: 162339689257.87, Points: 16233968925
+2024/10/19 02:01:11 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xd60d309dff1f644d705c113ad053910a46f521d0f3b7ee08133171da33079b26, Amount0In: 600000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 225813023739786761
+2024/10/19 02:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 02:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:11 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xd60d309dff1f644d705c113ad053910a46f521d0f3b7ee08133171da33079b26, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x515d459555F8C1FCf2791DEd819b73B60a80b8e3, USD Value: 0.00, Points: 1
+2024/10/19 02:01:11 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xd60d309dff1f644d705c113ad053910a46f521d0f3b7ee08133171da33079b26, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x515d459555F8C1FCf2791DEd819b73B60a80b8e3, USD Value: 0.00, Points: 1
+2024/10/19 02:01:11 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x1d02409217b7e54d33dcb558f665f4d5463eded7cc305abeb65cab8c1444808b, Amount0In: 0, Amount1In: 151000000000000000, Amount0Out: 398815012, Amount1Out: 0
+2024/10/19 02:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 02:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:11 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x1d02409217b7e54d33dcb558f665f4d5463eded7cc305abeb65cab8c1444808b, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x06cd6245156c3608AE67D690c125E86A8bc6a88C, USD Value: 151000000000.00, Points: 15100000000
+2024/10/19 02:01:11 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x1d02409217b7e54d33dcb558f665f4d5463eded7cc305abeb65cab8c1444808b, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x06cd6245156c3608AE67D690c125E86A8bc6a88C, USD Value: 151000000000.00, Points: 15100000000
+2024/10/19 02:01:11 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x9b15abccb759c3f5896423a6294f0de8eaa17389c214b02b565d3ab5cb943b26, Amount0In: 0, Amount1In: 156000000000000000, Amount0Out: 412013265, Amount1Out: 0
+2024/10/19 02:01:12 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:12 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 02:01:12 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:12 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x9b15abccb759c3f5896423a6294f0de8eaa17389c214b02b565d3ab5cb943b26, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x06cd6245156c3608AE67D690c125E86A8bc6a88C, USD Value: 156000000000.00, Points: 15600000000
+2024/10/19 02:01:12 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x9b15abccb759c3f5896423a6294f0de8eaa17389c214b02b565d3ab5cb943b26, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x06cd6245156c3608AE67D690c125E86A8bc6a88C, USD Value: 156000000000.00, Points: 15600000000
+2024/10/19 02:01:12 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xffe0dc31a0cc3ca45551490b2bf39d595b5a248e910ae07aa9d098d723f293b3, Amount0In: 0, Amount1In: 118950000000000000, Amount0Out: 314154962, Amount1Out: 0
+2024/10/19 02:01:12 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:12 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x111111125421cA6dc452d289314280a0f8842A65
+2024/10/19 02:01:12 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:12 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xffe0dc31a0cc3ca45551490b2bf39d595b5a248e910ae07aa9d098d723f293b3, Sender: 0x111111125421cA6dc452d289314280a0f8842A65, To: 0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE, USD Value: 118950000000.00, Points: 11895000000
+2024/10/19 02:01:12 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xffe0dc31a0cc3ca45551490b2bf39d595b5a248e910ae07aa9d098d723f293b3, Sender: 0x111111125421cA6dc452d289314280a0f8842A65, To: 0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE, USD Value: 118950000000.00, Points: 11895000000
+2024/10/19 02:01:27 [INFO] [logger.go:161] Successfully fetched 30 swap events from block 20994006 to 20994106
+2024/10/19 02:01:27 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x68436fbb1857e5139f31ef400d99c1db308b0fbacdf49cfb6e2928ea5c8a2ef0, Amount0In: 1500000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 564738871096943173
+2024/10/19 02:01:27 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:27 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 02:01:27 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:27 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x68436fbb1857e5139f31ef400d99c1db308b0fbacdf49cfb6e2928ea5c8a2ef0, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x3006c0D2A6e54d3590a44384c6F066c9cF9a4ceA, USD Value: 0.00, Points: 1
+2024/10/19 02:01:27 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x68436fbb1857e5139f31ef400d99c1db308b0fbacdf49cfb6e2928ea5c8a2ef0, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x3006c0D2A6e54d3590a44384c6F066c9cF9a4ceA, USD Value: 0.00, Points: 1
+2024/10/19 02:01:27 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xd1f2447e56727ae2ab165f132087a55af6a65795b092d0297942016a56a03f03, Amount0In: 133129765, Amount1In: 0, Amount0Out: 0, Amount1Out: 50120523599071545
+2024/10/19 02:01:28 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:28 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 02:01:28 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:28 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xd1f2447e56727ae2ab165f132087a55af6a65795b092d0297942016a56a03f03, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x54D094a26e6B021E719bD7Cfc0cF332c68b78E05, USD Value: 0.00, Points: 1
+2024/10/19 02:01:28 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xd1f2447e56727ae2ab165f132087a55af6a65795b092d0297942016a56a03f03, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x54D094a26e6B021E719bD7Cfc0cF332c68b78E05, USD Value: 0.00, Points: 1
+2024/10/19 02:01:28 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x0598cfb2e9ff48bb6770604a0c51cf0a64de407bfa687c6728de7d7e1d9c96c9, Amount0In: 0, Amount1In: 342766014065818364, Amount0Out: 904982286, Amount1Out: 0
+2024/10/19 02:01:28 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:28 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xDef1C0ded9bec7F1a1670819833240f027b25EfF
+2024/10/19 02:01:28 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:28 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x0598cfb2e9ff48bb6770604a0c51cf0a64de407bfa687c6728de7d7e1d9c96c9, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0x814e3D7A925Ed1FD1E6C5c0bF39be54A5D767897, USD Value: 342766014065.82, Points: 34276601406
+2024/10/19 02:01:28 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x0598cfb2e9ff48bb6770604a0c51cf0a64de407bfa687c6728de7d7e1d9c96c9, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0x814e3D7A925Ed1FD1E6C5c0bF39be54A5D767897, USD Value: 342766014065.82, Points: 34276601406
+2024/10/19 02:01:28 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xcdcbe6fd83e1bce869be7d608f98f26dbafc30d6720859cb8719b170f8121878, Amount0In: 0, Amount1In: 25269872354830500, Amount0Out: 66716895, Amount1Out: 0
+2024/10/19 02:01:28 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:28 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xF3dE3C0d654FDa23daD170f0f320a92172509127
+2024/10/19 02:01:28 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:28 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xcdcbe6fd83e1bce869be7d608f98f26dbafc30d6720859cb8719b170f8121878, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x0b4a7E0082aD2FEc200fEAe1B68f460Cb969d80c, USD Value: 25269872354.83, Points: 2526987235
+2024/10/19 02:01:28 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xcdcbe6fd83e1bce869be7d608f98f26dbafc30d6720859cb8719b170f8121878, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x0b4a7E0082aD2FEc200fEAe1B68f460Cb969d80c, USD Value: 25269872354.83, Points: 2526987235
+2024/10/19 02:01:28 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x3c98d70c0b7dbe17cd0bd098e21f859fbe7b3ca3338423033267d07c4a878d13, Amount0In: 500000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 188244940396023070
+2024/10/19 02:01:28 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:28 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xF3dE3C0d654FDa23daD170f0f320a92172509127
+2024/10/19 02:01:28 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:28 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x3c98d70c0b7dbe17cd0bd098e21f859fbe7b3ca3338423033267d07c4a878d13, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x73b809b4F424477c5806CE7F7317C52bfa7dC39b, USD Value: 0.00, Points: 1
+2024/10/19 02:01:28 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x3c98d70c0b7dbe17cd0bd098e21f859fbe7b3ca3338423033267d07c4a878d13, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x73b809b4F424477c5806CE7F7317C52bfa7dC39b, USD Value: 0.00, Points: 1
+2024/10/19 02:01:28 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xa0ea66cfcaba3eebb12dfa510ad5b995703103bf3442658b5b23af3561179d0c, Amount0In: 692667474, Amount1In: 0, Amount0Out: 0, Amount1Out: 260775294120790104
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xa0ea66cfcaba3eebb12dfa510ad5b995703103bf3442658b5b23af3561179d0c, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0xcc0FCd959871E69F84fe9464C629f327941b655B, USD Value: 0.00, Points: 1
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xa0ea66cfcaba3eebb12dfa510ad5b995703103bf3442658b5b23af3561179d0c, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0xcc0FCd959871E69F84fe9464C629f327941b655B, USD Value: 0.00, Points: 1
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xb24fd8c4ca86aefcdeb6c5d1470073e305e24caf3fa4a758155ada9b93b28254, Amount0In: 0, Amount1In: 147694773523397151, Amount0Out: 389957034, Amount1Out: 0
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xb24fd8c4ca86aefcdeb6c5d1470073e305e24caf3fa4a758155ada9b93b28254, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x74de5d4FCbf63E00296fd95d33236B9794016631, USD Value: 147694773523.40, Points: 14769477352
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xb24fd8c4ca86aefcdeb6c5d1470073e305e24caf3fa4a758155ada9b93b28254, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x74de5d4FCbf63E00296fd95d33236B9794016631, USD Value: 147694773523.40, Points: 14769477352
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x165b520fb10def13fb44522135030d71213d1745eef8f004d5c705067f462f95, Amount0In: 2500000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 941148419329430254
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xf164fC0Ec4E93095b804a4795bBe1e041497b92a
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x165b520fb10def13fb44522135030d71213d1745eef8f004d5c705067f462f95, Sender: 0xf164fC0Ec4E93095b804a4795bBe1e041497b92a, To: 0xe945683B3462D2603a18BDfBB19261C6a4f03aD1, USD Value: 0.00, Points: 1
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x165b520fb10def13fb44522135030d71213d1745eef8f004d5c705067f462f95, Sender: 0xf164fC0Ec4E93095b804a4795bBe1e041497b92a, To: 0xe945683B3462D2603a18BDfBB19261C6a4f03aD1, USD Value: 0.00, Points: 1
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x26564c768544a506e99ff2f66422b9f90759c736f1533661bd390b8a47a02946, Amount0In: 470039102, Amount1In: 0, Amount0Out: 0, Amount1Out: 176938779718050420
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x26564c768544a506e99ff2f66422b9f90759c736f1533661bd390b8a47a02946, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 0.00, Points: 1
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x26564c768544a506e99ff2f66422b9f90759c736f1533661bd390b8a47a02946, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 0.00, Points: 1
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xd9f30f9bc75d5349a0da14795b422d58a3454b1731aabac4487e7750bb1c80c9, Amount0In: 100000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 37642933562781078
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xDef1C0ded9bec7F1a1670819833240f027b25EfF
+2024/10/19 02:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xd9f30f9bc75d5349a0da14795b422d58a3454b1731aabac4487e7750bb1c80c9, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0xfb4492a1cd2a28D08B0b2a3fFa567342EA93776F, USD Value: 0.00, Points: 1
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xd9f30f9bc75d5349a0da14795b422d58a3454b1731aabac4487e7750bb1c80c9, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0xfb4492a1cd2a28D08B0b2a3fFa567342EA93776F, USD Value: 0.00, Points: 1
+2024/10/19 02:01:29 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x071e114a1adabee7b0144f1449a263157d7c88d4ad715dc8f0fb227e0aeb6d8f, Amount0In: 192210854, Amount1In: 0, Amount0Out: 0, Amount1Out: 72353328335182928
+2024/10/19 02:01:30 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 02:01:30 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 02:01:30 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 02:01:30 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x071e114a1adabee7b0144f1449a263157d7c88d4ad715dc8f0fb227e0aeb6d8f, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x0f420A1d4c87037D562f0ce684D1ddEe52A53748, USD Value: 0.00, Points: 1
+2024/10/19 02:01:30 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x071e114a1adabee7b0144f1449a263157d7c88d4ad715dc8f0fb227e0aeb6d8f, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x0f420A1d4c87037D562f0ce684D1ddEe52A53748, USD Value: 0.00, Points: 1
+2024/10/19 02:01:30 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x6ebb2aea6b431f780a951263938f5f20f76c1f61a4de3b4b11dc90407e3f5624, Amount0In: 100000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 37642438314973968
+2024/10/19 14:01:05 [INFO] [logger.go:161] Trading Ace starting...
+2024/10/19 14:01:05 [INFO] [logger.go:161] Successfully connected to database
+2024/10/19 14:01:05 [INFO] [logger.go:161] Database migrations completed successfully
+2024/10/19 14:01:05 [INFO] [logger.go:161] Successfully connected to Ethereum client
+2024/10/19 14:01:06 [INFO] [logger.go:161] Successfully fetched 15 swap events from block 20997588 to 20997688
+2024/10/19 14:01:06 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xcf43b5a4d07027228c562369af7dc17ad130fc4ff80a431a1550f29031dd4e58, Amount0In: 0, Amount1In: 11898000000000000, Amount0Out: 31407203, Amount1Out: 0
+2024/10/19 14:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xe43ca1Dee3F0fc1e2df73A0745674545F11A59F5
+2024/10/19 14:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:07 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xcf43b5a4d07027228c562369af7dc17ad130fc4ff80a431a1550f29031dd4e58, Sender: 0xe43ca1Dee3F0fc1e2df73A0745674545F11A59F5, To: 0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE, USD Value: 11898000000.00, Points: 1189800000
+2024/10/19 14:01:07 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xcf43b5a4d07027228c562369af7dc17ad130fc4ff80a431a1550f29031dd4e58, Sender: 0xe43ca1Dee3F0fc1e2df73A0745674545F11A59F5, To: 0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE, USD Value: 11898000000.00, Points: 1189800000
+2024/10/19 14:01:07 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xb50d0706b9fc7d20ca5f37059ccd830a997d3d6ab8f854114596a83ed5b39c37, Amount0In: 0, Amount1In: 38299160848458605, Amount0Out: 101098163, Amount1Out: 0
+2024/10/19 14:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 14:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:07 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xb50d0706b9fc7d20ca5f37059ccd830a997d3d6ab8f854114596a83ed5b39c37, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 38299160848.46, Points: 3829916084
+2024/10/19 14:01:07 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xb50d0706b9fc7d20ca5f37059ccd830a997d3d6ab8f854114596a83ed5b39c37, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 38299160848.46, Points: 3829916084
+2024/10/19 14:01:07 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xe8860ed4e959a5ebe6edd660d64f9fc7aaf5f737f95269c2d2688f9ef62b4c20, Amount0In: 445500000, Amount1In: 0, Amount0Out: 0, Amount1Out: 167757003749481672
+2024/10/19 14:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xE37e799D5077682FA0a244D46E5649F71457BD09
+2024/10/19 14:01:07 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:07 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xe8860ed4e959a5ebe6edd660d64f9fc7aaf5f737f95269c2d2688f9ef62b4c20, Sender: 0xE37e799D5077682FA0a244D46E5649F71457BD09, To: 0xE4b8583cCB95b25737C016ac88E539D0605949e8, USD Value: 0.00, Points: 1
+2024/10/19 14:01:07 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xe8860ed4e959a5ebe6edd660d64f9fc7aaf5f737f95269c2d2688f9ef62b4c20, Sender: 0xE37e799D5077682FA0a244D46E5649F71457BD09, To: 0xE4b8583cCB95b25737C016ac88E539D0605949e8, USD Value: 0.00, Points: 1
+2024/10/19 14:01:07 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xfa47c82bcb606490e4ea41524e715456f317b8c0134aff0ff12187e44bd1a320, Amount0In: 0, Amount1In: 19830000000000000, Amount0Out: 52346051, Amount1Out: 0
+2024/10/19 14:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xe43ca1Dee3F0fc1e2df73A0745674545F11A59F5
+2024/10/19 14:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:08 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xfa47c82bcb606490e4ea41524e715456f317b8c0134aff0ff12187e44bd1a320, Sender: 0xe43ca1Dee3F0fc1e2df73A0745674545F11A59F5, To: 0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE, USD Value: 19830000000.00, Points: 1983000000
+2024/10/19 14:01:08 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xfa47c82bcb606490e4ea41524e715456f317b8c0134aff0ff12187e44bd1a320, Sender: 0xe43ca1Dee3F0fc1e2df73A0745674545F11A59F5, To: 0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE, USD Value: 19830000000.00, Points: 1983000000
+2024/10/19 14:01:08 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x770d549bc9a68db00ea08743534bf6fcde90e3f164f24cce86b82a8d9b7382e2, Amount0In: 0, Amount1In: 170487770673066089, Amount0Out: 450038351, Amount1Out: 0
+2024/10/19 14:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xF3dE3C0d654FDa23daD170f0f320a92172509127
+2024/10/19 14:01:08 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:08 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x770d549bc9a68db00ea08743534bf6fcde90e3f164f24cce86b82a8d9b7382e2, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x004dFF99137766767d49b9EE2D47D53Bccb477cA, USD Value: 170487770673.07, Points: 17048777067
+2024/10/19 14:01:08 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x770d549bc9a68db00ea08743534bf6fcde90e3f164f24cce86b82a8d9b7382e2, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x004dFF99137766767d49b9EE2D47D53Bccb477cA, USD Value: 170487770673.07, Points: 17048777067
+2024/10/19 14:01:08 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xf23a0249a5ac428d278706b59ad33de6c5567bfdb85134d77a11ba696d55dd8f, Amount0In: 0, Amount1In: 143588616570712827, Amount0Out: 379025275, Amount1Out: 0
+2024/10/19 14:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xE37e799D5077682FA0a244D46E5649F71457BD09
+2024/10/19 14:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:09 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xf23a0249a5ac428d278706b59ad33de6c5567bfdb85134d77a11ba696d55dd8f, Sender: 0xE37e799D5077682FA0a244D46E5649F71457BD09, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 143588616570.71, Points: 14358861657
+2024/10/19 14:01:09 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xf23a0249a5ac428d278706b59ad33de6c5567bfdb85134d77a11ba696d55dd8f, Sender: 0xE37e799D5077682FA0a244D46E5649F71457BD09, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 143588616570.71, Points: 14358861657
+2024/10/19 14:01:09 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x239e4b11fbe6268d32a62f49191268da92e48c0f62439a62b284579b57f222a3, Amount0In: 0, Amount1In: 192216678464685750, Amount0Out: 507376721, Amount1Out: 0
+2024/10/19 14:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 14:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:09 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x239e4b11fbe6268d32a62f49191268da92e48c0f62439a62b284579b57f222a3, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0xa7Ca2C8673bcFA5a26d8ceeC2887f2CC2b0Db22A, USD Value: 192216678464.69, Points: 19221667846
+2024/10/19 14:01:09 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x239e4b11fbe6268d32a62f49191268da92e48c0f62439a62b284579b57f222a3, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0xa7Ca2C8673bcFA5a26d8ceeC2887f2CC2b0Db22A, USD Value: 192216678464.69, Points: 19221667846
+2024/10/19 14:01:09 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xa74f19ec701f6973c20efcc7c2fdb3e28b7bf3ec0af740ec673764ad985f578a, Amount0In: 0, Amount1In: 539787847455728358, Amount0Out: 1424766303, Amount1Out: 0
+2024/10/19 14:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 14:01:09 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:09 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xa74f19ec701f6973c20efcc7c2fdb3e28b7bf3ec0af740ec673764ad985f578a, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 539787847455.73, Points: 53978784745
+2024/10/19 14:01:09 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xa74f19ec701f6973c20efcc7c2fdb3e28b7bf3ec0af740ec673764ad985f578a, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 539787847455.73, Points: 53978784745
+2024/10/19 14:01:09 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x43f3ef78dcd228251f639e671dc7ac122f83f15ee2f4de05bcb9b8fa492c2bc4, Amount0In: 0, Amount1In: 83706519255637839, Amount0Out: 220934560, Amount1Out: 0
+2024/10/19 14:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 14:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:10 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x43f3ef78dcd228251f639e671dc7ac122f83f15ee2f4de05bcb9b8fa492c2bc4, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 83706519255.64, Points: 8370651925
+2024/10/19 14:01:10 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x43f3ef78dcd228251f639e671dc7ac122f83f15ee2f4de05bcb9b8fa492c2bc4, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 83706519255.64, Points: 8370651925
+2024/10/19 14:01:10 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xc790d86a1da4cf86bc3164aaabe22b17a3a5e3a0465b6139834feb9ed87f67ff, Amount0In: 25881364, Amount1In: 0, Amount0Out: 0, Amount1Out: 9747091011212894
+2024/10/19 14:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 14:01:10 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:10 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xc790d86a1da4cf86bc3164aaabe22b17a3a5e3a0465b6139834feb9ed87f67ff, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 0.00, Points: 1
+2024/10/19 14:01:10 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xc790d86a1da4cf86bc3164aaabe22b17a3a5e3a0465b6139834feb9ed87f67ff, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 0.00, Points: 1
+2024/10/19 14:01:10 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x32098c3f0975bb7058fd792106d3f948bd6b814a42002364d707c42b6a3d74f6, Amount0In: 0, Amount1In: 2489319208088689334, Amount0Out: 6569297942, Amount1Out: 0
+2024/10/19 14:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 14:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:11 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x32098c3f0975bb7058fd792106d3f948bd6b814a42002364d707c42b6a3d74f6, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 2489319208088.69, Points: 248931920808
+2024/10/19 14:01:11 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x32098c3f0975bb7058fd792106d3f948bd6b814a42002364d707c42b6a3d74f6, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 2489319208088.69, Points: 248931920808
+2024/10/19 14:01:11 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xcf3e24ecdec6310d014f77d937e385b196c6fc188cc44cf30137028a21e14f02, Amount0In: 57531515, Amount1In: 0, Amount0Out: 0, Amount1Out: 21673134725623309
+2024/10/19 14:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 14:01:11 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:11 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xcf3e24ecdec6310d014f77d937e385b196c6fc188cc44cf30137028a21e14f02, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 0.00, Points: 1
+2024/10/19 14:01:11 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xcf3e24ecdec6310d014f77d937e385b196c6fc188cc44cf30137028a21e14f02, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 0.00, Points: 1
+2024/10/19 14:01:11 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x37fd9fbb76ca8ee28dba5a7d046f5ee167899d8c6b2ff0a658ddd3f258b51ec8, Amount0In: 194989843, Amount1In: 0, Amount0Out: 0, Amount1Out: 73455689894613445
+2024/10/19 14:01:12 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:12 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x7D0CcAa3Fac1e5A943c5168b6CEd828691b46B36
+2024/10/19 14:01:12 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:12 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x37fd9fbb76ca8ee28dba5a7d046f5ee167899d8c6b2ff0a658ddd3f258b51ec8, Sender: 0x7D0CcAa3Fac1e5A943c5168b6CEd828691b46B36, To: 0x5c6919B79FAC1C3555675ae59A9ac2484f3972F5, USD Value: 0.00, Points: 1
+2024/10/19 14:01:12 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x37fd9fbb76ca8ee28dba5a7d046f5ee167899d8c6b2ff0a658ddd3f258b51ec8, Sender: 0x7D0CcAa3Fac1e5A943c5168b6CEd828691b46B36, To: 0x5c6919B79FAC1C3555675ae59A9ac2484f3972F5, USD Value: 0.00, Points: 1
+2024/10/19 14:01:12 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x0e249753b4460edef53795abd59e9a3b0f4243d5495954b0932974e1863a5de8, Amount0In: 0, Amount1In: 33144584139376837, Amount0Out: 87456177, Amount1Out: 0
+2024/10/19 14:01:12 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:12 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 14:01:12 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:12 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x0e249753b4460edef53795abd59e9a3b0f4243d5495954b0932974e1863a5de8, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 33144584139.38, Points: 3314458413
+2024/10/19 14:01:12 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x0e249753b4460edef53795abd59e9a3b0f4243d5495954b0932974e1863a5de8, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 33144584139.38, Points: 3314458413
+2024/10/19 14:01:12 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x0626dfa315e2f97082414bf213cf519def315d6730a97f8373bbf3269d3b6382, Amount0In: 0, Amount1In: 42549495345719520, Amount0Out: 112271718, Amount1Out: 0
+2024/10/19 14:01:13 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:13 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xDef1C0ded9bec7F1a1670819833240f027b25EfF
+2024/10/19 14:01:13 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:13 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x0626dfa315e2f97082414bf213cf519def315d6730a97f8373bbf3269d3b6382, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0x74de5d4FCbf63E00296fd95d33236B9794016631, USD Value: 42549495345.72, Points: 4254949534
+2024/10/19 14:01:13 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x0626dfa315e2f97082414bf213cf519def315d6730a97f8373bbf3269d3b6382, Sender: 0xDef1C0ded9bec7F1a1670819833240f027b25EfF, To: 0x74de5d4FCbf63E00296fd95d33236B9794016631, USD Value: 42549495345.72, Points: 4254949534
+2024/10/19 14:01:29 [INFO] [logger.go:161] Successfully fetched 15 swap events from block 20997590 to 20997690
+2024/10/19 14:01:29 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xcf43b5a4d07027228c562369af7dc17ad130fc4ff80a431a1550f29031dd4e58, Amount0In: 0, Amount1In: 11898000000000000, Amount0Out: 31407203, Amount1Out: 0
+2024/10/19 14:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xe43ca1Dee3F0fc1e2df73A0745674545F11A59F5
+2024/10/19 14:01:29 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:29 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xcf43b5a4d07027228c562369af7dc17ad130fc4ff80a431a1550f29031dd4e58, Sender: 0xe43ca1Dee3F0fc1e2df73A0745674545F11A59F5, To: 0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE, USD Value: 11898000000.00, Points: 1189800000
+2024/10/19 14:01:29 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xcf43b5a4d07027228c562369af7dc17ad130fc4ff80a431a1550f29031dd4e58, Sender: 0xe43ca1Dee3F0fc1e2df73A0745674545F11A59F5, To: 0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE, USD Value: 11898000000.00, Points: 1189800000
+2024/10/19 14:01:29 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xb50d0706b9fc7d20ca5f37059ccd830a997d3d6ab8f854114596a83ed5b39c37, Amount0In: 0, Amount1In: 38299160848458605, Amount0Out: 101098163, Amount1Out: 0
+2024/10/19 14:01:30 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:30 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 14:01:30 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:30 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xb50d0706b9fc7d20ca5f37059ccd830a997d3d6ab8f854114596a83ed5b39c37, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 38299160848.46, Points: 3829916084
+2024/10/19 14:01:30 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xb50d0706b9fc7d20ca5f37059ccd830a997d3d6ab8f854114596a83ed5b39c37, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 38299160848.46, Points: 3829916084
+2024/10/19 14:01:30 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xe8860ed4e959a5ebe6edd660d64f9fc7aaf5f737f95269c2d2688f9ef62b4c20, Amount0In: 445500000, Amount1In: 0, Amount0Out: 0, Amount1Out: 167757003749481672
+2024/10/19 14:01:30 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:30 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xE37e799D5077682FA0a244D46E5649F71457BD09
+2024/10/19 14:01:30 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:30 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xe8860ed4e959a5ebe6edd660d64f9fc7aaf5f737f95269c2d2688f9ef62b4c20, Sender: 0xE37e799D5077682FA0a244D46E5649F71457BD09, To: 0xE4b8583cCB95b25737C016ac88E539D0605949e8, USD Value: 0.00, Points: 1
+2024/10/19 14:01:30 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xe8860ed4e959a5ebe6edd660d64f9fc7aaf5f737f95269c2d2688f9ef62b4c20, Sender: 0xE37e799D5077682FA0a244D46E5649F71457BD09, To: 0xE4b8583cCB95b25737C016ac88E539D0605949e8, USD Value: 0.00, Points: 1
+2024/10/19 14:01:30 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xfa47c82bcb606490e4ea41524e715456f317b8c0134aff0ff12187e44bd1a320, Amount0In: 0, Amount1In: 19830000000000000, Amount0Out: 52346051, Amount1Out: 0
+2024/10/19 14:01:30 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:30 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xe43ca1Dee3F0fc1e2df73A0745674545F11A59F5
+2024/10/19 14:01:30 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:30 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xfa47c82bcb606490e4ea41524e715456f317b8c0134aff0ff12187e44bd1a320, Sender: 0xe43ca1Dee3F0fc1e2df73A0745674545F11A59F5, To: 0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE, USD Value: 19830000000.00, Points: 1983000000
+2024/10/19 14:01:30 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xfa47c82bcb606490e4ea41524e715456f317b8c0134aff0ff12187e44bd1a320, Sender: 0xe43ca1Dee3F0fc1e2df73A0745674545F11A59F5, To: 0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE, USD Value: 19830000000.00, Points: 1983000000
+2024/10/19 14:01:30 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x770d549bc9a68db00ea08743534bf6fcde90e3f164f24cce86b82a8d9b7382e2, Amount0In: 0, Amount1In: 170487770673066089, Amount0Out: 450038351, Amount1Out: 0
+2024/10/19 14:01:31 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:31 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xF3dE3C0d654FDa23daD170f0f320a92172509127
+2024/10/19 14:01:31 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:31 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x770d549bc9a68db00ea08743534bf6fcde90e3f164f24cce86b82a8d9b7382e2, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x004dFF99137766767d49b9EE2D47D53Bccb477cA, USD Value: 170487770673.07, Points: 17048777067
+2024/10/19 14:01:31 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x770d549bc9a68db00ea08743534bf6fcde90e3f164f24cce86b82a8d9b7382e2, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x004dFF99137766767d49b9EE2D47D53Bccb477cA, USD Value: 170487770673.07, Points: 17048777067
+2024/10/19 14:01:31 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xf23a0249a5ac428d278706b59ad33de6c5567bfdb85134d77a11ba696d55dd8f, Amount0In: 0, Amount1In: 143588616570712827, Amount0Out: 379025275, Amount1Out: 0
+2024/10/19 14:01:31 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:31 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0xE37e799D5077682FA0a244D46E5649F71457BD09
+2024/10/19 14:01:31 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:31 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xf23a0249a5ac428d278706b59ad33de6c5567bfdb85134d77a11ba696d55dd8f, Sender: 0xE37e799D5077682FA0a244D46E5649F71457BD09, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 143588616570.71, Points: 14358861657
+2024/10/19 14:01:31 [INFO] [logger.go:161] Processed swap event: TX Hash: 0xf23a0249a5ac428d278706b59ad33de6c5567bfdb85134d77a11ba696d55dd8f, Sender: 0xE37e799D5077682FA0a244D46E5649F71457BD09, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 143588616570.71, Points: 14358861657
+2024/10/19 14:01:31 [INFO] [logger.go:161] Processing swap event: TX Hash: 0x239e4b11fbe6268d32a62f49191268da92e48c0f62439a62b284579b57f222a3, Amount0In: 0, Amount1In: 192216678464685750, Amount0Out: 507376721, Amount1Out: 0
+2024/10/19 14:01:31 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 14:01:31 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 14:01:31 [INFO] [logger.go:161] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 14:01:31 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x239e4b11fbe6268d32a62f49191268da92e48c0f62439a62b284579b57f222a3, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0xa7Ca2C8673bcFA5a26d8ceeC2887f2CC2b0Db22A, USD Value: 192216678464.69, Points: 19221667846
+2024/10/19 14:01:31 [INFO] [logger.go:161] Processed swap event: TX Hash: 0x239e4b11fbe6268d32a62f49191268da92e48c0f62439a62b284579b57f222a3, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0xa7Ca2C8673bcFA5a26d8ceeC2887f2CC2b0Db22A, USD Value: 192216678464.69, Points: 19221667846
+2024/10/19 14:01:31 [INFO] [logger.go:161] Processing swap event: TX Hash: 0xa74f19ec701f6973c20efcc7c2fdb3e28b7bf3ec0af740ec673764ad985f578a, Amount0In: 0, Amount1In: 539787847455728358, Amount0Out: 1424766303, Amount1Out: 0
+2024/10/19 15:18:23 [INFO] [logger.go:163] Trading Ace starting...
+2024/10/19 15:18:23 [INFO] [logger.go:163] Database migrations completed successfully
+2024/10/19 15:18:23 [INFO] [logger.go:163] Successfully connected to Ethereum client
+2024/10/19 15:18:24 [INFO] [logger.go:163] Successfully fetched 33 swap events from block 20997971 to 20998071
+2024/10/19 15:18:24 [INFO] [logger.go:163] Processing swap event: TX Hash: 0xd3f37e9814e1f3a7a6af3d7f5a358e4432065509876fc8741e95c8593ee8c6f7, Amount0In: 0, Amount1In: 794872593913897425, Amount0Out: 2097387049, Amount1Out: 0
+2024/10/19 15:18:25 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:25 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 15:18:25 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:25 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xd3f37e9814e1f3a7a6af3d7f5a358e4432065509876fc8741e95c8593ee8c6f7, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 794872593913.90, Points: 79487259391
+2024/10/19 15:18:25 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xd3f37e9814e1f3a7a6af3d7f5a358e4432065509876fc8741e95c8593ee8c6f7, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 794872593913.90, Points: 79487259391
+2024/10/19 15:18:25 [INFO] [logger.go:163] Processing swap event: TX Hash: 0xcd18cbfa5cf6d3de7a8bd4c1c7babeaaaaae0600e9d7199a255726305ee5a2be, Amount0In: 79200000, Amount1In: 0, Amount0Out: 0, Amount1Out: 29836939335844867
+2024/10/19 15:18:26 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:26 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0xE37e799D5077682FA0a244D46E5649F71457BD09
+2024/10/19 15:18:26 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:26 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xcd18cbfa5cf6d3de7a8bd4c1c7babeaaaaae0600e9d7199a255726305ee5a2be, Sender: 0xE37e799D5077682FA0a244D46E5649F71457BD09, To: 0x9C2F395d35DE334975610a54D4555C5A577E4BDa, USD Value: 0.00, Points: 1
+2024/10/19 15:18:26 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xcd18cbfa5cf6d3de7a8bd4c1c7babeaaaaae0600e9d7199a255726305ee5a2be, Sender: 0xE37e799D5077682FA0a244D46E5649F71457BD09, To: 0x9C2F395d35DE334975610a54D4555C5A577E4BDa, USD Value: 0.00, Points: 1
+2024/10/19 15:18:26 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x9e89a85a2629feee5e856c0d813ae9a9afda767f53f5e8a635de6f5f59d7364d, Amount0In: 0, Amount1In: 672013585994904725, Amount0Out: 1773056963, Amount1Out: 0
+2024/10/19 15:18:26 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:26 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 15:18:26 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:26 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x9e89a85a2629feee5e856c0d813ae9a9afda767f53f5e8a635de6f5f59d7364d, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x06cd6245156c3608AE67D690c125E86A8bc6a88C, USD Value: 672013585994.90, Points: 67201358599
+2024/10/19 15:18:26 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x9e89a85a2629feee5e856c0d813ae9a9afda767f53f5e8a635de6f5f59d7364d, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x06cd6245156c3608AE67D690c125E86A8bc6a88C, USD Value: 672013585994.90, Points: 67201358599
+2024/10/19 15:18:26 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x43aa5861bb1302e52fd6f8ec1045ef8e7d8424c81353d60de6c09bc789d35d91, Amount0In: 0, Amount1In: 1337200569545083043, Amount0Out: 3527680237, Amount1Out: 0
+2024/10/19 15:18:26 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:26 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 15:18:26 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:26 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x43aa5861bb1302e52fd6f8ec1045ef8e7d8424c81353d60de6c09bc789d35d91, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 1337200569545.08, Points: 133720056954
+2024/10/19 15:18:26 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x43aa5861bb1302e52fd6f8ec1045ef8e7d8424c81353d60de6c09bc789d35d91, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 1337200569545.08, Points: 133720056954
+2024/10/19 15:18:26 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x9b9e450d6303eb4cc71a23c3274e5963d9c8093b3102e723c7fd33f6b13b1100, Amount0In: 0, Amount1In: 35675353292462083131, Amount0Out: 93908599038, Amount1Out: 0
+2024/10/19 15:18:26 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:26 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 15:18:26 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:26 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x9b9e450d6303eb4cc71a23c3274e5963d9c8093b3102e723c7fd33f6b13b1100, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 35675353292462.09, Points: 3567535329246
+2024/10/19 15:18:26 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x9b9e450d6303eb4cc71a23c3274e5963d9c8093b3102e723c7fd33f6b13b1100, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 35675353292462.09, Points: 3567535329246
+2024/10/19 15:18:26 [INFO] [logger.go:163] Processing swap event: TX Hash: 0xeaa4c49d83186b77e7d95293c74a2e41a622c2aa4599135c3a8b30dc81510044, Amount0In: 11949687289, Amount1In: 0, Amount0Out: 0, Amount1Out: 4520812801234985582
+2024/10/19 15:18:27 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:27 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0xA69babEF1cA67A37Ffaf7a485DfFF3382056e78C
+2024/10/19 15:18:27 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:27 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xeaa4c49d83186b77e7d95293c74a2e41a622c2aa4599135c3a8b30dc81510044, Sender: 0xA69babEF1cA67A37Ffaf7a485DfFF3382056e78C, To: 0xA69babEF1cA67A37Ffaf7a485DfFF3382056e78C, USD Value: 0.00, Points: 1
+2024/10/19 15:18:27 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xeaa4c49d83186b77e7d95293c74a2e41a622c2aa4599135c3a8b30dc81510044, Sender: 0xA69babEF1cA67A37Ffaf7a485DfFF3382056e78C, To: 0xA69babEF1cA67A37Ffaf7a485DfFF3382056e78C, USD Value: 0.00, Points: 1
+2024/10/19 15:18:27 [INFO] [logger.go:163] Processing swap event: TX Hash: 0xcd2ee79ebdaf16955b184f82707fdf128133fbd5c0b71ce6456dc11c9d42f018, Amount0In: 4999458898, Amount1In: 0, Amount0Out: 0, Amount1Out: 1890674539545987818
+2024/10/19 15:18:28 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:28 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x031F1aD10547b8dEB43A36e5491c06A93812023a
+2024/10/19 15:18:28 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:28 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xcd2ee79ebdaf16955b184f82707fdf128133fbd5c0b71ce6456dc11c9d42f018, Sender: 0x031F1aD10547b8dEB43A36e5491c06A93812023a, To: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, USD Value: 0.00, Points: 1
+2024/10/19 15:18:28 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xcd2ee79ebdaf16955b184f82707fdf128133fbd5c0b71ce6456dc11c9d42f018, Sender: 0x031F1aD10547b8dEB43A36e5491c06A93812023a, To: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, USD Value: 0.00, Points: 1
+2024/10/19 15:18:28 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x47b5c3980e92523aa9776516ca11df34315e64db332fb545ef8437b2b4593e95, Amount0In: 14979830, Amount1In: 0, Amount0Out: 0, Amount1Out: 5664367839799619
+2024/10/19 15:18:28 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:28 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0xF3dE3C0d654FDa23daD170f0f320a92172509127
+2024/10/19 15:18:28 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:28 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x47b5c3980e92523aa9776516ca11df34315e64db332fb545ef8437b2b4593e95, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, USD Value: 0.00, Points: 1
+2024/10/19 15:18:28 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x47b5c3980e92523aa9776516ca11df34315e64db332fb545ef8437b2b4593e95, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, USD Value: 0.00, Points: 1
+2024/10/19 15:18:28 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x114187b385488c82e7657b1b20babc9de938eeda8c5f0a88e78494b3f2633f57, Amount0In: 367035974, Amount1In: 0, Amount0Out: 0, Amount1Out: 138787214077344171
+2024/10/19 15:18:29 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:29 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D
+2024/10/19 15:18:29 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:29 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x114187b385488c82e7657b1b20babc9de938eeda8c5f0a88e78494b3f2633f57, Sender: 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D, To: 0xda1375FC4A5975514B3F414034Ed7F88D786E611, USD Value: 0.00, Points: 1
+2024/10/19 15:18:29 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x114187b385488c82e7657b1b20babc9de938eeda8c5f0a88e78494b3f2633f57, Sender: 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D, To: 0xda1375FC4A5975514B3F414034Ed7F88D786E611, USD Value: 0.00, Points: 1
+2024/10/19 15:18:29 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x36a3a599f07913554e38e31d01d578f0add4809af390a0180e27e52381c0c07a, Amount0In: 424737228, Amount1In: 0, Amount0Out: 0, Amount1Out: 154602905052530463
+2024/10/19 15:18:29 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:29 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0xF86e51F970cD7990f234dE7c64e246D3aC1Da8F9
+2024/10/19 15:18:29 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:29 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x36a3a599f07913554e38e31d01d578f0add4809af390a0180e27e52381c0c07a, Sender: 0xF86e51F970cD7990f234dE7c64e246D3aC1Da8F9, To: 0x9008D19f58AAbD9eD0D60971565AA8510560ab41, USD Value: 0.00, Points: 1
+2024/10/19 15:18:29 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x36a3a599f07913554e38e31d01d578f0add4809af390a0180e27e52381c0c07a, Sender: 0xF86e51F970cD7990f234dE7c64e246D3aC1Da8F9, To: 0x9008D19f58AAbD9eD0D60971565AA8510560ab41, USD Value: 0.00, Points: 1
+2024/10/19 15:18:29 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x58d923ab430ff35837c1604e749b9651d0dcce28663564baf1b3e5bad8b24497, Amount0In: 370891820, Amount1In: 0, Amount0Out: 0, Amount1Out: 140240251553119571
+2024/10/19 15:18:30 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:30 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D
+2024/10/19 15:18:30 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:30 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x58d923ab430ff35837c1604e749b9651d0dcce28663564baf1b3e5bad8b24497, Sender: 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D, To: 0xE666594023f345Ab8b78BE1886fB3bfD21942400, USD Value: 0.00, Points: 1
+2024/10/19 15:18:30 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x58d923ab430ff35837c1604e749b9651d0dcce28663564baf1b3e5bad8b24497, Sender: 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D, To: 0xE666594023f345Ab8b78BE1886fB3bfD21942400, USD Value: 0.00, Points: 1
+2024/10/19 15:18:30 [INFO] [logger.go:163] Processing swap event: TX Hash: 0xe7ebd7aea9b489cda5d356cd7ac9142ea56b73008f8b0702eb78d0040571d8c6, Amount0In: 250000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 94527756430490409
+2024/10/19 15:18:30 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:30 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0xF3dE3C0d654FDa23daD170f0f320a92172509127
+2024/10/19 15:18:30 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:30 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xe7ebd7aea9b489cda5d356cd7ac9142ea56b73008f8b0702eb78d0040571d8c6, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x01Cb1ca35BDab1E29013A7ea493c15c3622787bf, USD Value: 0.00, Points: 1
+2024/10/19 15:18:30 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xe7ebd7aea9b489cda5d356cd7ac9142ea56b73008f8b0702eb78d0040571d8c6, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x01Cb1ca35BDab1E29013A7ea493c15c3622787bf, USD Value: 0.00, Points: 1
+2024/10/19 15:18:30 [INFO] [logger.go:163] Processing swap event: TX Hash: 0xdf45c56af247c8ecba847bc6e56f4cf13cbd51f5be7955a3d8d27dec44b33149, Amount0In: 118876928, Amount1In: 0, Amount0Out: 0, Amount1Out: 44948302906892551
+2024/10/19 15:18:30 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:30 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0xf164fC0Ec4E93095b804a4795bBe1e041497b92a
+2024/10/19 15:18:30 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:30 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xdf45c56af247c8ecba847bc6e56f4cf13cbd51f5be7955a3d8d27dec44b33149, Sender: 0xf164fC0Ec4E93095b804a4795bBe1e041497b92a, To: 0x22F9dCF4647084d6C31b2765F6910cd85C178C18, USD Value: 0.00, Points: 1
+2024/10/19 15:18:30 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xdf45c56af247c8ecba847bc6e56f4cf13cbd51f5be7955a3d8d27dec44b33149, Sender: 0xf164fC0Ec4E93095b804a4795bBe1e041497b92a, To: 0x22F9dCF4647084d6C31b2765F6910cd85C178C18, USD Value: 0.00, Points: 1
+2024/10/19 15:18:30 [INFO] [logger.go:163] Processing swap event: TX Hash: 0xa67935dfc72b51616f2b7dea142ea3137a53494914f2bf5b273f651d16fd9f67, Amount0In: 56732089, Amount1In: 0, Amount0Out: 0, Amount1Out: 21450764715308135
+2024/10/19 15:18:31 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:31 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 15:18:31 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:31 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xa67935dfc72b51616f2b7dea142ea3137a53494914f2bf5b273f651d16fd9f67, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 0.00, Points: 1
+2024/10/19 15:18:31 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xa67935dfc72b51616f2b7dea142ea3137a53494914f2bf5b273f651d16fd9f67, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 0.00, Points: 1
+2024/10/19 15:18:31 [INFO] [logger.go:163] Processing swap event: TX Hash: 0xf84679f15ae6b2c61a840224897bddabc7b2945d2653e3169d4e9a0122d2748f, Amount0In: 0, Amount1In: 4106963267818730645, Amount0Out: 10794232124, Amount1Out: 0
+2024/10/19 15:18:32 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:32 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 15:18:32 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:32 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xf84679f15ae6b2c61a840224897bddabc7b2945d2653e3169d4e9a0122d2748f, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 4106963267818.73, Points: 410696326781
+2024/10/19 15:18:32 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xf84679f15ae6b2c61a840224897bddabc7b2945d2653e3169d4e9a0122d2748f, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 4106963267818.73, Points: 410696326781
+2024/10/19 15:18:32 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x5bca7844bb6984e602bf6e8163ca92b967e98d0856b1f3307d14b8c52a2c75f2, Amount0In: 700000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 264799295841206895
+2024/10/19 15:18:32 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:32 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 15:18:32 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:32 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x5bca7844bb6984e602bf6e8163ca92b967e98d0856b1f3307d14b8c52a2c75f2, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x006Ab11E89e7246CB8c0F7BdAa8C2713374b1676, USD Value: 0.00, Points: 1
+2024/10/19 15:18:32 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x5bca7844bb6984e602bf6e8163ca92b967e98d0856b1f3307d14b8c52a2c75f2, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x006Ab11E89e7246CB8c0F7BdAa8C2713374b1676, USD Value: 0.00, Points: 1
+2024/10/19 15:18:32 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x1a843d710290406c35d3e7b222683bc60e934fbe129482d7f12fe7a195572792, Amount0In: 200000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 75655403835180352
+2024/10/19 15:18:32 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:32 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 15:18:32 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:32 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x1a843d710290406c35d3e7b222683bc60e934fbe129482d7f12fe7a195572792, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x8197aC03de2D0aF9DF48CC851B848f819DE48764, USD Value: 0.00, Points: 1
+2024/10/19 15:18:32 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x1a843d710290406c35d3e7b222683bc60e934fbe129482d7f12fe7a195572792, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x8197aC03de2D0aF9DF48CC851B848f819DE48764, USD Value: 0.00, Points: 1
+2024/10/19 15:18:32 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x274646487bcb9f8811545886353f5727e139d3c7ca712ee3531416d28ff11e5a, Amount0In: 23000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 8700327606577093
+2024/10/19 15:18:33 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:33 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0xF3dE3C0d654FDa23daD170f0f320a92172509127
+2024/10/19 15:18:33 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:33 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x274646487bcb9f8811545886353f5727e139d3c7ca712ee3531416d28ff11e5a, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, USD Value: 0.00, Points: 1
+2024/10/19 15:18:33 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x274646487bcb9f8811545886353f5727e139d3c7ca712ee3531416d28ff11e5a, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, USD Value: 0.00, Points: 1
+2024/10/19 15:18:33 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x988de29be7a93f6b3a8e628531f3e69f8fe13144f10828e206a9147d8744e3ea, Amount0In: 200000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 75654642408133485
+2024/10/19 15:18:33 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:33 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 15:18:33 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:33 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x988de29be7a93f6b3a8e628531f3e69f8fe13144f10828e206a9147d8744e3ea, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x8a85f9384C37Ecc64D33C37E490D7B4E5951Cb59, USD Value: 0.00, Points: 1
+2024/10/19 15:18:33 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x988de29be7a93f6b3a8e628531f3e69f8fe13144f10828e206a9147d8744e3ea, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x8a85f9384C37Ecc64D33C37E490D7B4E5951Cb59, USD Value: 0.00, Points: 1
+2024/10/19 15:18:33 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x11b997512499c9035e0e3ccb2c52e34436b571c58a5a554378215ae4d8bee6ab, Amount0In: 1452378945, Amount1In: 0, Amount0Out: 0, Amount1Out: 549375587015590733
+2024/10/19 15:18:34 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:34 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x111111125421cA6dc452d289314280a0f8842A65
+2024/10/19 15:18:34 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:34 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x11b997512499c9035e0e3ccb2c52e34436b571c58a5a554378215ae4d8bee6ab, Sender: 0x111111125421cA6dc452d289314280a0f8842A65, To: 0x5F9C1f252AaF2953b77127492d355274742283f6, USD Value: 0.00, Points: 1
+2024/10/19 15:18:34 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x11b997512499c9035e0e3ccb2c52e34436b571c58a5a554378215ae4d8bee6ab, Sender: 0x111111125421cA6dc452d289314280a0f8842A65, To: 0x5F9C1f252AaF2953b77127492d355274742283f6, USD Value: 0.00, Points: 1
+2024/10/19 15:18:34 [INFO] [logger.go:163] Processing swap event: TX Hash: 0xfdca8d67656df2840a434e006594a367681d48bbbe4248b202869c05742d65ab, Amount0In: 1000000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 378238186100741451
+2024/10/19 15:18:34 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:34 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x031F1aD10547b8dEB43A36e5491c06A93812023a
+2024/10/19 15:18:34 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:34 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xfdca8d67656df2840a434e006594a367681d48bbbe4248b202869c05742d65ab, Sender: 0x031F1aD10547b8dEB43A36e5491c06A93812023a, To: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, USD Value: 0.00, Points: 1
+2024/10/19 15:18:34 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xfdca8d67656df2840a434e006594a367681d48bbbe4248b202869c05742d65ab, Sender: 0x031F1aD10547b8dEB43A36e5491c06A93812023a, To: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, USD Value: 0.00, Points: 1
+2024/10/19 15:18:34 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x5aafffc2f9218b78c20a4851ee3a6e37c6853a05138dae9d882904fe42faf8bb, Amount0In: 1982500000, Amount1In: 0, Amount0Out: 0, Amount1Out: 749806766372736376
+2024/10/19 15:18:35 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:35 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x1111111254EEB25477B68fb85Ed929f73A960582
+2024/10/19 15:18:35 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:35 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x5aafffc2f9218b78c20a4851ee3a6e37c6853a05138dae9d882904fe42faf8bb, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x25647E01Bd0967C1B9599FA3521939871D1d0888, USD Value: 0.00, Points: 1
+2024/10/19 15:18:35 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x5aafffc2f9218b78c20a4851ee3a6e37c6853a05138dae9d882904fe42faf8bb, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x25647E01Bd0967C1B9599FA3521939871D1d0888, USD Value: 0.00, Points: 1
+2024/10/19 15:18:35 [INFO] [logger.go:163] Processing swap event: TX Hash: 0xd3327cf7a44837834764ce9e442167db95c2266fc4f14e4c37cbd966371d088a, Amount0In: 0, Amount1In: 99502487562189054, Amount0Out: 261520047, Amount1Out: 0
+2024/10/19 15:18:35 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:35 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x3328F7f4A1D1C57c35df56bBf0c9dCAFCA309C49
+2024/10/19 15:18:35 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:35 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xd3327cf7a44837834764ce9e442167db95c2266fc4f14e4c37cbd966371d088a, Sender: 0x3328F7f4A1D1C57c35df56bBf0c9dCAFCA309C49, To: 0x85673C92f0F27A9C4D8c221F6bFeFA33B716338A, USD Value: 99502487562.19, Points: 9950248756
+2024/10/19 15:18:35 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xd3327cf7a44837834764ce9e442167db95c2266fc4f14e4c37cbd966371d088a, Sender: 0x3328F7f4A1D1C57c35df56bBf0c9dCAFCA309C49, To: 0x85673C92f0F27A9C4D8c221F6bFeFA33B716338A, USD Value: 99502487562.19, Points: 9950248756
+2024/10/19 15:18:35 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x6f00d8670ecf4fcdbfa337d9cb7319449ac80901a0626ec0a18a954f0192a473, Amount0In: 0, Amount1In: 99502487562189054, Amount0Out: 261516951, Amount1Out: 0
+2024/10/19 15:18:35 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:35 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x3328F7f4A1D1C57c35df56bBf0c9dCAFCA309C49
+2024/10/19 15:18:35 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:35 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x6f00d8670ecf4fcdbfa337d9cb7319449ac80901a0626ec0a18a954f0192a473, Sender: 0x3328F7f4A1D1C57c35df56bBf0c9dCAFCA309C49, To: 0x85673C92f0F27A9C4D8c221F6bFeFA33B716338A, USD Value: 99502487562.19, Points: 9950248756
+2024/10/19 15:18:35 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x6f00d8670ecf4fcdbfa337d9cb7319449ac80901a0626ec0a18a954f0192a473, Sender: 0x3328F7f4A1D1C57c35df56bBf0c9dCAFCA309C49, To: 0x85673C92f0F27A9C4D8c221F6bFeFA33B716338A, USD Value: 99502487562.19, Points: 9950248756
+2024/10/19 15:18:35 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x34417771030c02d3e6da55d8707a0beeb87e67e892cb9b86b65cbe482cf51b95, Amount0In: 5000000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 1890810772451677960
+2024/10/19 15:18:36 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:36 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0xf2614A233c7C3e7f08b1F887Ba133a13f1eb2c55
+2024/10/19 15:18:36 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:36 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x34417771030c02d3e6da55d8707a0beeb87e67e892cb9b86b65cbe482cf51b95, Sender: 0xf2614A233c7C3e7f08b1F887Ba133a13f1eb2c55, To: 0xf2614A233c7C3e7f08b1F887Ba133a13f1eb2c55, USD Value: 0.00, Points: 1
+2024/10/19 15:18:36 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x34417771030c02d3e6da55d8707a0beeb87e67e892cb9b86b65cbe482cf51b95, Sender: 0xf2614A233c7C3e7f08b1F887Ba133a13f1eb2c55, To: 0xf2614A233c7C3e7f08b1F887Ba133a13f1eb2c55, USD Value: 0.00, Points: 1
+2024/10/19 15:18:36 [INFO] [logger.go:163] Processing swap event: TX Hash: 0xbe75b71b99f64d8ab622afeb442994c9683065272a949179a6e131cfb1ed1897, Amount0In: 1452363079, Amount1In: 0, Amount0Out: 0, Amount1Out: 549148734004216836
+2024/10/19 15:18:36 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:36 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x111111125421cA6dc452d289314280a0f8842A65
+2024/10/19 15:18:36 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:36 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xbe75b71b99f64d8ab622afeb442994c9683065272a949179a6e131cfb1ed1897, Sender: 0x111111125421cA6dc452d289314280a0f8842A65, To: 0x5F9C1f252AaF2953b77127492d355274742283f6, USD Value: 0.00, Points: 1
+2024/10/19 15:18:36 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xbe75b71b99f64d8ab622afeb442994c9683065272a949179a6e131cfb1ed1897, Sender: 0x111111125421cA6dc452d289314280a0f8842A65, To: 0x5F9C1f252AaF2953b77127492d355274742283f6, USD Value: 0.00, Points: 1
+2024/10/19 15:18:36 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x0a8996fbd5cbb95bd1dca1cd2890d61e4ba99dd8b9adc1074b1d973ef7586196, Amount0In: 101171648, Amount1In: 0, Amount0Out: 0, Amount1Out: 38252371896568506
+2024/10/19 15:18:36 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:36 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0xF3dE3C0d654FDa23daD170f0f320a92172509127
+2024/10/19 15:18:36 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:36 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x0a8996fbd5cbb95bd1dca1cd2890d61e4ba99dd8b9adc1074b1d973ef7586196, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0xE4b8583cCB95b25737C016ac88E539D0605949e8, USD Value: 0.00, Points: 1
+2024/10/19 15:18:36 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x0a8996fbd5cbb95bd1dca1cd2890d61e4ba99dd8b9adc1074b1d973ef7586196, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0xE4b8583cCB95b25737C016ac88E539D0605949e8, USD Value: 0.00, Points: 1
+2024/10/19 15:18:36 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x5cc5e51d80ee1f149b81ba6139d6eefbc3192ef3ca01d02dd3afb8a20bc9f5bc, Amount0In: 130852185, Amount1In: 0, Amount0Out: 0, Amount1Out: 49474139710674989
+2024/10/19 15:18:37 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic swap_events
+2024/10/19 15:18:37 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic user_0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD
+2024/10/19 15:18:37 [INFO] [logger.go:163] Broadcasted message to 0 clients subscribed to topic leaderboard
+2024/10/19 15:18:37 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x5cc5e51d80ee1f149b81ba6139d6eefbc3192ef3ca01d02dd3afb8a20bc9f5bc, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0xA8470Ae87a3480311B55894D7cd245097e7E0d2b, USD Value: 0.00, Points: 1
+2024/10/19 15:18:37 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x5cc5e51d80ee1f149b81ba6139d6eefbc3192ef3ca01d02dd3afb8a20bc9f5bc, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0xA8470Ae87a3480311B55894D7cd245097e7E0d2b, USD Value: 0.00, Points: 1
+2024/10/19 15:18:37 [INFO] [logger.go:163] Processing swap event: TX Hash: 0x1c720c67665b73044f502abdb5300c221e8019cf97df6c4a0f924173eecd9409, Amount0In: 12175000000, Amount1In: 0, Amount0Out: 0, Amount1Out: 4601992047905711613
+2024/10/19 15:54:31 [INFO] [logger.go:163] Trading Ace starting...
+2024/10/19 15:54:31 [INFO] [logger.go:163] Database migrations completed successfully
+2024/10/19 15:54:31 [INFO] [logger.go:163] Successfully connected to Ethereum client
+2024/10/19 15:54:33 [INFO] [logger.go:163] Successfully fetched 20 swap events from block 20998150 to 20998250
+2024/10/19 15:54:34 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x92e48b97d16225f807e111d6fa4a37777c3bcf7be7a6368be242eb4238e2478a, Sender: 0xf164fC0Ec4E93095b804a4795bBe1e041497b92a, To: 0x8f1B19622a888c53C8eE4F7D7B4Dc8F574ff9068, USD Value: 0.00, Points: 1
+2024/10/19 15:54:35 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x80b454d0f749d0923e0c942f2ca9d3f69979042b8b583066abc29f10611cd187, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 0.00, Points: 1
+2024/10/19 15:54:35 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x730d65fdbd22897cb99f2b9f232f4500037f51d058305117b26d4bd8e03c2bbd, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 71800074908.31, Points: 71800074908
+2024/10/19 15:54:36 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xd070fe851547220225726f41c2fa6eecadc4e4f2b8e0089c43398e54f4e66430, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 0.00, Points: 1
+2024/10/19 15:54:36 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x479c127e7e81f9913500ac3b4f4906cb7b4bf38f97cf6e49f7aa212a3a113e47, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x2cC846fFf0b08FB3bFfaD71f53a60B4b6E6d6482, USD Value: 0.00, Points: 1
+2024/10/19 15:54:37 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x38955b74449302729b61558e5c4da5de688902d0f3ad992d0a4284009900499f, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 17494153714.58, Points: 17494153714
+2024/10/19 15:54:37 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x5cd4652896de1fd0a4aa1cb072ce92d6838b31e0f76830d283022b1d27519728, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x1084a95c69Bdc3325c1c42F86676B6eb66dCe053, USD Value: 0.00, Points: 1
+2024/10/19 15:54:37 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xa12f9f14017cb933cd8a399da9d2468e76445a9abc05e084ffa8760b7c0d8227, Sender: 0x7D0CcAa3Fac1e5A943c5168b6CEd828691b46B36, To: 0x318Ba85CA49a3B12d3cf9c72cc72b29316971802, USD Value: 0.00, Points: 1
+2024/10/19 15:54:38 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x63118a6d17aa41af3f02078c3655f25611dd1acb01d5451cb9bea5288b37279e, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x06cd6245156c3608AE67D690c125E86A8bc6a88C, USD Value: 21753612188.59, Points: 21753612188
+2024/10/19 15:54:39 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xfee7142d750800492aea4db7a6d4424768ab9385895f53bd08fbe8e7bdfb448d, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x1a0D2C9314909837119BaEfF8F6402d709CFe9ae, USD Value: 0.00, Points: 1
+2024/10/19 15:54:39 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x2feb5cf2a99a97b21d234d13f76766cb8a15d67f5814cdbe0e937845c6a3aee9, Sender: 0x7D0CcAa3Fac1e5A943c5168b6CEd828691b46B36, To: 0xC98B2D550d8D123F8e6950E0758305E88511B037, USD Value: 0.00, Points: 1
+2024/10/19 15:54:40 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xaaaf4dadda834a181b25b2d2dc1b8b66a2e5c3901e232530d88dce42494f2f86, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x31ba74d3bcAf1B7A176A6cfd6C19ec101957d1f5, USD Value: 42000000000.00, Points: 42000000000
+2024/10/19 15:54:41 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xcc48288b24f51a7e06c2991720c894d322061d40e059f2b02ae7d89782f00fbd, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x0Da7096F14303EdDD634C0241963c064e0244984, USD Value: 0.00, Points: 1
+2024/10/19 15:54:42 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xd83d6af345ba29e789ca08ff30f3fd4d2bf4b777e75ac86213eb33607fb90d7f, Sender: 0x7D0CcAa3Fac1e5A943c5168b6CEd828691b46B36, To: 0x22f59FF1263e7Ca4076EcBAE615EE125beC8303d, USD Value: 0.00, Points: 1
+2024/10/19 15:54:42 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x2da29d6d0c1557df9b0133e4f376109320817c85199abab081b4c736fcc66aac, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x8A0d89e659FB1ee1B7AB91db933E9CC577E8e336, USD Value: 0.00, Points: 1
+2024/10/19 15:54:43 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x875ea83bc498ccac9e8be345c5e3a1226e4b14fa28a1ebf65f6e595cffa87078, Sender: 0xf164fC0Ec4E93095b804a4795bBe1e041497b92a, To: 0x06cd6245156c3608AE67D690c125E86A8bc6a88C, USD Value: 5015679014.03, Points: 5015679014
+2024/10/19 15:54:43 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x852851d9fb65f7aedae33cea1eec56c6f579c3ba54dfd80e5f2218ec542ef175, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 6178064019.26, Points: 6178064019
+2024/10/19 15:54:44 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xb068f98eeb9be0d8e162b22201a62f8dac4499ddc5569b0cc95e3adaee58e4d8, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x8A0d89e659FB1ee1B7AB91db933E9CC577E8e336, USD Value: 0.00, Points: 1
+2024/10/19 15:54:44 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x77afcf70e0886e6b77073006aba6a834ded2a6662b81e6d20258321f61767720, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0xE4b8583cCB95b25737C016ac88E539D0605949e8, USD Value: 0.00, Points: 1
+2024/10/19 15:54:44 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x68eeb651a777597dc3fe2bbfc04db1fc4fc8881d430bb63b77d33c4092b9be34, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x31ba74d3bcAf1B7A176A6cfd6C19ec101957d1f5, USD Value: 10000000000.00, Points: 10000000000
+2024/10/19 15:55:00 [INFO] [logger.go:163] Successfully fetched 19 swap events from block 20998153 to 20998253
+2024/10/19 15:55:00 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x80b454d0f749d0923e0c942f2ca9d3f69979042b8b583066abc29f10611cd187, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 0.00, Points: 1
+2024/10/19 15:55:01 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x730d65fdbd22897cb99f2b9f232f4500037f51d058305117b26d4bd8e03c2bbd, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 71800074908.31, Points: 71800074908
+2024/10/19 15:55:01 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xd070fe851547220225726f41c2fa6eecadc4e4f2b8e0089c43398e54f4e66430, Sender: 0x1111111254EEB25477B68fb85Ed929f73A960582, To: 0x1111111254EEB25477B68fb85Ed929f73A960582, USD Value: 0.00, Points: 1
+2024/10/19 15:55:01 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x479c127e7e81f9913500ac3b4f4906cb7b4bf38f97cf6e49f7aa212a3a113e47, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x2cC846fFf0b08FB3bFfaD71f53a60B4b6E6d6482, USD Value: 0.00, Points: 1
+2024/10/19 15:55:02 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x38955b74449302729b61558e5c4da5de688902d0f3ad992d0a4284009900499f, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 17494153714.58, Points: 17494153714
+2024/10/19 15:55:02 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x5cd4652896de1fd0a4aa1cb072ce92d6838b31e0f76830d283022b1d27519728, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x1084a95c69Bdc3325c1c42F86676B6eb66dCe053, USD Value: 0.00, Points: 1
+2024/10/19 15:55:02 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xa12f9f14017cb933cd8a399da9d2468e76445a9abc05e084ffa8760b7c0d8227, Sender: 0x7D0CcAa3Fac1e5A943c5168b6CEd828691b46B36, To: 0x318Ba85CA49a3B12d3cf9c72cc72b29316971802, USD Value: 0.00, Points: 1
+2024/10/19 15:55:03 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x63118a6d17aa41af3f02078c3655f25611dd1acb01d5451cb9bea5288b37279e, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x06cd6245156c3608AE67D690c125E86A8bc6a88C, USD Value: 21753612188.59, Points: 21753612188
+2024/10/19 15:55:03 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xfee7142d750800492aea4db7a6d4424768ab9385895f53bd08fbe8e7bdfb448d, Sender: 0xF3dE3C0d654FDa23daD170f0f320a92172509127, To: 0x1a0D2C9314909837119BaEfF8F6402d709CFe9ae, USD Value: 0.00, Points: 1
+2024/10/19 15:55:03 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x2feb5cf2a99a97b21d234d13f76766cb8a15d67f5814cdbe0e937845c6a3aee9, Sender: 0x7D0CcAa3Fac1e5A943c5168b6CEd828691b46B36, To: 0xC98B2D550d8D123F8e6950E0758305E88511B037, USD Value: 0.00, Points: 1
+2024/10/19 15:55:04 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xaaaf4dadda834a181b25b2d2dc1b8b66a2e5c3901e232530d88dce42494f2f86, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x31ba74d3bcAf1B7A176A6cfd6C19ec101957d1f5, USD Value: 42000000000.00, Points: 42000000000
+2024/10/19 15:55:04 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xcc48288b24f51a7e06c2991720c894d322061d40e059f2b02ae7d89782f00fbd, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x0Da7096F14303EdDD634C0241963c064e0244984, USD Value: 0.00, Points: 1
+2024/10/19 15:55:04 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xd83d6af345ba29e789ca08ff30f3fd4d2bf4b777e75ac86213eb33607fb90d7f, Sender: 0x7D0CcAa3Fac1e5A943c5168b6CEd828691b46B36, To: 0x22f59FF1263e7Ca4076EcBAE615EE125beC8303d, USD Value: 0.00, Points: 1
+2024/10/19 15:55:04 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x2da29d6d0c1557df9b0133e4f376109320817c85199abab081b4c736fcc66aac, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x8A0d89e659FB1ee1B7AB91db933E9CC577E8e336, USD Value: 0.00, Points: 1
+2024/10/19 15:55:05 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x875ea83bc498ccac9e8be345c5e3a1226e4b14fa28a1ebf65f6e595cffa87078, Sender: 0xf164fC0Ec4E93095b804a4795bBe1e041497b92a, To: 0x06cd6245156c3608AE67D690c125E86A8bc6a88C, USD Value: 5015679014.03, Points: 5015679014
+2024/10/19 15:55:05 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x852851d9fb65f7aedae33cea1eec56c6f579c3ba54dfd80e5f2218ec542ef175, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, USD Value: 6178064019.26, Points: 6178064019
+2024/10/19 15:55:06 [INFO] [logger.go:163] Processed swap event: TX Hash: 0xb068f98eeb9be0d8e162b22201a62f8dac4499ddc5569b0cc95e3adaee58e4d8, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x8A0d89e659FB1ee1B7AB91db933E9CC577E8e336, USD Value: 0.00, Points: 1
+2024/10/19 15:55:06 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x77afcf70e0886e6b77073006aba6a834ded2a6662b81e6d20258321f61767720, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0xE4b8583cCB95b25737C016ac88E539D0605949e8, USD Value: 0.00, Points: 1
+2024/10/19 15:55:07 [INFO] [logger.go:163] Processed swap event: TX Hash: 0x68eeb651a777597dc3fe2bbfc04db1fc4fc8881d430bb63b77d33c4092b9be34, Sender: 0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD, To: 0x31ba74d3bcAf1B7A176A6cfd6C19ec101957d1f5, USD Value: 10000000000.00, Points: 10000000000
