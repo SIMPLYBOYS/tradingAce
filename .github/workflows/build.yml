@@ -29,7 +29,16 @@ jobs:
             ${{ runner.os }}-go-mod-
 
       - name: Build
-        run: go build -v ./...
+        run: |
+          go build -v ./cmd/tradingace
+          # This will create binary file in current directory
+
+      # Optional: If you want to save the binary as an artifact
+      - name: Upload binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: tradingace
+          path: tradingace  # This is the binary file name
 
       - name: Test
         env:
